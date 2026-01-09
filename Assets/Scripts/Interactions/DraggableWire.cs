@@ -1,17 +1,19 @@
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using STEM2D.Core;
 
 namespace STEM2D.Interactions
 {
     [RequireComponent(typeof(LineRenderer))]
-    public class DraggableWire : MonoBehaviour, IInteractable
+    public class DraggableWire : MonoBehaviour, IInteractable, IPointerDownHandler, IPointerUpHandler
     {
         [Header("Wire Settings")]
         [SerializeField] private string wireId;
         [SerializeField] private WireColor wireColor;
         [SerializeField] private ConnectionPoint sourcePoint;
-        
+
         [Header("Action Registration")]
         [Tooltip("Action ID to register when wire is fully connected")]
         [SerializeField] private string completionActionId;
@@ -20,7 +22,7 @@ namespace STEM2D.Interactions
         [SerializeField] private float lineWidth = 0.08f;
         [SerializeField] private int curveSegments = 20;
         [SerializeField] private float sagAmount = 0.5f;
-        
+
         [Header("Snap Settings")]
         [SerializeField] private float snapDistance = 0.5f;
         [SerializeField] private LayerMask connectionPointLayer;
@@ -49,9 +51,9 @@ namespace STEM2D.Interactions
         {
             lineRenderer = GetComponent<LineRenderer>();
             mainCamera = Camera.main;
-            
+
             SetupLineRenderer();
-            
+
             if (string.IsNullOrEmpty(wireId))
             {
                 wireId = gameObject.name;
@@ -65,7 +67,7 @@ namespace STEM2D.Interactions
                 transform.position = sourcePoint.transform.position;
                 dragEndPosition = sourcePoint.transform.position;
             }
-            
+
             UpdateLinePositions();
         }
 
@@ -75,7 +77,7 @@ namespace STEM2D.Interactions
             lineRenderer.startWidth = lineWidth;
             lineRenderer.endWidth = lineWidth;
             lineRenderer.useWorldSpace = true;
-            
+
             Color color = ConnectionPoint.GetColorForWireType(wireColor);
             lineRenderer.startColor = color;
             lineRenderer.endColor = color;
@@ -88,36 +90,41 @@ namespace STEM2D.Interactions
                 UpdateDragPosition();
                 CheckForSnapTarget();
             }
-            
+
             UpdateLinePositions();
         }
 
-        void OnMouseDown()
+        public void OnPointerDown(PointerEventData eventData)
         {
             if (!isInteractable) return;
             if (isConnected) return;
 
             isDragging = true;
             OnDragStarted?.Invoke();
-            
+
             HighlightValidTargets(true);
+
+            Debug.Log("[Wire] Drag started");
         }
 
-        void OnMouseUp()
+        public void OnPointerUp(PointerEventData eventData)
         {
             if (!isDragging) return;
 
             isDragging = false;
             OnDragEnded?.Invoke();
-            
+
             HighlightValidTargets(false);
-            
+
             TryConnect();
+
+            Debug.Log("[Wire] Drag ended");
         }
 
         void UpdateDragPosition()
         {
-            Vector3 mousePos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 mouseScreenPos = Mouse.current.position.ReadValue();
+            Vector3 mousePos = mainCamera.ScreenToWorldPoint(new Vector3(mouseScreenPos.x, mouseScreenPos.y, 0));
             mousePos.z = 0;
             dragEndPosition = mousePos;
         }
@@ -125,7 +132,7 @@ namespace STEM2D.Interactions
         void CheckForSnapTarget()
         {
             Collider2D[] hits = Physics2D.OverlapCircleAll(dragEndPosition, snapDistance, connectionPointLayer);
-            
+
             ConnectionPoint nearest = null;
             float nearestDist = float.MaxValue;
 
@@ -163,14 +170,14 @@ namespace STEM2D.Interactions
                         targetPoint = point;
                         isConnected = true;
                         dragEndPosition = point.transform.position;
-                        
+
                         OnConnected?.Invoke(point);
-                        
+
                         if (!string.IsNullOrEmpty(completionActionId))
                         {
                             ExperimentManager.Instance?.RegisterActionComplete(completionActionId);
                         }
-                        
+
                         Debug.Log($"[Wire] {wireId}: Connected to {point.PointId}");
                         return;
                     }
@@ -200,7 +207,7 @@ namespace STEM2D.Interactions
 
             isConnected = false;
             ResetToSource();
-            
+
             OnDisconnected?.Invoke();
             Debug.Log($"[Wire] {wireId}: Disconnected");
         }
@@ -216,10 +223,10 @@ namespace STEM2D.Interactions
             {
                 float t = (float)i / (curveSegments - 1);
                 Vector3 point = Vector3.Lerp(start, end, t);
-                
+
                 float sag = Mathf.Sin(t * Mathf.PI) * sagAmount;
                 point.y -= sag;
-                
+
                 lineRenderer.SetPosition(i, point);
             }
         }
@@ -227,7 +234,7 @@ namespace STEM2D.Interactions
         void HighlightValidTargets(bool highlight)
         {
             ConnectionPoint[] allPoints = FindObjectsByType<ConnectionPoint>(FindObjectsSortMode.None);
-            
+
             foreach (ConnectionPoint point in allPoints)
             {
                 if (point.IsSource) continue;
@@ -257,12 +264,12 @@ namespace STEM2D.Interactions
         void OnDrawGizmosSelected()
         {
             Gizmos.color = ConnectionPoint.GetColorForWireType(wireColor);
-            
+
             if (sourcePoint != null)
             {
                 Gizmos.DrawLine(sourcePoint.transform.position, transform.position);
             }
-            
+
             Gizmos.DrawWireSphere(transform.position, snapDistance);
         }
     }
