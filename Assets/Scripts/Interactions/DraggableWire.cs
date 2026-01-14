@@ -7,6 +7,7 @@ using STEM2D.Core;
 namespace STEM2D.Interactions
 {
     [RequireComponent(typeof(LineRenderer))]
+    [RequireComponent(typeof(BoxCollider2D))]
     public class DraggableWire : MonoBehaviour, IInteractable, IPointerDownHandler, IPointerUpHandler
     {
         [Header("Wire Settings")]
@@ -23,6 +24,10 @@ namespace STEM2D.Interactions
         [SerializeField] private int curveSegments = 20;
         [SerializeField] private float sagAmount = 0.5f;
 
+        [Header("Collider Settings")]
+        [SerializeField] private Vector2 colliderOffset = new Vector2(0f, -0.3f);
+        [SerializeField] private Vector2 colliderSize = new Vector2(0.6f, 0.6f);
+
         [Header("Snap Settings")]
         [SerializeField] private float snapDistance = 0.5f;
         [SerializeField] private LayerMask connectionPointLayer;
@@ -34,6 +39,7 @@ namespace STEM2D.Interactions
         public UnityEvent OnDisconnected;
 
         private LineRenderer lineRenderer;
+        private BoxCollider2D boxCollider;
         private bool isDragging = false;
         private bool isConnected = false;
         private bool isInteractable = true;
@@ -50,6 +56,7 @@ namespace STEM2D.Interactions
         void Awake()
         {
             lineRenderer = GetComponent<LineRenderer>();
+            boxCollider = GetComponent<BoxCollider2D>();
             mainCamera = Camera.main;
 
             SetupLineRenderer();
@@ -62,6 +69,13 @@ namespace STEM2D.Interactions
 
         void Start()
         {
+            // Apply configured collider settings
+            if (boxCollider != null)
+            {
+                boxCollider.offset = colliderOffset;
+                boxCollider.size = colliderSize;
+            }
+
             if (sourcePoint != null)
             {
                 transform.position = sourcePoint.transform.position;
@@ -103,8 +117,6 @@ namespace STEM2D.Interactions
             OnDragStarted?.Invoke();
 
             HighlightValidTargets(true);
-
-            Debug.Log("[Wire] Drag started");
         }
 
         public void OnPointerUp(PointerEventData eventData)
@@ -117,8 +129,6 @@ namespace STEM2D.Interactions
             HighlightValidTargets(false);
 
             TryConnect();
-
-            Debug.Log("[Wire] Drag ended");
         }
 
         void UpdateDragPosition()
