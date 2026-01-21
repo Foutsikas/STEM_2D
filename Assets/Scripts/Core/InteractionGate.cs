@@ -148,10 +148,4 @@ namespace STEM2D.Core
             UpdateActiveState();
         }
     }
-
-    public interface IInteractable
-    {
-        void SetInteractable(bool interactable);
-        bool CanInteract();
-    }
 }

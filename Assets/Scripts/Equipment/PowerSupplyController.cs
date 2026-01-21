@@ -32,9 +32,9 @@ namespace STEM2D.Interactions
         [SerializeField] private GameObject batteryVisual;
         
         [Header("Button References")]
-        [SerializeField] private DL120Button powerSwitch;
-        [SerializeField] private DL120Button plusButton;
-        [SerializeField] private DL120Button minusButton;
+        [SerializeField] private EquipmentButton powerSwitch;
+        [SerializeField] private EquipmentButton plusButton;
+        [SerializeField] private EquipmentButton minusButton;
         
         [Header("Audio")]
         [SerializeField] private AudioSource switchSound;
