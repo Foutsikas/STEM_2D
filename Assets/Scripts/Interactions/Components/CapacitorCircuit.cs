@@ -8,31 +8,28 @@ namespace STEM2D.Interactions
     {
         [Header("Circuit Components")]
         [SerializeField] private PowerSupplyController powerSupply;
-        [SerializeField] private Switch circuitSwitch;
-        [SerializeField] private Lamp led;
+        [SerializeField] private LED led;
         [SerializeField] private VoltageSensor voltageSensor;
         [SerializeField] private DischargeGraph graph;
-        
+
         [Header("Capacitor Settings")]
         [SerializeField] private float capacitance = 0.001f;
         [SerializeField] private float resistance = 5000f;
-        
+
         [Header("State")]
         [SerializeField] private float capacitorVoltage = 0f;
         [SerializeField] private bool isCharging = false;
         [SerializeField] private bool isDischarging = false;
-        
+
         [Header("Simulation")]
         [SerializeField] private float chargeSpeed = 2f;
         [SerializeField] private float dischargeTimeConstant = 5f;
-        
+
         [Header("Action Registration")]
-        [SerializeField] private string actionIdOnCircuitClosed;
         [SerializeField] private string actionIdOnDischargeStarted;
-        
+
         [Header("Events")]
-        public UnityEvent OnCircuitClosed;
-        public UnityEvent OnCircuitOpened;
+        public UnityEvent OnChargingStarted;
         public UnityEvent OnCapacitorCharged;
         public UnityEvent OnDischargeStarted;
         public UnityEvent OnDischargeComplete;
@@ -41,7 +38,6 @@ namespace STEM2D.Interactions
         private float targetVoltage = 0f;
         private float dischargeStartTime = 0f;
         private float initialDischargeVoltage = 0f;
-        private bool circuitComplete = false;
 
         public float CapacitorVoltage => capacitorVoltage;
         public bool IsCharging => isCharging;
@@ -51,10 +47,9 @@ namespace STEM2D.Interactions
         void Start()
         {
             SubscribeToEvents();
-            
-            // Calculate time constant from R and C
+
             dischargeTimeConstant = resistance * capacitance;
-            
+
             if (graph != null)
             {
                 graph.SetTimeConstant(dischargeTimeConstant);
@@ -70,12 +65,9 @@ namespace STEM2D.Interactions
         {
             if (powerSupply != null)
             {
+                powerSupply.OnPowerOn.AddListener(OnPowerSupplyTurnedOn);
+                powerSupply.OnPowerOff.AddListener(OnPowerSupplyTurnedOff);
                 powerSupply.OnVoltageChanged.AddListener(OnPowerSupplyVoltageChanged);
-            }
-            
-            if (circuitSwitch != null)
-            {
-                circuitSwitch.OnStateChanged.AddListener(OnSwitchStateChanged);
             }
         }
 
@@ -83,89 +75,61 @@ namespace STEM2D.Interactions
         {
             if (powerSupply != null)
             {
+                powerSupply.OnPowerOn.RemoveListener(OnPowerSupplyTurnedOn);
+                powerSupply.OnPowerOff.RemoveListener(OnPowerSupplyTurnedOff);
                 powerSupply.OnVoltageChanged.RemoveListener(OnPowerSupplyVoltageChanged);
             }
-            
-            if (circuitSwitch != null)
-            {
-                circuitSwitch.OnStateChanged.RemoveListener(OnSwitchStateChanged);
-            }
         }
 
-        void OnPowerSupplyVoltageChanged(float voltage)
-        {
-            targetVoltage = voltage;
-            
-            if (circuitComplete && voltage > 0)
-            {
-                StartCharging();
-            }
-            
-            Debug.Log($"[Circuit] Power supply voltage: {voltage}V");
-        }
-
-        void OnSwitchStateChanged(bool switchOn)
-        {
-            if (switchOn)
-            {
-                CloseCircuit();
-            }
-            else
-            {
-                OpenCircuit();
-            }
-        }
-
-        void CloseCircuit()
-        {
-            circuitComplete = true;
-            OnCircuitClosed?.Invoke();
-            
-            if (!string.IsNullOrEmpty(actionIdOnCircuitClosed))
-            {
-                ExperimentManager.Instance?.RegisterActionComplete(actionIdOnCircuitClosed);
-            }
-            
-            // If power supply is on, start charging
-            if (powerSupply != null && powerSupply.IsPoweredOn)
-            {
-                targetVoltage = powerSupply.CurrentVoltage;
-                StartCharging();
-            }
-            
-            Debug.Log("[Circuit] Circuit CLOSED");
-        }
-
-        void OpenCircuit()
-        {
-            circuitComplete = false;
-            OnCircuitOpened?.Invoke();
-            
-            // If capacitor has charge, start discharging
-            if (capacitorVoltage > 0.1f)
-            {
-                StartDischarging();
-            }
-            
-            Debug.Log("[Circuit] Circuit OPENED");
-        }
-
-        void StartCharging()
+        void OnPowerSupplyTurnedOn()
         {
             if (isDischarging)
             {
                 StopDischarging();
             }
-            
+
+            targetVoltage = powerSupply.CurrentVoltage;
+            StartCharging();
+
+            Debug.Log($"[Circuit] Power ON - Charging to {targetVoltage}V");
+        }
+
+        void OnPowerSupplyTurnedOff()
+        {
+            if (isCharging)
+            {
+                StopCharging();
+            }
+
+            if (capacitorVoltage > 0.1f)
+            {
+                StartDischarging();
+            }
+
+            Debug.Log("[Circuit] Power OFF - Discharging");
+        }
+
+        void OnPowerSupplyVoltageChanged(float voltage)
+        {
+            if (powerSupply.IsPoweredOn)
+            {
+                targetVoltage = voltage;
+                Debug.Log($"[Circuit] Target voltage changed to {voltage}V");
+            }
+        }
+
+        void StartCharging()
+        {
             isCharging = true;
-            
-            // Turn on LED
+            isDischarging = false;
+
             if (led != null)
             {
                 led.TurnOn();
             }
-            
-            Debug.Log($"[Circuit] Charging capacitor to {targetVoltage}V");
+
+            OnChargingStarted?.Invoke();
+            Debug.Log($"[Circuit] Charging started to {targetVoltage}V");
         }
 
         void StopCharging()
@@ -175,41 +139,30 @@ namespace STEM2D.Interactions
 
         void StartDischarging()
         {
-            if (isCharging)
-            {
-                StopCharging();
-            }
-            
+            isCharging = false;
             isDischarging = true;
             dischargeStartTime = Time.time;
             initialDischargeVoltage = capacitorVoltage;
-            
-            // Start graph recording
+
             if (graph != null)
             {
                 graph.StartRecording(initialDischargeVoltage);
             }
-            
-            // Turn off LED (or dim based on voltage)
-            if (led != null)
-            {
-                led.TurnOff();
-            }
-            
+
             OnDischargeStarted?.Invoke();
-            
+
             if (!string.IsNullOrEmpty(actionIdOnDischargeStarted))
             {
                 ExperimentManager.Instance?.RegisterActionComplete(actionIdOnDischargeStarted);
             }
-            
+
             Debug.Log($"[Circuit] Discharging from {initialDischargeVoltage}V");
         }
 
         void StopDischarging()
         {
             isDischarging = false;
-            
+
             if (graph != null)
             {
                 graph.StopRecording();
@@ -226,45 +179,41 @@ namespace STEM2D.Interactions
             {
                 UpdateDischarging();
             }
-            
-            // Update LED brightness based on capacitor voltage
+
             UpdateLED();
-            
-            // Update voltage sensor reading
-            if (voltageSensor != null && voltageSensor.IsConnected)
-            {
-                voltageSensor.SetVoltageSource(capacitorVoltage);
-            }
+            UpdateVoltageSensor();
         }
 
         void UpdateCharging()
         {
             if (capacitorVoltage < targetVoltage)
             {
-                // Simple linear charging for visual feedback
                 capacitorVoltage += chargeSpeed * Time.deltaTime;
                 capacitorVoltage = Mathf.Min(capacitorVoltage, targetVoltage);
-                
+
                 OnVoltageChanged?.Invoke(capacitorVoltage);
-                
+
                 if (Mathf.Approximately(capacitorVoltage, targetVoltage))
                 {
                     OnCapacitorCharged?.Invoke();
-                    Debug.Log($"[Circuit] Capacitor fully charged: {capacitorVoltage}V");
+                    Debug.Log($"[Circuit] Fully charged: {capacitorVoltage}V");
                 }
+            }
+            else if (capacitorVoltage > targetVoltage)
+            {
+                capacitorVoltage = targetVoltage;
+                OnVoltageChanged?.Invoke(capacitorVoltage);
             }
         }
 
         void UpdateDischarging()
         {
             float elapsedTime = Time.time - dischargeStartTime;
-            
-            // Exponential decay: V(t) = V0 * e^(-t/RC)
+
             capacitorVoltage = initialDischargeVoltage * Mathf.Exp(-elapsedTime / dischargeTimeConstant);
-            
+
             OnVoltageChanged?.Invoke(capacitorVoltage);
-            
-            // Check if discharge is essentially complete
+
             if (capacitorVoltage < 0.01f)
             {
                 capacitorVoltage = 0f;
@@ -278,17 +227,23 @@ namespace STEM2D.Interactions
         {
             if (led == null) return;
 
-            if (circuitComplete && capacitorVoltage > 0.1f)
+            if (capacitorVoltage > 0.1f)
             {
-                // LED brightness proportional to voltage
-                float brightness = capacitorVoltage / targetVoltage;
+                float maxVoltage = Mathf.Max(targetVoltage, initialDischargeVoltage, 1.5f);
+                float brightness = capacitorVoltage / maxVoltage;
                 led.SetBrightness(brightness);
             }
-            else if (isDischarging)
+            else
             {
-                // During discharge, LED dims with voltage
-                float brightness = capacitorVoltage / initialDischargeVoltage;
-                led.SetBrightness(brightness);
+                led.SetBrightness(0f);
+            }
+        }
+
+        void UpdateVoltageSensor()
+        {
+            if (voltageSensor != null && voltageSensor.IsConnected)
+            {
+                voltageSensor.SetVoltageSource(capacitorVoltage);
             }
         }
 
@@ -296,7 +251,7 @@ namespace STEM2D.Interactions
         {
             capacitance = c;
             dischargeTimeConstant = resistance * capacitance;
-            
+
             if (graph != null)
             {
                 graph.SetTimeConstant(dischargeTimeConstant);
@@ -307,7 +262,7 @@ namespace STEM2D.Interactions
         {
             resistance = r;
             dischargeTimeConstant = resistance * capacitance;
-            
+
             if (graph != null)
             {
                 graph.SetTimeConstant(dischargeTimeConstant);
@@ -319,13 +274,12 @@ namespace STEM2D.Interactions
             capacitorVoltage = 0f;
             isCharging = false;
             isDischarging = false;
-            circuitComplete = false;
-            
+
             if (led != null)
             {
                 led.TurnOff();
             }
-            
+
             if (graph != null)
             {
                 graph.ClearGraph();
