@@ -2,7 +2,7 @@
 - Project name: STEM_2D_Experiments
 - Unity version: Unity 6000.3.3f1
 - Active game object:
-  - Name: ConfirmButton
+  - Name: DischargeGraph
   - Tag: Untagged
   - Layer: Default
 <!-- UNITY CODE ASSIST INSTRUCTIONS END -->

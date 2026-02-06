@@ -10,36 +10,39 @@ namespace STEM2D.Interactions
         [Header("Power Settings")]
         [SerializeField] private bool isPoweredOn = false;
         [SerializeField] private float currentVoltage = 1.5f;
-        
+
         [Header("Voltage Configuration")]
         [SerializeField] private float minVoltage = 0f;
         [SerializeField] private float maxVoltage = 9f;
         [SerializeField] private float voltageStep = 1.5f;
-        
+
         [Header("Action Registration")]
         [SerializeField] private string actionIdOnPowerOn;
         [SerializeField] private string actionIdOnPowerOff;
         [SerializeField] private string actionIdOnVoltageChanged;
-        
+
         [Header("UI References")]
         [SerializeField] private TMP_Text voltageDisplayText;
         [SerializeField] private string voltageFormat = "{0:F1} V";
-        
+
         [Header("Visual Feedback")]
         [SerializeField] private SpriteRenderer powerIndicator;
         [SerializeField] private Color powerOnColor = Color.green;
         [SerializeField] private Color powerOffColor = Color.red;
         [SerializeField] private GameObject batteryVisual;
-        
+
+        [Header("Connected Components")]
+        [SerializeField] private LED circuitLED;
+
         [Header("Button References")]
         [SerializeField] private EquipmentButton powerSwitch;
         [SerializeField] private EquipmentButton plusButton;
         [SerializeField] private EquipmentButton minusButton;
-        
+
         [Header("Audio")]
         [SerializeField] private AudioSource switchSound;
         [SerializeField] private AudioSource adjustSound;
-        
+
         [Header("Events")]
         public UnityEvent OnPowerOn;
         public UnityEvent OnPowerOff;
@@ -87,20 +90,26 @@ namespace STEM2D.Interactions
             if (isPoweredOn) return;
 
             isPoweredOn = true;
-            
+
             if (switchSound != null) switchSound.Play();
-            
+
             UpdateDisplay();
-            
+
+            // Turn on the circuit LED
+            if (circuitLED != null)
+            {
+                circuitLED.TurnOn();
+            }
+
             OnPowerOn?.Invoke();
             OnPowerStateChanged?.Invoke(true);
             OnVoltageChanged?.Invoke(currentVoltage);
-            
+
             if (!string.IsNullOrEmpty(actionIdOnPowerOn))
             {
                 ExperimentManager.Instance?.RegisterActionComplete(actionIdOnPowerOn);
             }
-            
+
             Debug.Log($"[PowerSupply] ON - Output: {currentVoltage}V");
         }
 
@@ -109,20 +118,26 @@ namespace STEM2D.Interactions
             if (!isPoweredOn) return;
 
             isPoweredOn = false;
-            
+
             if (switchSound != null) switchSound.Play();
-            
+
             UpdateDisplay();
-            
+
+            // Turn off the circuit LED
+            if (circuitLED != null)
+            {
+                circuitLED.TurnOff();
+            }
+
             OnPowerOff?.Invoke();
             OnPowerStateChanged?.Invoke(false);
             OnVoltageChanged?.Invoke(0f);
-            
+
             if (!string.IsNullOrEmpty(actionIdOnPowerOff))
             {
                 ExperimentManager.Instance?.RegisterActionComplete(actionIdOnPowerOff);
             }
-            
+
             Debug.Log("[PowerSupply] OFF");
         }
 
@@ -153,41 +168,38 @@ namespace STEM2D.Interactions
         public void SetVoltage(float voltage)
         {
             voltage = Mathf.Clamp(voltage, minVoltage, maxVoltage);
-            
+
             if (Mathf.Approximately(currentVoltage, voltage)) return;
 
             currentVoltage = voltage;
-            
+
             UpdateDisplay();
-            
+
             if (isPoweredOn)
             {
                 OnVoltageChanged?.Invoke(currentVoltage);
             }
-            
+
             if (!string.IsNullOrEmpty(actionIdOnVoltageChanged))
             {
                 ExperimentManager.Instance?.RegisterActionComplete(actionIdOnVoltageChanged);
             }
-            
+
             Debug.Log($"[PowerSupply] Voltage set to {currentVoltage}V");
         }
 
         void UpdateDisplay()
         {
-            // Update voltage text
             if (voltageDisplayText != null)
             {
                 voltageDisplayText.text = string.Format(voltageFormat, currentVoltage);
             }
 
-            // Update power indicator
             if (powerIndicator != null)
             {
                 powerIndicator.color = isPoweredOn ? powerOnColor : powerOffColor;
             }
 
-            // Update battery visual (show/hide based on voltage level)
             UpdateBatteryVisual();
         }
 
@@ -195,11 +207,7 @@ namespace STEM2D.Interactions
         {
             if (batteryVisual == null) return;
 
-            // Calculate how many "battery units" based on voltage
-            // Assuming 1.5V per battery
             int batteryCount = Mathf.RoundToInt(currentVoltage / 1.5f);
-            
-            // You can expand this to show multiple battery sprites
             batteryVisual.SetActive(batteryCount > 0);
         }
 
@@ -212,6 +220,12 @@ namespace STEM2D.Interactions
         {
             isPoweredOn = false;
             currentVoltage = 1.5f;
+
+            if (circuitLED != null)
+            {
+                circuitLED.TurnOff();
+            }
+
             UpdateDisplay();
         }
 

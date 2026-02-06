@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.EventSystems;
 using TMPro;
 using STEM2D.Core;
 
@@ -185,6 +184,13 @@ namespace STEM2D.Interactions
         {
             if (!isInteractable) return;
 
+            // If device is OFF, power it on (dual-purpose button)
+            if (currentState == DL120State.Off)
+            {
+                PowerOn();
+                return;
+            }
+
             if (buttonSound != null) buttonSound.Play();
 
             if (currentState == DL120State.MainMenu)
@@ -237,12 +243,10 @@ namespace STEM2D.Interactions
 
         void UpdateDisplay()
         {
-            // Hide all screens
             if (screenOff != null) screenOff.SetActive(false);
             if (screenMainMenu != null) screenMainMenu.SetActive(false);
             if (screenMeter != null) screenMeter.SetActive(false);
 
-            // Show appropriate screen
             switch (currentState)
             {
                 case DL120State.Off:
