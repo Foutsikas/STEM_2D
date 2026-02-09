@@ -10,23 +10,24 @@ namespace STEM2D.Interactions
         [Header("Graph Settings")]
         [SerializeField] private float graphWidth = 4f;
         [SerializeField] private float graphHeight = 3f;
-        [SerializeField] private int maxDataPoints = 100;
-        
+
         [Header("Discharge Simulation")]
         [SerializeField] private float timeConstant = 5f;
         [SerializeField] private float simulationSpeed = 1f;
         [SerializeField] private float maxTime = 40f;
-        
+
+        [Header("Sampling")]
+        [SerializeField] private float sampleInterval = 0.1f;
+
         [Header("Visual Settings")]
         [SerializeField] private float lineWidth = 0.05f;
         [SerializeField] private Color lineColor = Color.blue;
-        [SerializeField] private Color gridColor = new Color(0.8f, 0.8f, 0.8f, 0.5f);
-        
+
         [Header("Axis References")]
         [SerializeField] private LineRenderer xAxisLine;
         [SerializeField] private LineRenderer yAxisLine;
         [SerializeField] private Transform graphOrigin;
-        
+
         [Header("Labels")]
         [SerializeField] private TMPro.TMP_Text xAxisLabel;
         [SerializeField] private TMPro.TMP_Text yAxisLabel;
@@ -34,7 +35,7 @@ namespace STEM2D.Interactions
         [SerializeField] private string xAxisText = "Time (s)";
         [SerializeField] private string yAxisText = "Voltage (V)";
         [SerializeField] private string titleText = "Capacitor Discharge";
-        
+
         [Header("Events")]
         public UnityEvent OnRecordingStarted;
         public UnityEvent OnRecordingStopped;
@@ -43,10 +44,10 @@ namespace STEM2D.Interactions
         private LineRenderer lineRenderer;
         private List<Vector2> dataPoints = new List<Vector2>();
         private bool isRecording = false;
-        private float recordingStartTime = 0f;
         private float currentSimulationTime = 0f;
         private float initialVoltage = 0f;
         private float currentVoltage = 0f;
+        private float timeSinceLastSample = 0f;
 
         public bool IsRecording => isRecording;
         public float CurrentVoltage => currentVoltage;
@@ -91,19 +92,28 @@ namespace STEM2D.Interactions
 
         void UpdateSimulation()
         {
-            currentSimulationTime += Time.deltaTime * simulationSpeed;
-            
+            float deltaTime = Time.deltaTime * simulationSpeed;
+            currentSimulationTime += deltaTime;
+            timeSinceLastSample += deltaTime;
+
             if (currentSimulationTime >= maxTime)
             {
+                // Add final point
+                currentVoltage = initialVoltage * Mathf.Exp(-maxTime / timeConstant);
+                AddDataPoint(maxTime, currentVoltage);
                 StopRecording();
                 return;
             }
 
-            // Calculate voltage using exponential decay: V(t) = V0 * e^(-t/RC)
+            // Calculate current voltage
             currentVoltage = initialVoltage * Mathf.Exp(-currentSimulationTime / timeConstant);
-            
-            // Add data point
-            AddDataPoint(currentSimulationTime, currentVoltage);
+
+            // Only add point at sample intervals to keep line smooth but not excessive
+            if (timeSinceLastSample >= sampleInterval)
+            {
+                AddDataPoint(currentSimulationTime, currentVoltage);
+                timeSinceLastSample = 0f;
+            }
         }
 
         public void StartRecording(float startVoltage)
@@ -113,16 +123,16 @@ namespace STEM2D.Interactions
             initialVoltage = startVoltage;
             currentVoltage = startVoltage;
             currentSimulationTime = 0f;
-            recordingStartTime = Time.time;
-            
+            timeSinceLastSample = 0f;
+
             ClearGraph();
-            
+
             // Add initial point
             AddDataPoint(0f, initialVoltage);
-            
+
             isRecording = true;
             OnRecordingStarted?.Invoke();
-            
+
             Debug.Log($"[Graph] Recording started at {initialVoltage}V");
         }
 
@@ -132,7 +142,7 @@ namespace STEM2D.Interactions
 
             isRecording = false;
             OnRecordingStopped?.Invoke();
-            
+
             Debug.Log($"[Graph] Recording stopped. {dataPoints.Count} data points");
         }
 
@@ -154,16 +164,12 @@ namespace STEM2D.Interactions
             // Normalize to graph coordinates
             float normalizedX = (time / maxTime) * graphWidth;
             float normalizedY = (voltage / GetMaxVoltageScale()) * graphHeight;
-            
+
             Vector2 point = new Vector2(normalizedX, normalizedY);
             dataPoints.Add(point);
-            
-            // Limit data points
-            if (dataPoints.Count > maxDataPoints)
-            {
-                dataPoints.RemoveAt(0);
-            }
-            
+
+            // No limit - keep ALL points for full trail
+
             UpdateLineRenderer();
             OnDataPointAdded?.Invoke(time, voltage);
         }
@@ -171,9 +177,9 @@ namespace STEM2D.Interactions
         void UpdateLineRenderer()
         {
             lineRenderer.positionCount = dataPoints.Count;
-            
+
             Vector3 originOffset = graphOrigin != null ? graphOrigin.localPosition : Vector3.zero;
-            
+
             for (int i = 0; i < dataPoints.Count; i++)
             {
                 Vector3 pos = new Vector3(
@@ -187,7 +193,6 @@ namespace STEM2D.Interactions
 
         float GetMaxVoltageScale()
         {
-            // Round up to nearest 1.5V increment for nice axis labels
             float maxV = Mathf.Max(initialVoltage, 1.5f);
             return Mathf.Ceil(maxV / 1.5f) * 1.5f;
         }
@@ -198,8 +203,9 @@ namespace STEM2D.Interactions
             lineRenderer.positionCount = 0;
             currentSimulationTime = 0f;
             currentVoltage = 0f;
+            timeSinceLastSample = 0f;
             isRecording = false;
-            
+
             Debug.Log("[Graph] Cleared");
         }
 
@@ -242,8 +248,7 @@ namespace STEM2D.Interactions
         void OnDrawGizmosSelected()
         {
             Vector3 origin = graphOrigin != null ? graphOrigin.position : transform.position;
-            
-            // Draw graph bounds
+
             Gizmos.color = Color.green;
             Gizmos.DrawLine(origin, origin + Vector3.right * graphWidth);
             Gizmos.DrawLine(origin, origin + Vector3.up * graphHeight);

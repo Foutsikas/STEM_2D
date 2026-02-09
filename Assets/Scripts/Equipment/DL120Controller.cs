@@ -56,7 +56,6 @@ namespace STEM2D.Interactions
         [SerializeField] private string option3Label = "Snapshot";
 
         [Header("Button References")]
-        [SerializeField] private EquipmentButton powerButton;
         [SerializeField] private EquipmentButton upButton;
         [SerializeField] private EquipmentButton downButton;
         [SerializeField] private EquipmentButton confirmButton;
@@ -68,7 +67,6 @@ namespace STEM2D.Interactions
 
         [Header("Events")]
         public UnityEvent OnPowerOn;
-        public UnityEvent OnPowerOff;
         public UnityEvent OnMeterModeEntered;
         public UnityEvent<int, float> OnChannelValueChanged;
 
@@ -88,8 +86,6 @@ namespace STEM2D.Interactions
 
         void InitializeButtons()
         {
-            if (powerButton != null)
-                powerButton.OnButtonPressed.AddListener(OnPowerButtonPressed);
             if (upButton != null)
                 upButton.OnButtonPressed.AddListener(OnUpButtonPressed);
             if (downButton != null)
@@ -98,20 +94,6 @@ namespace STEM2D.Interactions
                 confirmButton.OnButtonPressed.AddListener(OnConfirmButtonPressed);
             if (cancelButton != null)
                 cancelButton.OnButtonPressed.AddListener(OnCancelButtonPressed);
-        }
-
-        void OnPowerButtonPressed()
-        {
-            if (!isInteractable) return;
-
-            if (currentState == DL120State.Off)
-            {
-                PowerOn();
-            }
-            else
-            {
-                PowerOff();
-            }
         }
 
         public void PowerOn()
@@ -132,20 +114,6 @@ namespace STEM2D.Interactions
             }
 
             Debug.Log("[DL120] Powered ON");
-        }
-
-        public void PowerOff()
-        {
-            if (currentState == DL120State.Off) return;
-
-            currentState = DL120State.Off;
-
-            if (powerSound != null) powerSound.Play();
-
-            UpdateDisplay();
-            OnPowerOff?.Invoke();
-
-            Debug.Log("[DL120] Powered OFF");
         }
 
         void OnUpButtonPressed()
@@ -184,7 +152,7 @@ namespace STEM2D.Interactions
         {
             if (!isInteractable) return;
 
-            // If device is OFF, power it on (dual-purpose button)
+            // If device is OFF, power it on
             if (currentState == DL120State.Off)
             {
                 PowerOn();
