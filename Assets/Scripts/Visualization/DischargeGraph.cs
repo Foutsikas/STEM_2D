@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.Events;
 using System.Collections.Generic;
+using TMPro;
+using STEM2D.Core;
 
 namespace STEM2D.Interactions
 {
@@ -16,6 +18,9 @@ namespace STEM2D.Interactions
         [SerializeField] private float simulationSpeed = 1f;
         [SerializeField] private float maxTime = 40f;
 
+        [Header("Action Registration")]
+        [SerializeField] private string actionIdOnRecordingComplete;
+
         [Header("Sampling")]
         [SerializeField] private float sampleInterval = 0.1f;
 
@@ -28,13 +33,26 @@ namespace STEM2D.Interactions
         [SerializeField] private LineRenderer yAxisLine;
         [SerializeField] private Transform graphOrigin;
 
-        [Header("Labels")]
-        [SerializeField] private TMPro.TMP_Text xAxisLabel;
-        [SerializeField] private TMPro.TMP_Text yAxisLabel;
-        [SerializeField] private TMPro.TMP_Text titleLabel;
+        [Header("Axis Labels")]
+        [SerializeField] private TMP_Text xAxisLabel;
+        [SerializeField] private TMP_Text yAxisLabel;
+        [SerializeField] private TMP_Text titleLabel;
         [SerializeField] private string xAxisText = "Time (s)";
         [SerializeField] private string yAxisText = "Voltage (V)";
         [SerializeField] private string titleText = "Capacitor Discharge";
+
+        [Header("Axis Number Labels")]
+        [SerializeField] private Transform xAxisLabelsParent;
+        [SerializeField] private Transform yAxisLabelsParent;
+        [SerializeField] private TMP_Text labelPrefab;
+        [SerializeField] private float labelOffset = 0.15f;
+
+        [Header("Y-Axis Config")]
+        [SerializeField] private float maxVoltageDisplay = 6f;
+        [SerializeField] private float yAxisStep = 2f;
+
+        [Header("X-Axis Config")]
+        [SerializeField] private int[] xAxisValues = { 1, 3, 5, 7, 9, 11, 14, 17, 20, 23, 26, 29, 32, 35, 38 };
 
         [Header("Events")]
         public UnityEvent OnRecordingStarted;
@@ -48,6 +66,7 @@ namespace STEM2D.Interactions
         private float initialVoltage = 0f;
         private float currentVoltage = 0f;
         private float timeSinceLastSample = 0f;
+        private List<TMP_Text> spawnedLabels = new List<TMP_Text>();
 
         public bool IsRecording => isRecording;
         public float CurrentVoltage => currentVoltage;
@@ -62,6 +81,7 @@ namespace STEM2D.Interactions
         void Start()
         {
             SetupLabels();
+            GenerateAxisNumbers();
             ClearGraph();
         }
 
@@ -82,6 +102,55 @@ namespace STEM2D.Interactions
             if (titleLabel != null) titleLabel.text = titleText;
         }
 
+        void GenerateAxisNumbers()
+        {
+            if (labelPrefab == null) return;
+
+            Vector3 origin = graphOrigin != null ? graphOrigin.localPosition : Vector3.zero;
+
+            // Generate Y-axis labels (0, 2, 4, 6)
+            if (yAxisLabelsParent != null)
+            {
+                for (float v = 0; v <= maxVoltageDisplay; v += yAxisStep)
+                {
+                    float normalizedY = (v / maxVoltageDisplay) * graphHeight;
+
+                    TMP_Text label = Instantiate(labelPrefab, yAxisLabelsParent);
+                    label.text = v.ToString("0");
+                    label.alignment = TextAlignmentOptions.MidlineRight;
+
+                    label.transform.localPosition = new Vector3(
+                        origin.x - labelOffset,
+                        origin.y + normalizedY,
+                        0f
+                    );
+
+                    spawnedLabels.Add(label);
+                }
+            }
+
+            // Generate X-axis labels (1, 3, 5, 7, 9, 11, 14, 17, 20, 23, 26, 29, 32, 35, 38)
+            if (xAxisLabelsParent != null)
+            {
+                foreach (int t in xAxisValues)
+                {
+                    float normalizedX = ((float)t / maxTime) * graphWidth;
+
+                    TMP_Text label = Instantiate(labelPrefab, xAxisLabelsParent);
+                    label.text = t.ToString();
+                    label.alignment = TextAlignmentOptions.Top;
+
+                    label.transform.localPosition = new Vector3(
+                        origin.x + normalizedX,
+                        origin.y - labelOffset,
+                        0f
+                    );
+
+                    spawnedLabels.Add(label);
+                }
+            }
+        }
+
         void Update()
         {
             if (isRecording)
@@ -98,17 +167,14 @@ namespace STEM2D.Interactions
 
             if (currentSimulationTime >= maxTime)
             {
-                // Add final point
                 currentVoltage = initialVoltage * Mathf.Exp(-maxTime / timeConstant);
                 AddDataPoint(maxTime, currentVoltage);
                 StopRecording();
                 return;
             }
 
-            // Calculate current voltage
             currentVoltage = initialVoltage * Mathf.Exp(-currentSimulationTime / timeConstant);
 
-            // Only add point at sample intervals to keep line smooth but not excessive
             if (timeSinceLastSample >= sampleInterval)
             {
                 AddDataPoint(currentSimulationTime, currentVoltage);
@@ -127,7 +193,6 @@ namespace STEM2D.Interactions
 
             ClearGraph();
 
-            // Add initial point
             AddDataPoint(0f, initialVoltage);
 
             isRecording = true;
@@ -142,6 +207,12 @@ namespace STEM2D.Interactions
 
             isRecording = false;
             OnRecordingStopped?.Invoke();
+
+            // Register action for step progression
+            if (!string.IsNullOrEmpty(actionIdOnRecordingComplete))
+            {
+                ExperimentManager.Instance?.RegisterActionComplete(actionIdOnRecordingComplete);
+            }
 
             Debug.Log($"[Graph] Recording stopped. {dataPoints.Count} data points");
         }
@@ -161,14 +232,11 @@ namespace STEM2D.Interactions
 
         void AddDataPoint(float time, float voltage)
         {
-            // Normalize to graph coordinates
             float normalizedX = (time / maxTime) * graphWidth;
-            float normalizedY = (voltage / GetMaxVoltageScale()) * graphHeight;
+            float normalizedY = (voltage / maxVoltageDisplay) * graphHeight;
 
             Vector2 point = new Vector2(normalizedX, normalizedY);
             dataPoints.Add(point);
-
-            // No limit - keep ALL points for full trail
 
             UpdateLineRenderer();
             OnDataPointAdded?.Invoke(time, voltage);
@@ -189,12 +257,6 @@ namespace STEM2D.Interactions
                 );
                 lineRenderer.SetPosition(i, pos);
             }
-        }
-
-        float GetMaxVoltageScale()
-        {
-            float maxV = Mathf.Max(initialVoltage, 1.5f);
-            return Mathf.Ceil(maxV / 1.5f) * 1.5f;
         }
 
         public void ClearGraph()
@@ -222,6 +284,11 @@ namespace STEM2D.Interactions
         public void SetMaxTime(float time)
         {
             maxTime = time;
+        }
+
+        public void SetMaxVoltageDisplay(float voltage)
+        {
+            maxVoltageDisplay = voltage;
         }
 
         public void SetLineColor(Color color)

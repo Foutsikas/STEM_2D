@@ -599,7 +599,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.4264, y: 1.1094, z: 0}
-  m_LocalScale: {x: 4, y: 4, z: 1}
+  m_LocalScale: {x: 5, y: 5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2023983999}
@@ -1267,6 +1267,37 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!1 &261095256
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 261095257}
+  m_Layer: 0
+  m_Name: YAxisLabels
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &261095257
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 261095256}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.2, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2023983999}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &315227414
 GameObject:
   m_ObjectHideFlags: 0
@@ -1893,6 +1924,7 @@ MonoBehaviour:
     showNextButton: 0
     requiredActionIds:
     - circuit_closed
+    - graph_complete
     onStepEnter:
       m_PersistentCalls:
         m_Calls: []
@@ -2231,7 +2263,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.044, y: -0.315}
+  m_AnchoredPosition: {x: 0.044, y: -1.16}
   m_SizeDelta: {x: 1.137, y: 0.2821}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &430271064
@@ -3007,6 +3039,10 @@ MonoBehaviour:
   screenOff: {fileID: 1963998878}
   screenMainMenu: {fileID: 792782259}
   screenMeter: {fileID: 162829979}
+  powerOnIndicator: {fileID: 1938864877}
+  powerIndicatorRenderer: {fileID: 1938864879}
+  powerOnColor: {r: 0, g: 1, b: 0, a: 1}
+  powerOffColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   menuTitleText: {fileID: 1248125999}
   option1Text: {fileID: 560751686}
   option2Text: {fileID: 529524866}
@@ -4046,7 +4082,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.5, y: 2.9}
+  m_AnchoredPosition: {x: 1.5, y: 3.33}
   m_SizeDelta: {x: 4.2585, y: 0.7996}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &609584351
@@ -4691,7 +4727,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.363, y: 1.2557}
+  m_AnchoredPosition: {x: -0.898, y: 1.2557}
   m_SizeDelta: {x: 2.4693, y: 0.3965}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &730839108
@@ -5864,8 +5900,8 @@ Transform:
   m_GameObject: {fileID: 1194959594}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.573, y: 2.615, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -1.05, y: 3.026, z: 0}
+  m_LocalScale: {x: 1.24, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2023983999}
@@ -6443,6 +6479,37 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!1 &1494592851
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1494592852}
+  m_Layer: 0
+  m_Name: XAxisLabels
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1494592852
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1494592851}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2023983999}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1521231323
 GameObject:
   m_ObjectHideFlags: 0
@@ -7793,7 +7860,7 @@ GameObject:
   - component: {fileID: 1938864878}
   - component: {fileID: 1938864879}
   m_Layer: 0
-  m_Name: Circle
+  m_Name: PowerIndicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8826,6 +8893,8 @@ Transform:
   - {fileID: 730839107}
   - {fileID: 609584350}
   - {fileID: 1194959595}
+  - {fileID: 1494592852}
+  - {fileID: 261095257}
   m_Father: {fileID: 1827777755}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!120 &2023984000
@@ -8955,6 +9024,7 @@ MonoBehaviour:
   timeConstant: 5
   simulationSpeed: 1
   maxTime: 40
+  actionIdOnRecordingComplete: graph_complete
   sampleInterval: 0.1
   lineWidth: 0.05
   lineColor: {r: 0, g: 0, b: 1, a: 1}
@@ -8967,6 +9037,13 @@ MonoBehaviour:
   xAxisText: Time (s)
   yAxisText: Voltage (V)
   titleText: Capacitor Discharge
+  xAxisLabelsParent: {fileID: 1494592852}
+  yAxisLabelsParent: {fileID: 261095257}
+  labelPrefab: {fileID: 8307196029029678380, guid: 3503346e54be13540bd0e6c28b305049, type: 3}
+  labelOffset: 0.15
+  maxVoltageDisplay: 6
+  yAxisStep: 2
+  xAxisValues: 01000000030000000500000007000000090000000b0000000e0000001100000014000000170000001a0000001d000000200000002300000026000000
   OnRecordingStarted:
     m_PersistentCalls:
       m_Calls: []

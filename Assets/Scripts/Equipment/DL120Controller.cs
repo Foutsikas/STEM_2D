@@ -33,6 +33,12 @@ namespace STEM2D.Interactions
         [SerializeField] private GameObject screenMainMenu;
         [SerializeField] private GameObject screenMeter;
 
+        [Header("Power Indicator")]
+        [SerializeField] private GameObject powerOnIndicator;
+        [SerializeField] private SpriteRenderer powerIndicatorRenderer;
+        [SerializeField] private Color powerOnColor = Color.green;
+        [SerializeField] private Color powerOffColor = Color.gray;
+
         [Header("Main Menu UI")]
         [SerializeField] private TMP_Text menuTitleText;
         [SerializeField] private TMP_Text option1Text;
@@ -70,7 +76,7 @@ namespace STEM2D.Interactions
         public UnityEvent OnMeterModeEntered;
         public UnityEvent<int, float> OnChannelValueChanged;
 
-        private MenuOption selectedOption = MenuOption.Meter;
+        private MenuOption selectedOption = MenuOption.EasyLog;
         private float[] channelValues = new float[4];
         private bool isInteractable = true;
 
@@ -82,6 +88,7 @@ namespace STEM2D.Interactions
         {
             InitializeButtons();
             UpdateDisplay();
+            UpdatePowerIndicator();
         }
 
         void InitializeButtons()
@@ -101,11 +108,12 @@ namespace STEM2D.Interactions
             if (currentState != DL120State.Off) return;
 
             currentState = DL120State.MainMenu;
-            selectedOption = MenuOption.Meter;
+            selectedOption = MenuOption.EasyLog; // Start on Option 1
 
             if (powerSound != null) powerSound.Play();
 
             UpdateDisplay();
+            UpdatePowerIndicator();
             OnPowerOn?.Invoke();
 
             if (!string.IsNullOrEmpty(actionIdOnPowerOn))
@@ -114,6 +122,21 @@ namespace STEM2D.Interactions
             }
 
             Debug.Log("[DL120] Powered ON");
+        }
+
+        void UpdatePowerIndicator()
+        {
+            bool isOn = currentState != DL120State.Off;
+
+            if (powerOnIndicator != null)
+            {
+                powerOnIndicator.SetActive(isOn);
+            }
+
+            if (powerIndicatorRenderer != null)
+            {
+                powerIndicatorRenderer.color = isOn ? powerOnColor : powerOffColor;
+            }
         }
 
         void OnUpButtonPressed()
@@ -152,7 +175,6 @@ namespace STEM2D.Interactions
         {
             if (!isInteractable) return;
 
-            // If device is OFF, power it on
             if (currentState == DL120State.Off)
             {
                 PowerOn();
@@ -251,7 +273,7 @@ namespace STEM2D.Interactions
                 MenuOption.EasyLog => selectionYPositions1,
                 MenuOption.Meter => selectionYPositions2,
                 MenuOption.Snapshot => selectionYPositions3,
-                _ => selectionYPositions2
+                _ => selectionYPositions1
             };
 
             Vector3 pos = selectionIndicator.transform.localPosition;
@@ -299,9 +321,10 @@ namespace STEM2D.Interactions
         public void Reset()
         {
             currentState = DL120State.Off;
-            selectedOption = MenuOption.Meter;
+            selectedOption = MenuOption.EasyLog;
             channelValues = new float[4];
             UpdateDisplay();
+            UpdatePowerIndicator();
         }
     }
 }
