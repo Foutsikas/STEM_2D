@@ -26,7 +26,7 @@ namespace STEM2D.Interactions
         [SerializeField] private float dischargeTimeConstant = 5f;
 
         [Header("Action Registration")]
-        [SerializeField] private string actionIdOnDischargeStarted;
+        [SerializeField] private string actionIdOnDischargeStarted = "circuit_closed";
 
         [Header("Events")]
         public UnityEvent OnChargingStarted;
@@ -151,9 +151,11 @@ namespace STEM2D.Interactions
 
             OnDischargeStarted?.Invoke();
 
+            // Register action when discharge starts (circuit closed)
             if (!string.IsNullOrEmpty(actionIdOnDischargeStarted))
             {
                 ExperimentManager.Instance?.RegisterActionComplete(actionIdOnDischargeStarted);
+                Debug.Log($"[Circuit] Action '{actionIdOnDischargeStarted}' registered");
             }
 
             Debug.Log($"[Circuit] Discharging from {initialDischargeVoltage}V");

@@ -1,204 +1,163 @@
 using UnityEngine;
 using UnityEngine.Events;
 using System.Collections.Generic;
-using TMPro;
 using STEM2D.Core;
 
 namespace STEM2D.Interactions
 {
-    [RequireComponent(typeof(LineRenderer))]
     public class DischargeGraph : MonoBehaviour
     {
-        [Header("Graph Settings")]
-        [SerializeField] private float graphWidth = 4f;
-        [SerializeField] private float graphHeight = 3f;
+        [Header("Plot Area Definition")]
+        [Tooltip("Bottom-left corner of the plot area")]
+        [SerializeField] private Transform plotBottomLeft;
+        [Tooltip("Top-right corner of the plot area")]
+        [SerializeField] private Transform plotTopRight;
+
+        [Header("Data Range")]
+        [SerializeField] private float maxTime = 40f;
+        [SerializeField] private float maxVoltage = 6f;
 
         [Header("Discharge Simulation")]
         [SerializeField] private float timeConstant = 5f;
         [SerializeField] private float simulationSpeed = 1f;
-        [SerializeField] private float maxTime = 40f;
-
-        [Header("Action Registration")]
-        [SerializeField] private string actionIdOnRecordingComplete;
-
-        [Header("Sampling")]
         [SerializeField] private float sampleInterval = 0.1f;
 
-        [Header("Visual Settings")]
-        [SerializeField] private float lineWidth = 0.05f;
+        [Header("Line Appearance")]
+        [SerializeField] private LineRenderer lineRenderer;
+        [SerializeField] private float lineWidth = 0.03f;
         [SerializeField] private Color lineColor = Color.blue;
 
-        [Header("Axis References")]
-        [SerializeField] private LineRenderer xAxisLine;
-        [SerializeField] private LineRenderer yAxisLine;
-        [SerializeField] private Transform graphOrigin;
-
-        [Header("Axis Labels")]
-        [SerializeField] private TMP_Text xAxisLabel;
-        [SerializeField] private TMP_Text yAxisLabel;
-        [SerializeField] private TMP_Text titleLabel;
-        [SerializeField] private string xAxisText = "Time (s)";
-        [SerializeField] private string yAxisText = "Voltage (V)";
-        [SerializeField] private string titleText = "Capacitor Discharge";
-
-        [Header("Axis Number Labels")]
-        [SerializeField] private Transform xAxisLabelsParent;
-        [SerializeField] private Transform yAxisLabelsParent;
-        [SerializeField] private TMP_Text labelPrefab;
-        [SerializeField] private float labelOffset = 0.15f;
-
-        [Header("Y-Axis Config")]
-        [SerializeField] private float maxVoltageDisplay = 6f;
-        [SerializeField] private float yAxisStep = 2f;
-
-        [Header("X-Axis Config")]
-        [SerializeField] private int[] xAxisValues = { 1, 3, 5, 7, 9, 11, 14, 17, 20, 23, 26, 29, 32, 35, 38 };
+        [Header("Action Registration")]
+        [SerializeField] private string actionIdOnComplete = "graph_complete";
 
         [Header("Events")]
         public UnityEvent OnRecordingStarted;
         public UnityEvent OnRecordingStopped;
         public UnityEvent<float, float> OnDataPointAdded;
 
-        private LineRenderer lineRenderer;
-        private List<Vector2> dataPoints = new List<Vector2>();
+        private List<Vector3> points = new List<Vector3>();
         private bool isRecording = false;
-        private float currentSimulationTime = 0f;
+        private float currentTime = 0f;
         private float initialVoltage = 0f;
-        private float currentVoltage = 0f;
         private float timeSinceLastSample = 0f;
-        private List<TMP_Text> spawnedLabels = new List<TMP_Text>();
+
+        private Vector3 plotOrigin;
+        private float plotWidth;
+        private float plotHeight;
 
         public bool IsRecording => isRecording;
-        public float CurrentVoltage => currentVoltage;
-        public int DataPointCount => dataPoints.Count;
+        public float CurrentVoltage { get; private set; }
+        public int DataPointCount => points.Count;
 
         void Awake()
         {
-            lineRenderer = GetComponent<LineRenderer>();
             SetupLineRenderer();
-        }
-
-        void Start()
-        {
-            SetupLabels();
-            GenerateAxisNumbers();
-            ClearGraph();
+            CalculatePlotArea();
         }
 
         void SetupLineRenderer()
         {
+            if (lineRenderer == null)
+            {
+                lineRenderer = GetComponent<LineRenderer>();
+                if (lineRenderer == null)
+                {
+                    lineRenderer = gameObject.AddComponent<LineRenderer>();
+                }
+            }
+
             lineRenderer.startWidth = lineWidth;
             lineRenderer.endWidth = lineWidth;
             lineRenderer.startColor = lineColor;
             lineRenderer.endColor = lineColor;
-            lineRenderer.useWorldSpace = false;
+            lineRenderer.useWorldSpace = true;
             lineRenderer.positionCount = 0;
+
+            if (lineRenderer.material == null)
+            {
+                lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
+            }
+            lineRenderer.material.color = lineColor;
         }
 
-        void SetupLabels()
+        void CalculatePlotArea()
         {
-            if (xAxisLabel != null) xAxisLabel.text = xAxisText;
-            if (yAxisLabel != null) yAxisLabel.text = yAxisText;
-            if (titleLabel != null) titleLabel.text = titleText;
-        }
-
-        void GenerateAxisNumbers()
-        {
-            if (labelPrefab == null) return;
-
-            Vector3 origin = graphOrigin != null ? graphOrigin.localPosition : Vector3.zero;
-
-            // Generate Y-axis labels (0, 2, 4, 6)
-            if (yAxisLabelsParent != null)
+            if (plotBottomLeft == null || plotTopRight == null)
             {
-                for (float v = 0; v <= maxVoltageDisplay; v += yAxisStep)
-                {
-                    float normalizedY = (v / maxVoltageDisplay) * graphHeight;
-
-                    TMP_Text label = Instantiate(labelPrefab, yAxisLabelsParent);
-                    label.text = v.ToString("0");
-                    label.alignment = TextAlignmentOptions.MidlineRight;
-
-                    label.transform.localPosition = new Vector3(
-                        origin.x - labelOffset,
-                        origin.y + normalizedY,
-                        0f
-                    );
-
-                    spawnedLabels.Add(label);
-                }
+                Debug.LogError("[Graph] Assign plotBottomLeft and plotTopRight!");
+                return;
             }
 
-            // Generate X-axis labels (1, 3, 5, 7, 9, 11, 14, 17, 20, 23, 26, 29, 32, 35, 38)
-            if (xAxisLabelsParent != null)
-            {
-                foreach (int t in xAxisValues)
-                {
-                    float normalizedX = ((float)t / maxTime) * graphWidth;
+            plotOrigin = plotBottomLeft.position;
+            plotWidth = plotTopRight.position.x - plotBottomLeft.position.x;
+            plotHeight = plotTopRight.position.y - plotBottomLeft.position.y;
 
-                    TMP_Text label = Instantiate(labelPrefab, xAxisLabelsParent);
-                    label.text = t.ToString();
-                    label.alignment = TextAlignmentOptions.Top;
-
-                    label.transform.localPosition = new Vector3(
-                        origin.x + normalizedX,
-                        origin.y - labelOffset,
-                        0f
-                    );
-
-                    spawnedLabels.Add(label);
-                }
-            }
+            Debug.Log($"[Graph] Plot: origin={plotOrigin}, size={plotWidth}x{plotHeight}");
         }
 
         void Update()
         {
             if (isRecording)
             {
-                UpdateSimulation();
+                RunSimulation();
             }
         }
 
-        void UpdateSimulation()
+        void RunSimulation()
         {
-            float deltaTime = Time.deltaTime * simulationSpeed;
-            currentSimulationTime += deltaTime;
-            timeSinceLastSample += deltaTime;
+            float dt = Time.deltaTime * simulationSpeed;
+            currentTime += dt;
+            timeSinceLastSample += dt;
 
-            if (currentSimulationTime >= maxTime)
-            {
-                currentVoltage = initialVoltage * Mathf.Exp(-maxTime / timeConstant);
-                AddDataPoint(maxTime, currentVoltage);
-                StopRecording();
-                return;
-            }
-
-            currentVoltage = initialVoltage * Mathf.Exp(-currentSimulationTime / timeConstant);
+            CurrentVoltage = initialVoltage * Mathf.Exp(-currentTime / timeConstant);
 
             if (timeSinceLastSample >= sampleInterval)
             {
-                AddDataPoint(currentSimulationTime, currentVoltage);
+                AddPoint(currentTime, CurrentVoltage);
                 timeSinceLastSample = 0f;
             }
+
+            if (currentTime >= maxTime)
+            {
+                AddPoint(maxTime, CurrentVoltage);
+                StopRecording();
+            }
+        }
+
+        void AddPoint(float time, float voltage)
+        {
+            float x = plotOrigin.x + (time / maxTime) * plotWidth;
+            float y = plotOrigin.y + (voltage / maxVoltage) * plotHeight;
+
+            Vector3 worldPos = new Vector3(x, y, plotOrigin.z);
+            points.Add(worldPos);
+
+            lineRenderer.positionCount = points.Count;
+            lineRenderer.SetPositions(points.ToArray());
+
+            OnDataPointAdded?.Invoke(time, voltage);
         }
 
         public void StartRecording(float startVoltage)
         {
             if (isRecording) return;
 
+            CalculatePlotArea();
+
             initialVoltage = startVoltage;
-            currentVoltage = startVoltage;
-            currentSimulationTime = 0f;
+            CurrentVoltage = startVoltage;
+            currentTime = 0f;
             timeSinceLastSample = 0f;
 
-            ClearGraph();
+            points.Clear();
+            lineRenderer.positionCount = 0;
 
-            AddDataPoint(0f, initialVoltage);
+            AddPoint(0f, initialVoltage);
 
             isRecording = true;
             OnRecordingStarted?.Invoke();
 
-            Debug.Log($"[Graph] Recording started at {initialVoltage}V");
+            Debug.Log($"[Graph] Started at {initialVoltage}V");
         }
 
         public void StopRecording()
@@ -208,67 +167,22 @@ namespace STEM2D.Interactions
             isRecording = false;
             OnRecordingStopped?.Invoke();
 
-            // Register action for step progression
-            if (!string.IsNullOrEmpty(actionIdOnRecordingComplete))
+            if (!string.IsNullOrEmpty(actionIdOnComplete) && ExperimentManager.Instance != null)
             {
-                ExperimentManager.Instance?.RegisterActionComplete(actionIdOnRecordingComplete);
+                ExperimentManager.Instance.RegisterActionComplete(actionIdOnComplete);
+                Debug.Log($"[Graph] Action: {actionIdOnComplete}");
             }
 
-            Debug.Log($"[Graph] Recording stopped. {dataPoints.Count} data points");
-        }
-
-        public void PauseRecording()
-        {
-            isRecording = false;
-        }
-
-        public void ResumeRecording()
-        {
-            if (initialVoltage > 0)
-            {
-                isRecording = true;
-            }
-        }
-
-        void AddDataPoint(float time, float voltage)
-        {
-            float normalizedX = (time / maxTime) * graphWidth;
-            float normalizedY = (voltage / maxVoltageDisplay) * graphHeight;
-
-            Vector2 point = new Vector2(normalizedX, normalizedY);
-            dataPoints.Add(point);
-
-            UpdateLineRenderer();
-            OnDataPointAdded?.Invoke(time, voltage);
-        }
-
-        void UpdateLineRenderer()
-        {
-            lineRenderer.positionCount = dataPoints.Count;
-
-            Vector3 originOffset = graphOrigin != null ? graphOrigin.localPosition : Vector3.zero;
-
-            for (int i = 0; i < dataPoints.Count; i++)
-            {
-                Vector3 pos = new Vector3(
-                    dataPoints[i].x + originOffset.x,
-                    dataPoints[i].y + originOffset.y,
-                    0f
-                );
-                lineRenderer.SetPosition(i, pos);
-            }
+            Debug.Log($"[Graph] Stopped. Points: {points.Count}");
         }
 
         public void ClearGraph()
         {
-            dataPoints.Clear();
+            points.Clear();
             lineRenderer.positionCount = 0;
-            currentSimulationTime = 0f;
-            currentVoltage = 0f;
-            timeSinceLastSample = 0f;
+            currentTime = 0f;
+            CurrentVoltage = 0f;
             isRecording = false;
-
-            Debug.Log("[Graph] Cleared");
         }
 
         public void SetTimeConstant(float rc)
@@ -288,7 +202,7 @@ namespace STEM2D.Interactions
 
         public void SetMaxVoltageDisplay(float voltage)
         {
-            maxVoltageDisplay = voltage;
+            maxVoltage = voltage;
         }
 
         public void SetLineColor(Color color)
@@ -298,29 +212,29 @@ namespace STEM2D.Interactions
             {
                 lineRenderer.startColor = color;
                 lineRenderer.endColor = color;
+                if (lineRenderer.material != null)
+                    lineRenderer.material.color = color;
             }
         }
 
-        public List<Vector2> GetDataPoints()
+        void OnDrawGizmos()
         {
-            return new List<Vector2>(dataPoints);
-        }
+            if (plotBottomLeft == null || plotTopRight == null) return;
 
-        public float GetVoltageAtTime(float time)
-        {
-            if (initialVoltage <= 0) return 0f;
-            return initialVoltage * Mathf.Exp(-time / timeConstant);
-        }
+            Vector3 bl = plotBottomLeft.position;
+            Vector3 tr = plotTopRight.position;
+            Vector3 tl = new Vector3(bl.x, tr.y, bl.z);
+            Vector3 br = new Vector3(tr.x, bl.y, bl.z);
 
-        void OnDrawGizmosSelected()
-        {
-            Vector3 origin = graphOrigin != null ? graphOrigin.position : transform.position;
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawSphere(bl, 0.08f);
+            Gizmos.DrawSphere(tr, 0.08f);
 
             Gizmos.color = Color.green;
-            Gizmos.DrawLine(origin, origin + Vector3.right * graphWidth);
-            Gizmos.DrawLine(origin, origin + Vector3.up * graphHeight);
-            Gizmos.DrawLine(origin + Vector3.right * graphWidth, origin + Vector3.right * graphWidth + Vector3.up * graphHeight);
-            Gizmos.DrawLine(origin + Vector3.up * graphHeight, origin + Vector3.right * graphWidth + Vector3.up * graphHeight);
+            Gizmos.DrawLine(bl, br);
+            Gizmos.DrawLine(bl, tl);
+            Gizmos.DrawLine(tr, tl);
+            Gizmos.DrawLine(tr, br);
         }
     }
 }

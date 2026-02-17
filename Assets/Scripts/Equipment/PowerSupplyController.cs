@@ -9,12 +9,10 @@ namespace STEM2D.Interactions
     {
         [Header("Power Settings")]
         [SerializeField] private bool isPoweredOn = false;
-        [SerializeField] private float currentVoltage = 1.5f;
 
         [Header("Voltage Configuration")]
-        [SerializeField] private float minVoltage = 0f;
-        [SerializeField] private float maxVoltage = 9f;
-        [SerializeField] private float voltageStep = 1.5f;
+        [SerializeField] private float[] allowedVoltages = { 1.5f, 3f, 4.5f, 6f };
+        [SerializeField] private int currentVoltageIndex = 3;
 
         [Header("Action Registration")]
         [SerializeField] private string actionIdOnPowerOn;
@@ -52,8 +50,8 @@ namespace STEM2D.Interactions
         private bool isInteractable = true;
 
         public bool IsPoweredOn => isPoweredOn;
-        public float CurrentVoltage => currentVoltage;
-        public float OutputVoltage => isPoweredOn ? currentVoltage : 0f;
+        public float CurrentVoltage => allowedVoltages[currentVoltageIndex];
+        public float OutputVoltage => isPoweredOn ? CurrentVoltage : 0f;
 
         void Start()
         {
@@ -76,13 +74,9 @@ namespace STEM2D.Interactions
             if (!isInteractable) return;
 
             if (isPoweredOn)
-            {
                 TurnOff();
-            }
             else
-            {
                 TurnOn();
-            }
         }
 
         public void TurnOn()
@@ -95,22 +89,17 @@ namespace STEM2D.Interactions
 
             UpdateDisplay();
 
-            // Turn on the circuit LED
             if (circuitLED != null)
-            {
                 circuitLED.TurnOn();
-            }
 
             OnPowerOn?.Invoke();
             OnPowerStateChanged?.Invoke(true);
-            OnVoltageChanged?.Invoke(currentVoltage);
+            OnVoltageChanged?.Invoke(CurrentVoltage);
 
             if (!string.IsNullOrEmpty(actionIdOnPowerOn))
-            {
                 ExperimentManager.Instance?.RegisterActionComplete(actionIdOnPowerOn);
-            }
 
-            Debug.Log($"[PowerSupply] ON - Output: {currentVoltage}V");
+            Debug.Log($"[PowerSupply] ON - Output: {CurrentVoltage}V");
         }
 
         public void TurnOff()
@@ -123,20 +112,15 @@ namespace STEM2D.Interactions
 
             UpdateDisplay();
 
-            // Turn off the circuit LED
             if (circuitLED != null)
-            {
                 circuitLED.TurnOff();
-            }
 
             OnPowerOff?.Invoke();
             OnPowerStateChanged?.Invoke(false);
             OnVoltageChanged?.Invoke(0f);
 
             if (!string.IsNullOrEmpty(actionIdOnPowerOff))
-            {
                 ExperimentManager.Instance?.RegisterActionComplete(actionIdOnPowerOff);
-            }
 
             Debug.Log("[PowerSupply] OFF");
         }
@@ -144,61 +128,72 @@ namespace STEM2D.Interactions
         public void IncreaseVoltage()
         {
             if (!isInteractable) return;
+            if (allowedVoltages.Length == 0) return;
 
-            float newVoltage = currentVoltage + voltageStep;
-            if (newVoltage <= maxVoltage)
+            if (currentVoltageIndex < allowedVoltages.Length - 1)
             {
-                SetVoltage(newVoltage);
-                if (adjustSound != null) adjustSound.Play();
+                currentVoltageIndex++;
+                OnVoltageUpdated();
             }
         }
 
         public void DecreaseVoltage()
         {
             if (!isInteractable) return;
+            if (allowedVoltages.Length == 0) return;
 
-            float newVoltage = currentVoltage - voltageStep;
-            if (newVoltage >= minVoltage)
+            if (currentVoltageIndex > 0)
             {
-                SetVoltage(newVoltage);
-                if (adjustSound != null) adjustSound.Play();
+                currentVoltageIndex--;
+                OnVoltageUpdated();
             }
         }
 
-        public void SetVoltage(float voltage)
+        void OnVoltageUpdated()
         {
-            voltage = Mathf.Clamp(voltage, minVoltage, maxVoltage);
-
-            if (Mathf.Approximately(currentVoltage, voltage)) return;
-
-            currentVoltage = voltage;
+            if (adjustSound != null) adjustSound.Play();
 
             UpdateDisplay();
 
             if (isPoweredOn)
-            {
-                OnVoltageChanged?.Invoke(currentVoltage);
-            }
+                OnVoltageChanged?.Invoke(CurrentVoltage);
 
             if (!string.IsNullOrEmpty(actionIdOnVoltageChanged))
-            {
                 ExperimentManager.Instance?.RegisterActionComplete(actionIdOnVoltageChanged);
+
+            Debug.Log($"[PowerSupply] Voltage: {CurrentVoltage}V");
+        }
+
+        public void SetVoltage(float voltage)
+        {
+            // Find closest allowed voltage
+            int closestIndex = 0;
+            float closestDiff = Mathf.Abs(allowedVoltages[0] - voltage);
+
+            for (int i = 1; i < allowedVoltages.Length; i++)
+            {
+                float diff = Mathf.Abs(allowedVoltages[i] - voltage);
+                if (diff < closestDiff)
+                {
+                    closestDiff = diff;
+                    closestIndex = i;
+                }
             }
 
-            Debug.Log($"[PowerSupply] Voltage set to {currentVoltage}V");
+            if (currentVoltageIndex != closestIndex)
+            {
+                currentVoltageIndex = closestIndex;
+                OnVoltageUpdated();
+            }
         }
 
         void UpdateDisplay()
         {
             if (voltageDisplayText != null)
-            {
-                voltageDisplayText.text = string.Format(voltageFormat, currentVoltage);
-            }
+                voltageDisplayText.text = string.Format(voltageFormat, CurrentVoltage);
 
             if (powerIndicator != null)
-            {
                 powerIndicator.color = isPoweredOn ? powerOnColor : powerOffColor;
-            }
 
             UpdateBatteryVisual();
         }
@@ -207,7 +202,7 @@ namespace STEM2D.Interactions
         {
             if (batteryVisual == null) return;
 
-            int batteryCount = Mathf.RoundToInt(currentVoltage / 1.5f);
+            int batteryCount = GetBatteryCount();
             batteryVisual.SetActive(batteryCount > 0);
         }
 
@@ -219,19 +214,17 @@ namespace STEM2D.Interactions
         public void Reset()
         {
             isPoweredOn = false;
-            currentVoltage = 1.5f;
+            currentVoltageIndex = 3;
 
             if (circuitLED != null)
-            {
                 circuitLED.TurnOff();
-            }
 
             UpdateDisplay();
         }
 
         public int GetBatteryCount()
         {
-            return Mathf.RoundToInt(currentVoltage / 1.5f);
+            return Mathf.RoundToInt(CurrentVoltage / 1.5f);
         }
     }
 }
