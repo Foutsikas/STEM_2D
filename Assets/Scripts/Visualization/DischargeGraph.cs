@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 using System.Collections.Generic;
 using STEM2D.Core;
@@ -17,8 +17,12 @@ namespace STEM2D.Interactions
         [SerializeField] private float maxTime = 40f;
         [SerializeField] private float maxVoltage = 6f;
 
+        [Header("Axis Offsets (to not touch axes)")]
+        [SerializeField] private float startTimeOffset = 0.5f;
+        [SerializeField] private float minimumVoltage = 0.3f;
+
         [Header("Discharge Simulation")]
-        [SerializeField] private float timeConstant = 5f;
+        [SerializeField] private float timeConstant = 4.7f;
         [SerializeField] private float simulationSpeed = 1f;
         [SerializeField] private float sampleInterval = 0.1f;
 
@@ -117,17 +121,26 @@ namespace STEM2D.Interactions
                 timeSinceLastSample = 0f;
             }
 
-            if (currentTime >= maxTime)
+            // Stop when voltage reaches minimum OR time reaches max
+            if (CurrentVoltage <= minimumVoltage || currentTime >= maxTime)
             {
-                AddPoint(maxTime, CurrentVoltage);
+                // Clamp final voltage to minimum threshold
+                float finalVoltage = Mathf.Max(CurrentVoltage, minimumVoltage);
+                AddPoint(currentTime, finalVoltage);
                 StopRecording();
             }
         }
 
         void AddPoint(float time, float voltage)
         {
-            float x = plotOrigin.x + (time / maxTime) * plotWidth;
-            float y = plotOrigin.y + (voltage / maxVoltage) * plotHeight;
+            // Apply time offset so curve doesn't touch Y-axis
+            float adjustedTime = time + startTimeOffset;
+
+            // Clamp voltage to minimum so curve doesn't touch X-axis
+            float adjustedVoltage = Mathf.Max(voltage, minimumVoltage);
+
+            float x = plotOrigin.x + (adjustedTime / maxTime) * plotWidth;
+            float y = plotOrigin.y + (adjustedVoltage / maxVoltage) * plotHeight;
 
             Vector3 worldPos = new Vector3(x, y, plotOrigin.z);
             points.Add(worldPos);
@@ -152,12 +165,13 @@ namespace STEM2D.Interactions
             points.Clear();
             lineRenderer.positionCount = 0;
 
+            // Add first point (with offset applied internally)
             AddPoint(0f, initialVoltage);
 
             isRecording = true;
             OnRecordingStarted?.Invoke();
 
-            Debug.Log($"[Graph] Started at {initialVoltage}V");
+            Debug.Log($"[Graph] Started at {initialVoltage}V (τ={timeConstant}s)");
         }
 
         public void StopRecording()

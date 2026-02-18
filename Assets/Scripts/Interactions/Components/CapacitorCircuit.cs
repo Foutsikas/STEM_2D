@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 using STEM2D.Core;
 
@@ -13,8 +13,8 @@ namespace STEM2D.Interactions
         [SerializeField] private DischargeGraph graph;
 
         [Header("Capacitor Settings")]
-        [SerializeField] private float capacitance = 0.001f;
-        [SerializeField] private float resistance = 5000f;
+        [SerializeField] private float capacitance = 0.00047f;
+        [SerializeField] private float resistance = 10000f;
 
         [Header("State")]
         [SerializeField] private float capacitorVoltage = 0f;
@@ -23,7 +23,8 @@ namespace STEM2D.Interactions
 
         [Header("Simulation")]
         [SerializeField] private float chargeSpeed = 2f;
-        [SerializeField] private float dischargeTimeConstant = 5f;
+        [SerializeField] private float dischargeTimeConstant = 4.7f;
+        [SerializeField] private float minimumVoltageThreshold = 0.3f;
 
         [Header("Action Registration")]
         [SerializeField] private string actionIdOnDischargeStarted = "circuit_closed";
@@ -151,14 +152,13 @@ namespace STEM2D.Interactions
 
             OnDischargeStarted?.Invoke();
 
-            // Register action when discharge starts (circuit closed)
             if (!string.IsNullOrEmpty(actionIdOnDischargeStarted))
             {
                 ExperimentManager.Instance?.RegisterActionComplete(actionIdOnDischargeStarted);
                 Debug.Log($"[Circuit] Action '{actionIdOnDischargeStarted}' registered");
             }
 
-            Debug.Log($"[Circuit] Discharging from {initialDischargeVoltage}V");
+            Debug.Log($"[Circuit] Discharging from {initialDischargeVoltage}V (τ = {dischargeTimeConstant}s)");
         }
 
         void StopDischarging()
@@ -216,12 +216,13 @@ namespace STEM2D.Interactions
 
             OnVoltageChanged?.Invoke(capacitorVoltage);
 
-            if (capacitorVoltage < 0.01f)
+            // Stop when voltage reaches minimum threshold (never hits 0)
+            if (capacitorVoltage < minimumVoltageThreshold)
             {
-                capacitorVoltage = 0f;
+                capacitorVoltage = minimumVoltageThreshold;
                 StopDischarging();
                 OnDischargeComplete?.Invoke();
-                Debug.Log("[Circuit] Discharge complete");
+                Debug.Log($"[Circuit] Discharge complete at {minimumVoltageThreshold}V threshold");
             }
         }
 
