@@ -7,6 +7,7 @@ namespace STEM.Experiments.Pendulum
     {
         [Header("DL120 Screen Text References")]
         public TextMeshProUGUI modeText;
+        [SerializeField] GameObject screenOff;
         public TextMeshProUGUI periodValueText;
         public TextMeshProUGUI frequencyValueText;
         public TextMeshProUGUI timeValueText;
@@ -21,15 +22,21 @@ namespace STEM.Experiments.Pendulum
 
         private void Start()
         {
+            if (screenOff != null)
+                screenOff.SetActive(false);
+
+            modeText.text = "Ανεξάρτητη Μέτρηση";
             SetStaticLabels();
             ResetDisplay();
         }
 
         private void Update()
         {
-            if (!running) return;
-            elapsedTime += Time.deltaTime;
-            UpdateTimeDisplay();
+            if (running)
+            {
+                elapsedTime += Time.deltaTime;
+                timeValueText.text = elapsedTime.ToString("F2");
+            }
         }
 
         private void SetStaticLabels()

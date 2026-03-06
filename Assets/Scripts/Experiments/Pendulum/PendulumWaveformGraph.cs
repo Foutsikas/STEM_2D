@@ -74,27 +74,35 @@ namespace STEM.Experiments.Pendulum
             float tNorm = Mathf.Clamp01(runningTime / timeWindowSeconds);
             float dNorm = Mathf.InverseLerp(-15f, 15f, displacement);
 
-            Vector3 graphOrigin = transform.position;
+            Vector3[] corners = new Vector3[4];
+            graphArea.GetWorldCorners(corners);
+
+            Camera cam = Camera.main;
+            Vector3 originWorld = cam.ScreenToWorldPoint(new Vector3(corners[0].x, corners[0].y, Mathf.Abs(cam.transform.position.z)));
+            Vector3 topRightWorld = cam.ScreenToWorldPoint(new Vector3(corners[2].x, corners[2].y, Mathf.Abs(cam.transform.position.z)));
+
+            float worldWidth = topRightWorld.x - originWorld.x;
+            float worldHeight = topRightWorld.y - originWorld.y;
 
             Vector3 point = new Vector3(
-                graphOrigin.x + tNorm * graphWidth,
-                graphOrigin.y + (dNorm - 0.5f) * graphHeight,
-                graphOrigin.z
+                originWorld.x + tNorm * worldWidth,
+                originWorld.y + (dNorm - 0.5f) * worldHeight,
+                0f
             );
 
             if (runningTime > timeWindowSeconds)
             {
                 points.RemoveAt(0);
-                ShiftPointsLeft();
+                ShiftPointsLeft(worldWidth);
             }
 
             points.Add(point);
             RefreshLine();
         }
 
-        private void ShiftPointsLeft()
+        private void ShiftPointsLeft(float worldWidth)
         {
-            float shiftAmount = (graphWidth / (timeWindowSeconds * sampleRate));
+            float shiftAmount = worldWidth / (timeWindowSeconds * sampleRate);
             for (int i = 0; i < points.Count; i++)
             {
                 points[i] = new Vector3(
@@ -104,6 +112,7 @@ namespace STEM.Experiments.Pendulum
                 );
             }
         }
+
 
         private void RefreshLine()
         {

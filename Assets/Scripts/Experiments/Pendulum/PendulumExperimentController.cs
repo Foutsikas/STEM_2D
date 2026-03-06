@@ -70,8 +70,8 @@ namespace STEM.Experiments.Pendulum
 
             apparatus?.StartSwinging();
             waveformGraph?.StartRecording();
-            dl120Display?.StartMeasurement();
             dl120Display?.ResetDisplay();
+            dl120Display?.StartMeasurement();
             photogate?.ResetSensor();
         }
 
