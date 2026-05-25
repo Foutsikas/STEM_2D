@@ -7,6 +7,7 @@ namespace STEM.Experiments.DNA
         Cytosine,
         Guanine,
         Thymine,
-        Adenine
+        Adenine,
+        Uracil
     }
 }

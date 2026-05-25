@@ -173,6 +173,7 @@ MonoBehaviour:
   moleculeType: 3
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &8224711
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -881,6 +882,7 @@ MonoBehaviour:
   moleculeType: 0
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &157130013
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -2173,6 +2175,7 @@ MonoBehaviour:
   moleculeType: 1
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &377394525
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -2373,7 +2376,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0b7ec50f7f34bb41a4319ad93bfc6de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::STEM.Experiments.DNA.DNADropZone
-  expectedType: 4
+  expectedType: 6
   isPreplaced: 0
 --- !u!114 &387462115
 MonoBehaviour:
@@ -2575,6 +2578,7 @@ MonoBehaviour:
   moleculeType: 4
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &434386477
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -2743,6 +2747,7 @@ MonoBehaviour:
   moleculeType: 5
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &490040873
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -2885,6 +2890,7 @@ MonoBehaviour:
   moleculeType: 2
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &498924583
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -3673,6 +3679,7 @@ MonoBehaviour:
   moleculeType: 2
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &588700098
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -4059,6 +4066,7 @@ MonoBehaviour:
   moleculeType: 0
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &638575481
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -4428,6 +4436,7 @@ MonoBehaviour:
   moleculeType: 1
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &707749247
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -4623,6 +4632,7 @@ MonoBehaviour:
   moleculeType: 1
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &714340098
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -4864,6 +4874,7 @@ MonoBehaviour:
   moleculeType: 1
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &718297202
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -5978,6 +5989,7 @@ MonoBehaviour:
   moleculeType: 0
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &952518676
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -6082,6 +6094,7 @@ MonoBehaviour:
   moleculeType: 0
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &960816956
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -6376,6 +6389,7 @@ MonoBehaviour:
   moleculeType: 0
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &981259667
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -6681,6 +6695,7 @@ MonoBehaviour:
   moleculeType: 1
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &1021846089
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -7243,7 +7258,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0b7ec50f7f34bb41a4319ad93bfc6de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::STEM.Experiments.DNA.DNADropZone
-  expectedType: 4
+  expectedType: 6
   isPreplaced: 0
 --- !u!114 &1181436916
 MonoBehaviour:
@@ -8623,6 +8638,7 @@ MonoBehaviour:
   moleculeType: 0
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &1406329114
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -9192,6 +9208,7 @@ MonoBehaviour:
   moleculeType: 1
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &1465577975
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -9844,7 +9861,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u0398\u03C5\u03BC\u03AF\u03BD\u03B7"
+  m_text: "\u039F\u03C5\u03C1\u03B1\u03BA\u03AF\u03BB\u03B7"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -10281,6 +10298,7 @@ MonoBehaviour:
   moleculeType: 0
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &1619477378
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -10350,7 +10368,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: DNA
+  m_text: RNA
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -11360,6 +11378,7 @@ MonoBehaviour:
   moleculeType: 1
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &1779308477
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -11602,6 +11621,7 @@ MonoBehaviour:
   moleculeType: 0
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &1824577767
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -11942,6 +11962,7 @@ MonoBehaviour:
   moleculeType: 3
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &1858427292
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -12183,6 +12204,7 @@ MonoBehaviour:
   moleculeType: 4
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &1865192157
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -12973,6 +12995,7 @@ MonoBehaviour:
   moleculeType: 2
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &2000933596
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -13305,6 +13328,7 @@ MonoBehaviour:
   moleculeType: 0
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &2036601306
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -13758,6 +13782,7 @@ MonoBehaviour:
   moleculeType: 1
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &2084994452
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -13862,6 +13887,7 @@ MonoBehaviour:
   moleculeType: 1
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &2093695323
 CanvasGroup:
   m_ObjectHideFlags: 0

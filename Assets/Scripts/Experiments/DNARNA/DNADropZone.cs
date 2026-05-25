@@ -44,19 +44,36 @@ namespace STEM.Experiments.DNA
             if (droppedType == expectedType)
             {
                 IsOccupied = true;
+                RectTransform zoneRect = GetComponent<RectTransform>();
 
                 if (molecule.isPoolSource)
                 {
-                    // Pool source: create a placed copy
-                    GameObject placed = Instantiate(dragged, transform);
-                    var placedMol = placed.GetComponent<DraggableMolecule>();
-                    placedMol.isPoolSource = false;
-                    placedMol.PlaceInZone(GetComponent<RectTransform>());
+                    GameObject ghost = molecule.DragGhost;
+                    if (ghost != null)
+                    {
+                        ghost.transform.SetParent(transform);
+                        RectTransform ghostRect = ghost.GetComponent<RectTransform>();
+                        ghostRect.anchorMin = new Vector2(0.5f, 0.5f);
+                        ghostRect.anchorMax = new Vector2(0.5f, 0.5f);
+                        ghostRect.pivot = new Vector2(0.5f, 0.5f);
+                        ghostRect.anchoredPosition = Vector2.zero;
+                        ghostRect.sizeDelta = zoneRect.sizeDelta;
+
+                        var cg = ghost.GetComponent<CanvasGroup>();
+                        if (cg != null)
+                        {
+                            cg.alpha = 1f;
+                            cg.blocksRaycasts = false;
+                        }
+
+                        molecule.ClaimGhost();
+                    }
+
+                    molecule.poolUsed = true;
                 }
                 else
                 {
-                    // Loose clone: place it directly
-                    molecule.PlaceInZone(GetComponent<RectTransform>());
+                    molecule.PlaceInZone(zoneRect);
                 }
 
                 HideQuestionMark();

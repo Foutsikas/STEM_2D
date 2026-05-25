@@ -10,14 +10,16 @@ namespace STEM.Experiments.DNA
         public bool isPoolSource = true;
 
         [HideInInspector] public bool wasPlaced = false;
+        [HideInInspector] public bool poolUsed = false;
 
         private Canvas rootCanvas;
         private RectTransform rectTransform;
         private CanvasGroup canvasGroup;
 
-        // For pool sources: a visual ghost that follows the cursor
         private GameObject dragGhost;
         private RectTransform ghostRect;
+
+        public GameObject DragGhost => dragGhost;
 
         void Awake()
         {
@@ -33,18 +35,20 @@ namespace STEM.Experiments.DNA
                 dragGhost = Instantiate(gameObject, rootCanvas.transform);
                 dragGhost.name = moleculeType.ToString() + "_Ghost";
 
-                // Disable the ghost's own drag handling so it doesn't interfere
                 var ghostDM = dragGhost.GetComponent<DraggableMolecule>();
                 Destroy(ghostDM);
 
                 ghostRect = dragGhost.GetComponent<RectTransform>();
+                ghostRect.anchorMin = new Vector2(0.5f, 0.5f);
+                ghostRect.anchorMax = new Vector2(0.5f, 0.5f);
+                ghostRect.pivot = new Vector2(0.5f, 0.5f);
+                ghostRect.sizeDelta = rectTransform.rect.size;
                 ghostRect.position = rectTransform.position;
 
                 var ghostCG = dragGhost.GetComponent<CanvasGroup>();
                 ghostCG.alpha = 0.7f;
                 ghostCG.blocksRaycasts = false;
 
-                // Pool source itself must not block raycasts so drop zones can receive
                 canvasGroup.blocksRaycasts = false;
             }
             else
@@ -58,11 +62,11 @@ namespace STEM.Experiments.DNA
         {
             if (isPoolSource && ghostRect != null)
             {
-                ghostRect.anchoredPosition += eventData.delta / rootCanvas.scaleFactor;
+                ghostRect.position += (Vector3)eventData.delta;
             }
             else if (!isPoolSource)
             {
-                rectTransform.anchoredPosition += eventData.delta / rootCanvas.scaleFactor;
+                rectTransform.position += (Vector3)eventData.delta;
             }
         }
 
@@ -75,6 +79,9 @@ namespace STEM.Experiments.DNA
                 dragGhost = null;
                 ghostRect = null;
                 canvasGroup.blocksRaycasts = true;
+
+                if (poolUsed)
+                    Destroy(gameObject);
             }
             else
             {
@@ -83,6 +90,12 @@ namespace STEM.Experiments.DNA
                 if (!wasPlaced)
                     Destroy(gameObject);
             }
+        }
+
+        public void ClaimGhost()
+        {
+            dragGhost = null;
+            ghostRect = null;
         }
 
         public void PlaceInZone(RectTransform zoneRect)
