@@ -7,128 +7,145 @@ namespace STEM.Experiments.Pendulum
     public class PendulumWaveformGraph : MonoBehaviour
     {
         [Header("References")]
-        public PendulumApparatus apparatus;
-        public LineRenderer waveformLine;
+        public PendulumExperimentController experimentController;
+        public LineRenderer periodLine;
+        public LineRenderer frequencyLine;
         public RectTransform graphArea;
 
         [Header("Axis Label References")]
         public TextMeshProUGUI xAxisLabel;
         public TextMeshProUGUI yAxisLabel;
         public TextMeshProUGUI titleLabel;
+        public TextMeshProUGUI periodLegendLabel;
+        public TextMeshProUGUI frequencyLegendLabel;
 
         [Header("Graph Settings")]
-        [Tooltip("How many seconds of data the graph shows before scrolling.")]
-        public float timeWindowSeconds = 10f;
-        [Tooltip("Samples recorded per second.")]
-        public float sampleRate = 60f;
+        public float timeWindowSeconds = 20f;
+        public float maxPeriod = 2.0f;
+        public float maxFrequency = 2.0f;
 
-        [Header("Axis Scale")]
-        public float graphWidth = 8f;
-        public float graphHeight = 3f;
+        private List<Vector3> periodPoints = new List<Vector3>();
+        private List<Vector3> frequencyPoints = new List<Vector3>();
 
-        private List<Vector3> points = new List<Vector3>();
-        private float sampleTimer;
         private float runningTime;
         private bool recording;
 
         private void Start()
         {
             SetupLabels();
-            SetupLineRenderer();
+            SetupLineRenderers();
         }
 
         private void SetupLabels()
         {
-            if (titleLabel != null) titleLabel.text = "Μετατόπιση - Χρόνος";
+            if (titleLabel != null) titleLabel.text = "Περίοδος & Συχνότητα - Χρόνος";
             if (xAxisLabel != null) xAxisLabel.text = "t (s)";
-            if (yAxisLabel != null) yAxisLabel.text = "x (cm)";
+            if (yAxisLabel != null) yAxisLabel.text = "T(s) / f(Hz)";
+            if (periodLegendLabel != null) periodLegendLabel.text = "— Περίοδος";
+            if (frequencyLegendLabel != null) frequencyLegendLabel.text = "— Συχνότητα";
         }
 
-        private void SetupLineRenderer()
+        private void SetupLineRenderers()
         {
-            if (waveformLine == null) return;
-            waveformLine.positionCount = 0;
-            waveformLine.startWidth = 0.03f;
-            waveformLine.endWidth = 0.03f;
-            waveformLine.useWorldSpace = true;
+            if (periodLine != null)
+            {
+                periodLine.startWidth = 0.025f;
+                periodLine.endWidth = 0.025f;
+                periodLine.startColor = new Color(0.3f, 0.5f, 1f);
+                periodLine.endColor = new Color(0.3f, 0.5f, 1f);
+            }
+
+            if (frequencyLine != null)
+            {
+                frequencyLine.startWidth = 0.025f;
+                frequencyLine.endWidth = 0.025f;
+                frequencyLine.startColor = new Color(0.2f, 1f, 0.4f);
+                frequencyLine.endColor = new Color(0.2f, 1f, 0.4f);
+            }
         }
 
         private void Update()
         {
-            if (!recording || apparatus == null) return;
-
-            sampleTimer += Time.deltaTime;
+            if (!recording) return;
             runningTime += Time.deltaTime;
-
-            if (sampleTimer >= 1f / sampleRate)
-            {
-                sampleTimer = 0f;
-                RecordSample();
-            }
         }
 
-        private void RecordSample()
+        public void AddReading(float period, float frequency)
         {
-            float displacement = apparatus.CurrentDisplacementMetres * 100f;
-
-            float tNorm = Mathf.Clamp01(runningTime / timeWindowSeconds);
-            float dNorm = Mathf.InverseLerp(-15f, 15f, displacement);
+            if (!recording) return;
 
             Vector3[] corners = new Vector3[4];
             graphArea.GetWorldCorners(corners);
 
-            Camera cam = Camera.main;
-            Vector3 originWorld = cam.ScreenToWorldPoint(new Vector3(corners[0].x, corners[0].y, Mathf.Abs(cam.transform.position.z)));
-            Vector3 topRightWorld = cam.ScreenToWorldPoint(new Vector3(corners[2].x, corners[2].y, Mathf.Abs(cam.transform.position.z)));
+            Vector3 originWorld = corners[0];
+            Vector3 topRightWorld = corners[2];
 
             float worldWidth = topRightWorld.x - originWorld.x;
             float worldHeight = topRightWorld.y - originWorld.y;
 
-            Vector3 point = new Vector3(
+            float tNorm = Mathf.Clamp01(runningTime / timeWindowSeconds);
+
+            float periodNorm = Mathf.Clamp01(period / maxPeriod);
+            float frequencyNorm = Mathf.Clamp01(frequency / maxFrequency);
+
+            Vector3 periodPoint = new Vector3(
                 originWorld.x + tNorm * worldWidth,
-                originWorld.y + (dNorm - 0.5f) * worldHeight,
+                originWorld.y + periodNorm * worldHeight,
+                0f
+            );
+
+            Vector3 frequencyPoint = new Vector3(
+                originWorld.x + tNorm * worldWidth,
+                originWorld.y + frequencyNorm * worldHeight,
                 0f
             );
 
             if (runningTime > timeWindowSeconds)
             {
-                points.RemoveAt(0);
-                ShiftPointsLeft(worldWidth);
+                if (periodPoints.Count > 0) periodPoints.RemoveAt(0);
+                if (frequencyPoints.Count > 0) frequencyPoints.RemoveAt(0);
+
+                float shiftAmount = worldWidth / (timeWindowSeconds * 10f);
+                ShiftLeft(periodPoints, shiftAmount);
+                ShiftLeft(frequencyPoints, shiftAmount);
             }
 
-            points.Add(point);
-            RefreshLine();
+            periodPoints.Add(periodPoint);
+            frequencyPoints.Add(frequencyPoint);
+
+            RefreshLines();
         }
 
-        private void ShiftPointsLeft(float worldWidth)
+        private void ShiftLeft(List<Vector3> points, float amount)
         {
-            float shiftAmount = worldWidth / (timeWindowSeconds * sampleRate);
             for (int i = 0; i < points.Count; i++)
-            {
-                points[i] = new Vector3(
-                    points[i].x - shiftAmount,
-                    points[i].y,
-                    points[i].z
-                );
-            }
+                points[i] = new Vector3(points[i].x - amount, points[i].y, points[i].z);
         }
 
-
-        private void RefreshLine()
+        private void RefreshLines()
         {
-            if (waveformLine == null) return;
-            waveformLine.positionCount = points.Count;
-            waveformLine.SetPositions(points.ToArray());
+            if (periodLine != null)
+            {
+                periodLine.positionCount = periodPoints.Count;
+                periodLine.SetPositions(periodPoints.ToArray());
+            }
+
+            if (frequencyLine != null)
+            {
+                frequencyLine.positionCount = frequencyPoints.Count;
+                frequencyLine.SetPositions(frequencyPoints.ToArray());
+            }
         }
 
         public void StartRecording()
         {
-            points.Clear();
+            periodPoints.Clear();
+            frequencyPoints.Clear();
             runningTime = 0f;
-            sampleTimer = 0f;
             recording = true;
-            if (waveformLine != null)
-                waveformLine.positionCount = 0;
+
+            if (periodLine != null) periodLine.positionCount = 0;
+            if (frequencyLine != null) frequencyLine.positionCount = 0;
         }
 
         public void StopRecording()
@@ -138,10 +155,12 @@ namespace STEM.Experiments.Pendulum
 
         public void ClearGraph()
         {
-            points.Clear();
+            periodPoints.Clear();
+            frequencyPoints.Clear();
             runningTime = 0f;
-            if (waveformLine != null)
-                waveformLine.positionCount = 0;
+
+            if (periodLine != null) periodLine.positionCount = 0;
+            if (frequencyLine != null) frequencyLine.positionCount = 0;
         }
     }
 }

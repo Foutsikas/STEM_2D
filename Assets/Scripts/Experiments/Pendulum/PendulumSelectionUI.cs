@@ -23,7 +23,7 @@ namespace STEM.Experiments.Pendulum
         public Toggle amplitude75Toggle;
         public Toggle amplitude10Toggle;
 
-        [Header("Playback")]
+        [Header("Buttons")]
         public Button playButton;
         public Button stopButton;
         public Button saveButton;
@@ -91,13 +91,11 @@ namespace STEM.Experiments.Pendulum
         private void OnPlay()
         {
             experimentController?.StartExperiment();
-            SetSelectionsInteractable(false);
         }
 
         private void OnStop()
         {
             experimentController?.StopExperiment();
-            SetSelectionsInteractable(true);
         }
 
         private void OnSave()
@@ -110,20 +108,31 @@ namespace STEM.Experiments.Pendulum
             if (selectionSummaryText == null) return;
             selectionSummaryText.text =
                 $"Μήκος: {selectedLength * 100:0} cm   " +
-                $"Βαρίδιο: {selectedMassGrams:0} g   " +
+                $"Βαρίδιο: {selectedMassGrams:0} g\n" +
                 $"Πλάτος: {selectedAmplitude * 100:0.0} cm";
         }
 
-        private void SetSelectionsInteractable(bool interactable)
+        public void ApplyLocks(
+            bool lengthLocked,
+            bool massLocked,
+            bool amplitudeLocked,
+            bool playLocked,
+            bool stopLocked,
+            bool saveLocked)
         {
-            if (length40Toggle != null) length40Toggle.interactable = interactable;
-            if (length30Toggle != null) length30Toggle.interactable = interactable;
-            if (length20Toggle != null) length20Toggle.interactable = interactable;
-            if (mass50Toggle != null) mass50Toggle.interactable = interactable;
-            if (mass100Toggle != null) mass100Toggle.interactable = interactable;
-            if (amplitude5Toggle != null) amplitude5Toggle.interactable = interactable;
-            if (amplitude75Toggle != null) amplitude75Toggle.interactable = interactable;
-            if (amplitude10Toggle != null) amplitude10Toggle.interactable = interactable;
+            SetToggleGroupInteractable(lengthLocked, length40Toggle, length30Toggle, length20Toggle);
+            SetToggleGroupInteractable(massLocked, mass50Toggle, mass100Toggle);
+            SetToggleGroupInteractable(amplitudeLocked, amplitude5Toggle, amplitude75Toggle, amplitude10Toggle);
+
+            if (playButton != null) playButton.interactable = !playLocked;
+            if (stopButton != null) stopButton.interactable = !stopLocked;
+            if (saveButton != null) saveButton.interactable = !saveLocked;
+        }
+
+        private void SetToggleGroupInteractable(bool locked, params Toggle[] toggles)
+        {
+            foreach (Toggle t in toggles)
+                if (t != null) t.interactable = !locked;
         }
     }
 }

@@ -55,6 +55,7 @@ namespace STEM.Experiments.Pendulum
                 lastRecordedFrequency = frequency;
 
                 dl120Display?.UpdateReadings(period, frequency);
+                waveformGraph?.AddReading(period, frequency);
             }
         }
 
@@ -89,7 +90,9 @@ namespace STEM.Experiments.Pendulum
         {
             if (lastRecordedPeriod <= 0f)
             {
-                Debug.Log("No valid period measured yet. Let the pendulum swing for at least one full oscillation.");
+#if UNITY_EDITOR
+                Debug.Log("No valid period measured yet.");
+#endif
                 return;
             }
 
