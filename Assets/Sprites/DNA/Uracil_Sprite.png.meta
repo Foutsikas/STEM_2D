@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e329ade7dc2a2e547a2dfb8caaefd4e6
+guid: c54d4ca4b0799fe4ab027e115953cf53
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -123,7 +123,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Pentose_Sprite
+      name: Uracil_Sprite
       rect:
         serializedVersion: 2
         x: 0
@@ -138,8 +138,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d74858021fd4b5f4da41c91fef2e53c7
-      internalID: 337509151
+      spriteID: fb5d04f1c51435745b7136e83cdbc7dc
+      internalID: -1889770915
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 12d1b516e3e54e5498b83f7b0401e445
+    spriteID: 88ce0afbec06b21408082ada50b750cd
     internalID: 0
     vertices: []
     indices: 
@@ -158,7 +158,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Pentose_Sprite: 337509151
+      Uracil_Sprite: -1889770915
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
