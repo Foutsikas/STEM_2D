@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eab4050f0e6c0fe4c993285c21492eac, type: 3}
+  m_Name: Scene2QuizSet
+  m_EditorClassIdentifier: Assembly-CSharp::STEM.DNA_Quiz.QuizSet
+  quizTitle: RNA Quiz
+  questions:
+  - {fileID: 11400000, guid: 75c14a50d93231d4bbf6eb6affdd0a04, type: 2}
+  - {fileID: 11400000, guid: e41d30be5835c16469709e064fd25b20, type: 2}
+  - {fileID: 11400000, guid: 8b0f1fa5c31c409488ae0b4c4e815499, type: 2}
+  requiredCorrect: 3

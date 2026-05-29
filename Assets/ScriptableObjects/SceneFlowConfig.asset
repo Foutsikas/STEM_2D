@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76ab8e5aabb91b547af80e583d6b0e8c, type: 3}
+  m_Name: SceneFlowConfig
+  m_EditorClassIdentifier: Assembly-CSharp::STEM.DNA_Quiz.SceneFlowConfig
+  scenes:
+  - sceneName: DNAScene
+    displayTitle: "DNA - \u0395\u03B9\u03C3\u03B1\u03B3\u03C9\u03B3\u03B7"
+    quiz: {fileID: 11400000, guid: 6f30c12f48ff52146b14a4fb3a520040, type: 2}
+  - sceneName: RNAScene
+    displayTitle: "RNA - \u0395\u03B9\u03C3\u03B1\u03B3\u03C9\u03B3\u03B7"
+    quiz: {fileID: 11400000, guid: a3c1e7e6b0e4c3e45a086544346f718f, type: 2}
+  - sceneName: CodonsIntroScene
+    displayTitle: "\u039A\u03C9\u03B4\u03B9\u03BA\u03BF\u03BD\u03B9\u03B1"
+    quiz: {fileID: 11400000, guid: 5f711ef6ec51b474186b2ab1fde3ac4f, type: 2}
+  - sceneName: StartCodonScene
+    displayTitle: "\u039A\u03C9\u03B4\u03B9\u03BA\u03BF\u03BD\u03B9\u03BF \u0395\u03BD\u03B1\u03C1\u03BE\u03B7\u03C2"
+    quiz: {fileID: 11400000, guid: d9a482198e5f554498f566aed08b8501, type: 2}
+  - sceneName: StopCodonDNAScene
+    displayTitle: "\u039A\u03C9\u03B4\u03B9\u03BA\u03BF\u03BD\u03B9\u03B1 \u039B\u03B7\u03BE\u03B7\u03C2
+      (DNA)"
+    quiz: {fileID: 11400000, guid: 57e258e99ba4689439797bae8df777c5, type: 2}
+  - sceneName: StopCodonRNAScene
+    displayTitle: "\u039A\u03C9\u03B4\u03B9\u03BA\u03BF\u03BD\u03B9\u03B1 \u039B\u03B7\u03BE\u03B7\u03C2
+      (mRNA)"
+    quiz: {fileID: 11400000, guid: e15f4f851d06aaf48be807ee8bc8928c, type: 2}

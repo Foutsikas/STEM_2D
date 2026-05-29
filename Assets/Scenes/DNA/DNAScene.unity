@@ -173,6 +173,7 @@ MonoBehaviour:
   moleculeType: 3
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &8224711
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -881,6 +882,7 @@ MonoBehaviour:
   moleculeType: 0
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &157130013
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -2173,6 +2175,7 @@ MonoBehaviour:
   moleculeType: 1
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &377394525
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -2575,6 +2578,7 @@ MonoBehaviour:
   moleculeType: 4
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &434386477
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -2743,6 +2747,7 @@ MonoBehaviour:
   moleculeType: 5
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &490040873
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -2885,6 +2890,7 @@ MonoBehaviour:
   moleculeType: 2
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &498924583
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -3673,6 +3679,7 @@ MonoBehaviour:
   moleculeType: 2
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &588700098
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -4059,6 +4066,7 @@ MonoBehaviour:
   moleculeType: 0
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &638575481
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -4428,6 +4436,7 @@ MonoBehaviour:
   moleculeType: 1
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &707749247
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -4623,6 +4632,7 @@ MonoBehaviour:
   moleculeType: 1
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &714340098
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -4864,6 +4874,7 @@ MonoBehaviour:
   moleculeType: 1
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &718297202
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -5978,6 +5989,7 @@ MonoBehaviour:
   moleculeType: 0
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &952518676
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -6082,6 +6094,7 @@ MonoBehaviour:
   moleculeType: 0
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &960816956
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -6376,6 +6389,7 @@ MonoBehaviour:
   moleculeType: 0
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &981259667
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -6681,6 +6695,7 @@ MonoBehaviour:
   moleculeType: 1
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &1021846089
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -8623,6 +8638,7 @@ MonoBehaviour:
   moleculeType: 0
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &1406329114
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -9192,6 +9208,7 @@ MonoBehaviour:
   moleculeType: 1
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &1465577975
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -10281,6 +10298,7 @@ MonoBehaviour:
   moleculeType: 0
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &1619477378
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -11360,6 +11378,7 @@ MonoBehaviour:
   moleculeType: 1
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &1779308477
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -11602,6 +11621,7 @@ MonoBehaviour:
   moleculeType: 0
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &1824577767
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -11942,6 +11962,7 @@ MonoBehaviour:
   moleculeType: 3
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &1858427292
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -12183,6 +12204,7 @@ MonoBehaviour:
   moleculeType: 4
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &1865192157
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -12973,6 +12995,7 @@ MonoBehaviour:
   moleculeType: 2
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &2000933596
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -13305,6 +13328,7 @@ MonoBehaviour:
   moleculeType: 0
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &2036601306
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -13758,6 +13782,7 @@ MonoBehaviour:
   moleculeType: 1
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &2084994452
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -13862,6 +13887,7 @@ MonoBehaviour:
   moleculeType: 1
   isPoolSource: 1
   wasPlaced: 0
+  poolUsed: 0
 --- !u!225 &2093695323
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -14316,6 +14342,111 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2140075944}
   m_CullTransparentMesh: 1
+--- !u!1001 &5585868205042389843
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1038778753049983036, guid: c8f1ecad4cb7906429123b4db807707c, type: 3}
+      propertyPath: m_Color.a
+      value: 0.98039216
+      objectReference: {fileID: 0}
+    - target: {fileID: 7251449233500978340, guid: c8f1ecad4cb7906429123b4db807707c, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7251449233500978340, guid: c8f1ecad4cb7906429123b4db807707c, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7251449233500978340, guid: c8f1ecad4cb7906429123b4db807707c, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7251449233500978340, guid: c8f1ecad4cb7906429123b4db807707c, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7251449233500978340, guid: c8f1ecad4cb7906429123b4db807707c, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7251449233500978340, guid: c8f1ecad4cb7906429123b4db807707c, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7251449233500978340, guid: c8f1ecad4cb7906429123b4db807707c, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7251449233500978340, guid: c8f1ecad4cb7906429123b4db807707c, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7251449233500978340, guid: c8f1ecad4cb7906429123b4db807707c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7251449233500978340, guid: c8f1ecad4cb7906429123b4db807707c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7251449233500978340, guid: c8f1ecad4cb7906429123b4db807707c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7251449233500978340, guid: c8f1ecad4cb7906429123b4db807707c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7251449233500978340, guid: c8f1ecad4cb7906429123b4db807707c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7251449233500978340, guid: c8f1ecad4cb7906429123b4db807707c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7251449233500978340, guid: c8f1ecad4cb7906429123b4db807707c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7251449233500978340, guid: c8f1ecad4cb7906429123b4db807707c, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7251449233500978340, guid: c8f1ecad4cb7906429123b4db807707c, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7251449233500978340, guid: c8f1ecad4cb7906429123b4db807707c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7251449233500978340, guid: c8f1ecad4cb7906429123b4db807707c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7251449233500978340, guid: c8f1ecad4cb7906429123b4db807707c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7956053911060647488, guid: c8f1ecad4cb7906429123b4db807707c, type: 3}
+      propertyPath: m_Name
+      value: Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 7956053911060647488, guid: c8f1ecad4cb7906429123b4db807707c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c8f1ecad4cb7906429123b4db807707c, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -14325,3 +14456,4 @@ SceneRoots:
   - {fileID: 1046283395}
   - {fileID: 1350998354}
   - {fileID: 2115508648}
+  - {fileID: 5585868205042389843}
