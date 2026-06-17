@@ -1,7 +1,8 @@
+using STEM.DNA_Quiz;
+using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
-using System.Collections;
 
 namespace STEM.Experiments.DNA
 {
@@ -59,6 +60,7 @@ namespace STEM.Experiments.DNA
             if (filledDropZones >= totalDropZones)
             {
                 ShowWellDone();
+                FindAnyObjectByType<ActivityQuizBridge>().OnActivityComplete();
             }
         }
 

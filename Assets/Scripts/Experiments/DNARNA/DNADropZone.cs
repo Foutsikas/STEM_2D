@@ -17,6 +17,10 @@ namespace STEM.Experiments.DNA
         private Color normalColor = new Color(0.9f, 0.9f, 0.9f, 1f);
         private Color highlightColor = new Color(0.7f, 1f, 0.7f, 1f);
 
+        [Header("Events")]
+        public UnityEngine.Events.UnityEvent onCorrectDrop;
+        public UnityEngine.Events.UnityEvent onIncorrectDrop;
+
         void Awake()
         {
             backgroundImage = GetComponent<Image>();
@@ -80,11 +84,19 @@ namespace STEM.Experiments.DNA
                 if (backgroundImage != null)
                     backgroundImage.color = Color.clear;
 
-                DNASceneManager.Instance.OnCorrectPlacement();
+                // was: DNASceneManager.Instance.OnCorrectPlacement();
+                if (onCorrectDrop.GetPersistentEventCount() > 0)
+                    onCorrectDrop.Invoke();
+                else
+                    DNASceneManager.Instance.OnCorrectPlacement();
             }
             else
             {
-                DNASceneManager.Instance.OnIncorrectPlacement();
+                // was: DNASceneManager.Instance.OnIncorrectPlacement();
+                if (onIncorrectDrop.GetPersistentEventCount() > 0)
+                    onIncorrectDrop.Invoke();
+                else
+                    DNASceneManager.Instance.OnIncorrectPlacement();
             }
 
             ResetHighlight();

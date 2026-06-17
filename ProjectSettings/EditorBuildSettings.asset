@@ -6,8 +6,26 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+    path: Assets/Scenes/DNA/BootScene.unity
+    guid: b4ed51fc92015974ca79ddc4645e7e85
+  - enabled: 1
+    path: Assets/Scenes/DNA/DNAScene.unity
+    guid: 344e813bd344324458e9b4897f8b4d73
+  - enabled: 1
+    path: Assets/Scenes/DNA/RNAScene.unity
+    guid: cfac870a6a9fd854e9b5efa9dc9deaae
+  - enabled: 1
+    path: Assets/Scenes/DNA/CodonsIntroScene.unity
+    guid: 25b2f8cd3cd6278478238e8cc394a61e
+  - enabled: 1
+    path: Assets/Scenes/DNA/StartCodonScene.unity
+    guid: 6c64dc10b8c92cb4ca939ecce6abfa36
+  - enabled: 1
+    path: Assets/Scenes/DNA/StopCodonDNAScene.unity
+    guid: 3ddb22866f7eacf4aa13e9e38f429f8b
+  - enabled: 1
+    path: Assets/Scenes/DNA/StopCodonRNAScene.unity
+    guid: 9dafb65e5403e534aab44d86db6a63ba
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
