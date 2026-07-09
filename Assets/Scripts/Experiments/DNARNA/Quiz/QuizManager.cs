@@ -145,7 +145,9 @@ namespace STEM.DNA_Quiz
             questionText.text = "";
             feedbackText.text = "Quiz Passed!";
             feedbackText.color = correctColor;
-            progressText.text = correctCount + " / " + currentQuiz.questions.Length;
+
+            if (currentQuiz != null)
+                progressText.text = correctCount + " / " + currentQuiz.questions.Length;
 
             HideAnswerButtons();
 
