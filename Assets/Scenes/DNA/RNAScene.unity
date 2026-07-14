@@ -8794,6 +8794,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1046283395}
     m_Modifications:
+    - target: {fileID: 105479075338942470, guid: 41c35a1b8c1346243980e248ec5e5e11, type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 512
+      objectReference: {fileID: 0}
+    - target: {fileID: 105479075338942470, guid: 41c35a1b8c1346243980e248ec5e5e11, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1206328243121800194, guid: 41c35a1b8c1346243980e248ec5e5e11, type: 3}
       propertyPath: m_Name
       value: LessonPanel
@@ -8928,7 +8936,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 39041664873785631, guid: 41c35a1b8c1346243980e248ec5e5e11, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2115031638}
+    - targetCorrespondingSourceObject: {fileID: 39041664873785631, guid: 41c35a1b8c1346243980e248ec5e5e11, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2115031637}
   m_SourcePrefab: {fileID: 100100000, guid: 41c35a1b8c1346243980e248ec5e5e11, type: 3}
 --- !u!224 &1604647303 stripped
 RectTransform:
@@ -11917,6 +11931,49 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!1 &2115031635 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 39041664873785631, guid: 41c35a1b8c1346243980e248ec5e5e11, type: 3}
+  m_PrefabInstance: {fileID: 1604647302}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2115031637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2115031635}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &2115031638
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2115031635}
+  m_CullTransparentMesh: 1
 --- !u!1 &2115508647
 GameObject:
   m_ObjectHideFlags: 0
