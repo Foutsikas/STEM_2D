@@ -2,25 +2,17 @@ using UnityEngine;
 
 namespace STEM.Experiments.Resistance
 {
-    [RequireComponent(typeof(Collider2D))]
     public class CableEnd : MonoBehaviour
     {
         [HideInInspector] public Cable cable;
 
         public Transform restPoint;
-        public float snapRadius = 0.6f;
+        public float snapRadius = 0.55f;
         public bool locked;
 
         public CircuitNode Node { get; private set; }
 
-        Camera cam;
         Vector3 grabOffset;
-        bool dragging;
-
-        void Awake()
-        {
-            cam = Camera.main;
-        }
 
         public void AttachTo(CircuitNode node)
         {
@@ -34,24 +26,19 @@ namespace STEM.Experiments.Resistance
             if (restPoint != null) transform.position = restPoint.position;
         }
 
-        void OnMouseDown()
+        public void BeginDrag(Vector3 world)
         {
-            if (locked) return;
-            dragging = true;
-            grabOffset = transform.position - MouseWorld();
+            grabOffset = transform.position - world;
             ConnectionManager.Instance.HighlightNodes(true);
         }
 
-        void OnMouseDrag()
+        public void Drag(Vector3 world)
         {
-            if (!dragging) return;
-            transform.position = MouseWorld() + grabOffset;
+            transform.position = world + grabOffset;
         }
 
-        void OnMouseUp()
+        public void EndDrag()
         {
-            if (!dragging) return;
-            dragging = false;
             ConnectionManager.Instance.HighlightNodes(false);
 
             CircuitNode target = ConnectionManager.Instance.NearestNode(transform.position, snapRadius);
@@ -59,13 +46,6 @@ namespace STEM.Experiments.Resistance
             else Detach();
 
             ConnectionManager.Instance.Evaluate();
-        }
-
-        Vector3 MouseWorld()
-        {
-            Vector3 p = cam.ScreenToWorldPoint(Input.mousePosition);
-            p.z = transform.position.z;
-            return p;
         }
     }
 }

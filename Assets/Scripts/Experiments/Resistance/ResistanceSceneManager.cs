@@ -110,14 +110,20 @@ namespace STEM.Experiments.Resistance
             measured = true;
 
             ResistancePhase phase = phases[index];
-            float r = ConnectionManager.Instance.Result.loadResistance;
-            if (phase.requiredTopology == Topology.Series)
-                r = ResistanceCircuit.R1;
+            bool series = phase.requiredTopology == Topology.Series;
+
+            // Clean nominal values for the calculation lines (like the pptx worksheet).
+            float loadR = ConnectionManager.Instance.Result.loadResistance;
+            float inom = ResistanceCircuit.SourceVoltage / loadR;
+            float vnom = series ? inom * ResistanceCircuit.R1 : ResistanceCircuit.SourceVoltage;
+            float rShown = series ? ResistanceCircuit.R1 : loadR;
 
             string body = phase.resultText
                 .Replace("{V}", v.ToString("0.00"))
                 .Replace("{I}", i.ToString("0.000"))
-                .Replace("{R}", r.ToString("0.##"));
+                .Replace("{Vn}", vnom.ToString("0.##"))
+                .Replace("{In}", inom.ToString("0.###"))
+                .Replace("{R}", rShown.ToString("0.##"));
 
             resultText.text = body;
             resultPanel.SetActive(true);

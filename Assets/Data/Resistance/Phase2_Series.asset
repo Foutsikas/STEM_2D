@@ -12,17 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5aa0de718882e0e4fb6bbb67eec1d13f, type: 3}
   m_Name: Phase2_Series
   m_EditorClassIdentifier: Assembly-CSharp::STEM.Experiments.Resistance.ResistancePhase
-  instruction: "\u0392\u03AE\u03BC\u03B1 2: \u03A0\u03C1\u03CC\u03C3\u03B8\u03B5\u03C3\u03B5
+  instruction: "\u0392\u03AE\u03BC\u03B1 12: \u03A0\u03C1\u03CC\u03C3\u03B8\u03B5\u03C3\u03B5
     \u03C4\u03B7\u03BD \u03B1\u03BD\u03C4\u03AF\u03C3\u03C4\u03B1\u03C3\u03B7 R1
-    \u03C3\u03B5 \u03C3\u03B5\u03B9\u03C1\u03AC \u03BC\u03B5 \u03C4\u03B7\u03BD R2.\n\u03A3\u03CD\u03BD\u03B4\u03B5\u03C3\u03B5
-    \u03C4\u03BF \u03B1\u03BC\u03C0\u03B5\u03C1\u03CC\u03BC\u03B5\u03C4\u03C1\u03BF
+    \u03C3\u03B5 \u03C3\u03B5\u03B9\u03C1\u03AC \u03BC\u03B5 \u03C4\u03B7\u03BD R2.\n\u03A4\u03BF
+    \u03B1\u03BC\u03C0\u03B5\u03C1\u03CC\u03BC\u03B5\u03C4\u03C1\u03BF \u03C3\u03C5\u03BD\u03B4\u03AD\u03B5\u03C4\u03B1\u03B9
     \u03C3\u03B5 \u03C3\u03B5\u03B9\u03C1\u03AC \u03BA\u03B1\u03B9 \u03C4\u03BF \u03B2\u03BF\u03BB\u03C4\u03CC\u03BC\u03B5\u03C4\u03C1\u03BF\n\u03C0\u03B1\u03C1\u03AC\u03BB\u03BB\u03B7\u03BB\u03B1
     \u03C3\u03C4\u03B1 \u03AC\u03BA\u03C1\u03B1 \u03C4\u03B7\u03C2 R1."
   resultText: "\u039C\u03AD\u03C4\u03C1\u03B7\u03C3\u03B7: V = {V} V, I = {I} A\n\nR1
-    = V / I = {R} \u03A9\n\n\u039F\u03BB\u03B9\u03BA\u03AE \u03B1\u03BD\u03C4\u03AF\u03C3\u03C4\u03B1\u03C3\u03B7:
-    R\u03BF\u03BB = R1 + R2 = 100 + 50 = 150 \u03A9\n\u0388\u03BB\u03B5\u03B3\u03C7\u03BF\u03C2:
-    V \u03C0\u03B7\u03B3\u03AE\u03C2 = I \xB7 R\u03BF\u03BB = {I} \xB7 150 \u2248
-    5 V"
+    = V / I = {Vn} / {In} \u2248 {R} \u03A9\n\n\u039F\u03BB\u03B9\u03BA\u03AE \u03B1\u03BD\u03C4\u03AF\u03C3\u03C4\u03B1\u03C3\u03B7:
+    R\u03BF\u03BB = R1 + R2 = 100 + 50 = 150 \u03A9\n\u0388\u03BB\u03B5\u03B3\u03C7\u03BF\u03C2
+    \u03C4\u03AC\u03C3\u03B7\u03C2 \u03C0\u03B7\u03B3\u03AE\u03C2: V = I \xB7 R\u03BF\u03BB
+    = {In} \xB7 150 \u2248 5 V"
   requiredTopology: 2
   requiredVoltmeter: 1
   switchStartsClosed: 1
@@ -46,7 +46,7 @@ MonoBehaviour:
     endANode: 5
     endALocked: 1
     endBAttached: 0
-    endBNode: 6
+    endBNode: 0
     endBLocked: 0
   - cableIndex: 3
     endAAttached: 1
@@ -67,12 +67,12 @@ MonoBehaviour:
     endANode: 10
     endALocked: 1
     endBAttached: 0
-    endBNode: 6
+    endBNode: 0
     endBLocked: 0
   - cableIndex: 7
     endAAttached: 1
     endANode: 11
     endALocked: 1
     endBAttached: 0
-    endBNode: 7
+    endBNode: 0
     endBLocked: 0

@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.UI;
 using UnityEngine.UI;
 using STEM.Experiments.Resistance;
 
@@ -16,6 +17,12 @@ namespace STEM.EditorTools
         const string DataFolder = "Assets/Data/Resistance";
         const string MatFolder = "Assets/Materials";
         const string CableMatPath = MatFolder + "/CableLine.mat";
+
+        // Camera: orthographic size 5.4 at 16:9 -> world x -9.6..9.6, y -5.4..5.4
+        //
+        // UI keep-out zones (do not place anything clickable inside):
+        //   InstructionPanel  screen x   40..1020, y 840..1040  -> world x -9.6..0.6,  y  3.0..5.4
+        //   DL120Panel        screen x 1460..1880, y  40.. 460  -> world x  5.0..9.6,  y -5.4..-0.8
 
         static Sprite knob;
         static Sprite panel;
@@ -29,12 +36,12 @@ namespace STEM.EditorTools
             { NodeId.SW_B,    new Vector2( 1.5f, -3.4f) },
             { NodeId.AMM_A,   new Vector2(-6.2f, -0.9f) },
             { NodeId.AMM_B,   new Vector2(-6.2f,  0.9f) },
-            { NodeId.R1_A,    new Vector2(-3.0f,  2.2f) },
-            { NodeId.R1_B,    new Vector2(-1.0f,  2.2f) },
-            { NodeId.R2_A,    new Vector2( 1.0f,  2.2f) },
-            { NodeId.R2_B,    new Vector2( 3.0f,  2.2f) },
-            { NodeId.VOLT_A,  new Vector2(-6.9f,  3.2f) },
-            { NodeId.VOLT_B,  new Vector2(-5.5f,  3.2f) },
+            { NodeId.R1_A,    new Vector2(-3.0f,  2.1f) },
+            { NodeId.R1_B,    new Vector2(-1.0f,  2.1f) },
+            { NodeId.R2_A,    new Vector2( 1.0f,  2.1f) },
+            { NodeId.R2_B,    new Vector2( 3.0f,  2.1f) },
+            { NodeId.VOLT_A,  new Vector2( 5.3f,  3.6f) },
+            { NodeId.VOLT_B,  new Vector2( 6.7f,  3.6f) },
         };
 
         [MenuItem("STEM/Build Resistance Scene")]
@@ -66,6 +73,7 @@ namespace STEM.EditorTools
             ResistancePhase[] phases = BuildPhaseAssets();
 
             var managers = new GameObject("Managers");
+
             var cm = managers.AddComponent<ConnectionManager>();
             cm.cables = cables;
             cm.nodes = new List<CircuitNode>(nodes.Values);
@@ -80,6 +88,8 @@ namespace STEM.EditorTools
             sm.nextButton = next;
             sm.dl120 = dl120;
             sm.quizSceneName = "ResistanceQuizScene";
+
+            managers.AddComponent<CircuitInputController>();
 
             EditorSceneManager.MarkSceneDirty(scene);
             EditorSceneManager.SaveScene(scene, ScenePath);
@@ -112,16 +122,16 @@ namespace STEM.EditorTools
             var root = new GameObject("Equipment").transform;
 
             Board(root, "BatteryHolder_PT2013.3", new Vector2(-4.0f, -3.4f), new Vector2(3.2f, 1.1f), new Color(0.30f, 0.33f, 0.38f));
-            Board(root, "Board1_PS2031.1", new Vector2(0.5f, -3.4f), new Vector2(3.4f, 1.1f), new Color(0.16f, 0.28f, 0.46f));
-            Board(root, "Board2_PT2013.2", new Vector2(0.0f, 2.2f), new Vector2(8.0f, 1.5f), new Color(0.16f, 0.28f, 0.46f));
+            Board(root, "Board1_PS2031.1", new Vector2(0.5f, -3.2f), new Vector2(3.4f, 1.6f), new Color(0.16f, 0.28f, 0.46f));
+            Board(root, "Board2_PT2013.2", new Vector2(0.0f, 2.1f), new Vector2(8.0f, 1.4f), new Color(0.16f, 0.28f, 0.46f));
             Board(root, "CurrentSensor_RS102", new Vector2(-6.2f, 0.0f), new Vector2(1.2f, 2.6f), new Color(0.85f, 0.86f, 0.88f));
-            Board(root, "VoltageSensor_RS101", new Vector2(-6.2f, 3.2f), new Vector2(2.4f, 1.1f), new Color(0.85f, 0.86f, 0.88f));
+            Board(root, "VoltageSensor_RS101", new Vector2(6.0f, 3.6f), new Vector2(2.6f, 1.1f), new Color(0.85f, 0.86f, 0.88f));
 
-            Label(root, "R1_Label", new Vector2(-2.0f, 3.15f), "R1", 1.4f, Color.white);
-            Label(root, "R2_Label", new Vector2(2.0f, 3.15f), "R2", 1.4f, Color.white);
+            Label(root, "R1_Label", new Vector2(-2.0f, 2.95f), "R1", 1.3f, Color.white);
+            Label(root, "R2_Label", new Vector2(2.0f, 2.95f), "R2", 1.3f, Color.white);
             Label(root, "Amm_Label", new Vector2(-6.2f, 0.0f), "A", 2.0f, Color.black);
-            Label(root, "Volt_Label", new Vector2(-6.2f, 3.9f), "V", 1.6f, Color.white);
-            Label(root, "Bat_Label", new Vector2(-4.0f, -2.6f), "4 x 1.5 V", 1.1f, Color.white);
+            Label(root, "Volt_Label", new Vector2(6.0f, 4.5f), "V", 1.6f, Color.white);
+            Label(root, "Bat_Label", new Vector2(-4.0f, -2.5f), "4 x 1.5 V", 1.0f, Color.white);
         }
 
         static void Board(Transform parent, string name, Vector2 pos, Vector2 size, Color color)
@@ -149,8 +159,10 @@ namespace STEM.EditorTools
             t.fontSize = size * 4f;
             t.alignment = TextAlignmentOptions.Center;
             t.color = color;
-            t.GetComponent<MeshRenderer>().sortingOrder = 2;
             t.rectTransform.sizeDelta = new Vector2(3f, 1f);
+
+            var mr = go.GetComponent<MeshRenderer>();
+            if (mr != null) mr.sortingOrder = 2;
         }
 
         static Dictionary<NodeId, CircuitNode> BuildNodes()
@@ -163,17 +175,17 @@ namespace STEM.EditorTools
                 var go = new GameObject(kv.Key.ToString());
                 go.transform.SetParent(root);
                 go.transform.position = kv.Value;
+                go.transform.localScale = Vector3.one * 0.9f;
 
                 var sr = go.AddComponent<SpriteRenderer>();
                 sr.sprite = knob;
                 sr.color = new Color(0.85f, 0.85f, 0.85f);
                 sr.sortingOrder = 3;
-                go.transform.localScale = Vector3.one * 0.9f;
 
                 var hi = new GameObject("Highlight");
                 hi.transform.SetParent(go.transform);
                 hi.transform.localPosition = Vector3.zero;
-                hi.transform.localScale = Vector3.one * 1.6f;
+                hi.transform.localScale = Vector3.one * 1.7f;
 
                 var hsr = hi.AddComponent<SpriteRenderer>();
                 hsr.sprite = knob;
@@ -198,13 +210,13 @@ namespace STEM.EditorTools
             Color[] colors =
             {
                 new Color(0.85f, 0.20f, 0.20f),
-                new Color(0.20f, 0.20f, 0.22f),
+                new Color(0.25f, 0.25f, 0.28f),
                 new Color(0.85f, 0.20f, 0.20f),
-                new Color(0.20f, 0.20f, 0.22f),
+                new Color(0.25f, 0.25f, 0.28f),
                 new Color(0.90f, 0.60f, 0.15f),
                 new Color(0.25f, 0.65f, 0.35f),
-                new Color(0.85f, 0.20f, 0.20f),
-                new Color(0.20f, 0.20f, 0.22f),
+                new Color(0.80f, 0.30f, 0.65f),
+                new Color(0.30f, 0.55f, 0.85f),
             };
 
             for (int i = 0; i < 8; i++)
@@ -254,19 +266,23 @@ namespace STEM.EditorTools
             return end;
         }
 
+        // Two rows along the bottom left. Kept clear of the DL120 panel.
         static Transform RestPoint(Transform root, int index)
         {
+            int col = index % 8;
+            int row = index / 8;
+
             var go = new GameObject("Rest_" + index);
             go.transform.SetParent(root);
-            go.transform.position = new Vector3(-8.2f + index * 1.05f, -4.7f, 0f);
+            go.transform.position = new Vector3(-8.4f + col * 1.35f, row == 0 ? -4.2f : -4.9f, 0f);
             return go.transform;
         }
 
         static CircuitSwitch BuildSwitch()
         {
             var go = new GameObject("Switch");
-            go.transform.position = new Vector3(0.5f, -2.6f, 0f);
-            go.transform.localScale = Vector3.one * 1.6f;
+            go.transform.position = new Vector3(0.5f, -2.5f, 0f);
+            go.transform.localScale = Vector3.one * 1.8f;
 
             var sr = go.AddComponent<SpriteRenderer>();
             sr.sprite = knob;
@@ -278,8 +294,6 @@ namespace STEM.EditorTools
 
             var sw = go.AddComponent<CircuitSwitch>();
             sw.graphic = sr;
-            sw.openSprite = knob;
-            sw.closedSprite = knob;
             sw.closed = false;
 
             return sw;
@@ -292,7 +306,7 @@ namespace STEM.EditorTools
         {
             var es = new GameObject("EventSystem");
             es.AddComponent<EventSystem>();
-            es.AddComponent<StandaloneInputModule>();
+            es.AddComponent<InputSystemUIInputModule>();
 
             var canvasGo = new GameObject("Canvas");
             var canvas = canvasGo.AddComponent<Canvas>();
@@ -305,54 +319,49 @@ namespace STEM.EditorTools
 
             canvasGo.AddComponent<GraphicRaycaster>();
 
-            // instruction
+            // instruction, top left, 980 x 200
             RectTransform instrPanel = Panel(canvasGo.transform, "InstructionPanel",
-                new Vector2(0f, 1f), new Vector2(0f, 1f), new Vector2(40f, -40f),
-                new Vector2(900f, 200f), new Color(0f, 0f, 0f, 0.55f));
-            instrPanel.pivot = new Vector2(0f, 1f);
+                new Vector2(0f, 1f), new Vector2(0f, 1f), new Vector2(0f, 1f),
+                new Vector2(40f, -40f), new Vector2(980f, 200f), new Color(0f, 0f, 0f, 0.6f));
 
-            instruction = Text(instrPanel, "InstructionText", new Vector2(20f, -20f),
-                new Vector2(860f, 130f), 30f, TextAlignmentOptions.TopLeft, Color.white);
+            instruction = Text(instrPanel, "InstructionText", new Vector2(20f, -16f),
+                new Vector2(940f, 120f), 28f, TextAlignmentOptions.TopLeft, Color.white);
 
-            status = Text(instrPanel, "StatusText", new Vector2(20f, -150f),
-                new Vector2(860f, 40f), 26f, TextAlignmentOptions.TopLeft, new Color(1f, 0.8f, 0.3f));
+            status = Text(instrPanel, "StatusText", new Vector2(20f, -140f),
+                new Vector2(940f, 50f), 24f, TextAlignmentOptions.TopLeft, new Color(1f, 0.8f, 0.3f));
 
-            // DL120
+            // DL120, bottom right, 420 x 420
             RectTransform dlPanel = Panel(canvasGo.transform, "DL120Panel",
-                new Vector2(1f, 0f), new Vector2(1f, 0f), new Vector2(-40f, 40f),
-                new Vector2(420f, 420f), new Color(0.92f, 0.93f, 0.95f, 1f));
-            dlPanel.pivot = new Vector2(1f, 0f);
+                new Vector2(1f, 0f), new Vector2(1f, 0f), new Vector2(1f, 0f),
+                new Vector2(-40f, 40f), new Vector2(420f, 420f), new Color(0.92f, 0.93f, 0.95f, 1f));
 
-            Text(dlPanel, "Title", new Vector2(0f, -14f), new Vector2(380f, 40f), 28f,
-                TextAlignmentOptions.Top, new Color(0.15f, 0.18f, 0.25f)).rectTransform.anchorMin =
-                dlPanel.GetComponent<RectTransform>().anchorMin;
-
-            var title = dlPanel.Find("Title").GetComponent<TMP_Text>();
+            TMP_Text title = Text(dlPanel, "Title", Vector2.zero, Vector2.zero, 28f,
+                TextAlignmentOptions.Center, new Color(0.15f, 0.18f, 0.25f));
             title.text = "DL120RS";
             CenterTop(title.rectTransform, new Vector2(0f, -14f), new Vector2(380f, 40f));
 
-            var vLabel = Text(dlPanel, "VoltageLabel", Vector2.zero, new Vector2(380f, 30f), 22f,
+            TMP_Text vLabel = Text(dlPanel, "VoltageLabel", Vector2.zero, Vector2.zero, 22f,
                 TextAlignmentOptions.Center, new Color(0.35f, 0.38f, 0.45f));
             vLabel.text = "Voltage (V)";
             CenterTop(vLabel.rectTransform, new Vector2(0f, -70f), new Vector2(380f, 30f));
 
-            var vValue = Text(dlPanel, "VoltageText", Vector2.zero, new Vector2(380f, 80f), 64f,
+            TMP_Text vValue = Text(dlPanel, "VoltageText", Vector2.zero, Vector2.zero, 60f,
                 TextAlignmentOptions.Center, new Color(0.20f, 0.45f, 0.70f));
             vValue.text = "---";
-            CenterTop(vValue.rectTransform, new Vector2(0f, -105f), new Vector2(380f, 80f));
+            CenterTop(vValue.rectTransform, new Vector2(0f, -102f), new Vector2(380f, 80f));
 
-            var cLabel = Text(dlPanel, "CurrentLabel", Vector2.zero, new Vector2(380f, 30f), 22f,
+            TMP_Text cLabel = Text(dlPanel, "CurrentLabel", Vector2.zero, Vector2.zero, 22f,
                 TextAlignmentOptions.Center, new Color(0.35f, 0.38f, 0.45f));
             cLabel.text = "Current (A)";
-            CenterTop(cLabel.rectTransform, new Vector2(0f, -200f), new Vector2(380f, 30f));
+            CenterTop(cLabel.rectTransform, new Vector2(0f, -196f), new Vector2(380f, 30f));
 
-            var cValue = Text(dlPanel, "CurrentText", Vector2.zero, new Vector2(380f, 80f), 64f,
+            TMP_Text cValue = Text(dlPanel, "CurrentText", Vector2.zero, Vector2.zero, 60f,
                 TextAlignmentOptions.Center, new Color(0.20f, 0.45f, 0.70f));
             cValue.text = "---";
-            CenterTop(cValue.rectTransform, new Vector2(0f, -235f), new Vector2(380f, 80f));
+            CenterTop(cValue.rectTransform, new Vector2(0f, -228f), new Vector2(380f, 80f));
 
             Button start = MakeButton(dlPanel, "StartButton", "Start (F6)", new Vector2(240f, 60f));
-            CenterTop(start.GetComponent<RectTransform>(), new Vector2(0f, -340f), new Vector2(240f, 60f));
+            CenterTop(start.GetComponent<RectTransform>(), new Vector2(0f, -330f), new Vector2(240f, 60f));
 
             dl120 = dlPanel.gameObject.AddComponent<DL120Panel>();
             dl120.voltageText = vValue;
@@ -360,18 +369,17 @@ namespace STEM.EditorTools
             dl120.startButton = start;
             dl120.noise = 0.01f;
 
-            // result
+            // result, centered modal
             RectTransform rp = Panel(canvasGo.transform, "ResultPanel",
-                new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero,
-                new Vector2(900f, 500f), new Color(0.08f, 0.10f, 0.14f, 0.95f));
-            rp.pivot = new Vector2(0.5f, 0.5f);
+                new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f),
+                Vector2.zero, new Vector2(900f, 520f), new Color(0.08f, 0.10f, 0.14f, 0.96f));
 
-            result = Text(rp, "ResultText", Vector2.zero, new Vector2(820f, 340f), 30f,
+            result = Text(rp, "ResultText", Vector2.zero, Vector2.zero, 28f,
                 TextAlignmentOptions.TopLeft, Color.white);
-            CenterTop(result.rectTransform, new Vector2(0f, -40f), new Vector2(820f, 340f));
+            CenterTop(result.rectTransform, new Vector2(0f, -40f), new Vector2(820f, 360f));
 
             next = MakeButton(rp, "NextButton", "Επόμενο", new Vector2(240f, 64f));
-            CenterTop(next.GetComponent<RectTransform>(), new Vector2(0f, -410f), new Vector2(240f, 64f));
+            CenterTop(next.GetComponent<RectTransform>(), new Vector2(0f, -430f), new Vector2(240f, 64f));
 
             resultPanel = rp.gameObject;
             resultPanel.SetActive(false);
@@ -387,7 +395,7 @@ namespace STEM.EditorTools
         }
 
         static RectTransform Panel(Transform parent, string name, Vector2 anchorMin, Vector2 anchorMax,
-                                   Vector2 pos, Vector2 size, Color color)
+                                   Vector2 pivot, Vector2 pos, Vector2 size, Color color)
         {
             var go = new GameObject(name);
             go.transform.SetParent(parent, false);
@@ -400,8 +408,9 @@ namespace STEM.EditorTools
             var rt = go.GetComponent<RectTransform>();
             rt.anchorMin = anchorMin;
             rt.anchorMax = anchorMax;
-            rt.anchoredPosition = pos;
+            rt.pivot = pivot;
             rt.sizeDelta = size;
+            rt.anchoredPosition = pos;
             return rt;
         }
 
@@ -415,14 +424,14 @@ namespace STEM.EditorTools
             t.fontSize = fontSize;
             t.alignment = align;
             t.color = color;
-            t.enableWordWrapping = true;
+            t.raycastTarget = false;
 
             var rt = go.GetComponent<RectTransform>();
             rt.anchorMin = new Vector2(0f, 1f);
             rt.anchorMax = new Vector2(0f, 1f);
             rt.pivot = new Vector2(0f, 1f);
-            rt.anchoredPosition = pos;
             rt.sizeDelta = size;
+            rt.anchoredPosition = pos;
             return t;
         }
 
@@ -450,6 +459,7 @@ namespace STEM.EditorTools
             t.fontSize = 26f;
             t.alignment = TextAlignmentOptions.Center;
             t.color = Color.white;
+            t.raycastTarget = false;
 
             var trt = textGo.GetComponent<RectTransform>();
             trt.anchorMin = Vector2.zero;
@@ -467,24 +477,24 @@ namespace STEM.EditorTools
             var p1 = MakePhase("Phase1_R2", Topology.SingleR2, VoltmeterTarget.AcrossR2, false,
                 "Βήμα 1: Συναρμολόγησε το κύκλωμα με την αντίσταση R2.\n" +
                 "Το αμπερόμετρο (RS102) είναι ήδη συνδεδεμένο σε σειρά.\n" +
-                "Σύνδεσε το βολτόμετρο (RS101) παράλληλα στα άκρα της R2.\n" +
+                "Σύρε τα δύο καλώδια του βολτομέτρου (RS101) στα άκρα της R2.\n" +
                 "Κλείσε τον διακόπτη και πάτησε Start (F6).",
                 "Μέτρηση: V = {V} V, I = {I} A\n\n" +
                 "Νόμος του Ohm:\nR2 = V / I = {R} Ω\n\n" +
                 "Η αντίσταση των καλωδίων θεωρείται αμελητέα.",
                 new List<CablePreset>
                 {
-                    Preset(0, NodeId.BAT_POS, true, NodeId.SW_A, true),
-                    Preset(1, NodeId.SW_B, true, NodeId.AMM_A, true),
-                    Preset(2, NodeId.AMM_B, true, NodeId.R2_A, true),
-                    Preset(3, NodeId.R2_B, true, NodeId.BAT_NEG, true),
-                    Loose(6, NodeId.VOLT_A, true, NodeId.R2_A),
-                    Loose(7, NodeId.VOLT_B, true, NodeId.R2_B),
+                    Fixed(0, NodeId.BAT_POS, NodeId.SW_A),
+                    Fixed(1, NodeId.SW_B, NodeId.AMM_A),
+                    Fixed(2, NodeId.AMM_B, NodeId.R2_A),
+                    Fixed(3, NodeId.R2_B, NodeId.BAT_NEG),
+                    LooseB(6, NodeId.VOLT_A),
+                    LooseB(7, NodeId.VOLT_B),
                 });
 
             var p2 = MakePhase("Phase2_Series", Topology.Series, VoltmeterTarget.AcrossR1, true,
                 "Βήμα 2: Πρόσθεσε την αντίσταση R1 σε σειρά με την R2.\n" +
-                "Σύνδεσε το αμπερόμετρο σε σειρά και το βολτόμετρο\n" +
+                "Το αμπερόμετρο παραμένει σε σειρά. Σύνδεσε το βολτόμετρο\n" +
                 "παράλληλα στα άκρα της R1.",
                 "Μέτρηση: V = {V} V, I = {I} A\n\n" +
                 "R1 = V / I = {R} Ω\n\n" +
@@ -492,13 +502,13 @@ namespace STEM.EditorTools
                 "Έλεγχος: V πηγής = I · Rολ = {I} · 150 ≈ 5 V",
                 new List<CablePreset>
                 {
-                    Preset(0, NodeId.BAT_POS, true, NodeId.SW_A, true),
-                    Preset(1, NodeId.SW_B, true, NodeId.AMM_A, true),
-                    Loose(2, NodeId.AMM_B, true, NodeId.R1_A),
-                    Preset(3, NodeId.R2_B, true, NodeId.BAT_NEG, true),
-                    BothLoose(4),
-                    Loose(6, NodeId.VOLT_A, true, NodeId.R1_A),
-                    Loose(7, NodeId.VOLT_B, true, NodeId.R1_B),
+                    Fixed(0, NodeId.BAT_POS, NodeId.SW_A),
+                    Fixed(1, NodeId.SW_B, NodeId.AMM_A),
+                    LooseB(2, NodeId.AMM_B),
+                    Fixed(3, NodeId.R2_B, NodeId.BAT_NEG),
+                    LooseBoth(4),
+                    LooseB(6, NodeId.VOLT_A),
+                    LooseB(7, NodeId.VOLT_B),
                 });
 
             var p3 = MakePhase("Phase3_Parallel", Topology.Parallel, VoltmeterTarget.AcrossR1, true,
@@ -513,14 +523,14 @@ namespace STEM.EditorTools
                 "να ακολουθήσει.",
                 new List<CablePreset>
                 {
-                    Preset(0, NodeId.BAT_POS, true, NodeId.SW_A, true),
-                    Preset(1, NodeId.SW_B, true, NodeId.AMM_A, true),
-                    Preset(2, NodeId.AMM_B, true, NodeId.R1_A, true),
-                    Preset(3, NodeId.R2_B, true, NodeId.BAT_NEG, true),
-                    BothLoose(4),
-                    BothLoose(5),
-                    Preset(6, NodeId.VOLT_A, true, NodeId.R1_A, true),
-                    Preset(7, NodeId.VOLT_B, true, NodeId.R1_B, true),
+                    Fixed(0, NodeId.BAT_POS, NodeId.SW_A),
+                    Fixed(1, NodeId.SW_B, NodeId.AMM_A),
+                    Fixed(2, NodeId.AMM_B, NodeId.R1_A),
+                    Fixed(3, NodeId.R2_B, NodeId.BAT_NEG),
+                    LooseBoth(4),
+                    LooseBoth(5),
+                    Fixed(6, NodeId.VOLT_A, NodeId.R1_A),
+                    Fixed(7, NodeId.VOLT_B, NodeId.R1_B),
                 });
 
             return new[] { p1, p2, p3 };
@@ -548,37 +558,34 @@ namespace STEM.EditorTools
             return asset;
         }
 
-        // both ends fixed
-        static CablePreset Preset(int index, NodeId a, bool aLocked, NodeId b, bool bLocked)
+        static CablePreset Fixed(int index, NodeId a, NodeId b)
         {
             return new CablePreset
             {
                 cableIndex = index,
                 endAAttached = true,
                 endANode = a,
-                endALocked = aLocked,
+                endALocked = true,
                 endBAttached = true,
                 endBNode = b,
-                endBLocked = bLocked,
+                endBLocked = true,
             };
         }
 
-        // endA fixed, endB loose for the student to place. targetHint is documentation only.
-        static CablePreset Loose(int index, NodeId a, bool aLocked, NodeId targetHint)
+        static CablePreset LooseB(int index, NodeId a)
         {
             return new CablePreset
             {
                 cableIndex = index,
                 endAAttached = true,
                 endANode = a,
-                endALocked = aLocked,
+                endALocked = true,
                 endBAttached = false,
-                endBNode = targetHint,
                 endBLocked = false,
             };
         }
 
-        static CablePreset BothLoose(int index)
+        static CablePreset LooseBoth(int index)
         {
             return new CablePreset
             {
@@ -595,8 +602,7 @@ namespace STEM.EditorTools
             var mat = AssetDatabase.LoadAssetAtPath<Material>(CableMatPath);
             if (mat != null) return mat;
 
-            var shader = Shader.Find("Sprites/Default");
-            mat = new Material(shader);
+            mat = new Material(Shader.Find("Sprites/Default"));
             AssetDatabase.CreateAsset(mat, CableMatPath);
             return mat;
         }

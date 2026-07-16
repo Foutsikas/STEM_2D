@@ -2,7 +2,6 @@ using UnityEngine;
 
 namespace STEM.Experiments.Resistance
 {
-    [RequireComponent(typeof(Collider2D))]
     public class CircuitSwitch : MonoBehaviour
     {
         public bool closed;
@@ -10,7 +9,7 @@ namespace STEM.Experiments.Resistance
         public Sprite openSprite;
         public Sprite closedSprite;
 
-        void OnMouseDown()
+        public void Toggle()
         {
             closed = !closed;
             Apply();
@@ -26,7 +25,10 @@ namespace STEM.Experiments.Resistance
         void Apply()
         {
             if (graphic == null) return;
-            graphic.sprite = closed ? closedSprite : openSprite;
+            if (openSprite != null && closedSprite != null)
+                graphic.sprite = closed ? closedSprite : openSprite;
+
+            graphic.color = closed ? new Color(0.25f, 0.75f, 0.35f) : new Color(0.75f, 0.2f, 0.2f);
         }
     }
 }
