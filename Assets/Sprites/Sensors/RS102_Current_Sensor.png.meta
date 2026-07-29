@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 5a2a9c23b60a9be49973b769c8e3e64e
+guid: 90bebce213c791a46bfdbd48956739c8
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -123,13 +123,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Voltage_Sensor
+      name: RS102_Current_Sensor_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 447
-        height: 555
+        width: 234
+        height: 401
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -138,8 +138,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 243d26b94f5a08d4d9c4bb9aeff31a3f
-      internalID: 1371059889
+      spriteID: 00511a8304c69414b97ea33a2f308b3f
+      internalID: -781946515
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: e69f5c2de40d3f2409d1ab673df8d205
+    spriteID: b93b46710794e8542af0459d02d1ceea
     internalID: 0
     vertices: []
     indices: 
@@ -158,7 +158,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Voltage_Sensor: 1371059889
+      RS102_Current_Sensor_0: -781946515
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

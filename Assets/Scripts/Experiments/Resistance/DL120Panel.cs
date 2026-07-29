@@ -1,24 +1,41 @@
 using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 namespace STEM.Experiments.Resistance
 {
+    // World-space DL120 device. Readouts sit in a World Space Canvas over the LCD.
+    // A reading is taken by clicking the OK button (or pressing F6).
     public class DL120Panel : MonoBehaviour
     {
         public TMP_Text voltageText;
         public TMP_Text currentText;
-        public Button startButton;
+        public SpriteRenderer okGlow;   // pulses when a reading is available
 
         [Range(0f, 0.05f)] public float noise = 0.01f;
 
         public event Action<float, float> OnMeasured;
 
+        bool canMeasure;
+
         void Start()
         {
-            startButton.onClick.AddListener(Measure);
             Clear();
+        }
+
+        void Update()
+        {
+            Keyboard kb = Keyboard.current;
+            if (kb != null && kb.f6Key.wasPressedThisFrame) TryMeasure();
+
+            if (okGlow != null && okGlow.enabled)
+            {
+                float a = 0.4f + 0.3f * Mathf.Abs(Mathf.Sin(Time.time * 3f));
+                Color c = okGlow.color;
+                c.a = a;
+                okGlow.color = c;
+            }
         }
 
         public void Clear()
@@ -29,11 +46,14 @@ namespace STEM.Experiments.Resistance
 
         public void SetStartEnabled(bool value)
         {
-            startButton.interactable = value;
+            canMeasure = value;
+            if (okGlow != null) okGlow.enabled = value;
         }
 
-        void Measure()
+        public void TryMeasure()
         {
+            if (!canMeasure) return;
+
             CircuitResult r = ConnectionManager.Instance.Result;
             if (!r.IsValid) return;
 

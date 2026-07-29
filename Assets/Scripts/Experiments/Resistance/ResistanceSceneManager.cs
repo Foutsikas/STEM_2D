@@ -99,7 +99,7 @@ namespace STEM.Experiments.Resistance
                       && r.topology == phase.requiredTopology
                       && (phase.requiredVoltmeter == VoltmeterTarget.None || r.voltmeter == phase.requiredVoltmeter);
 
-            statusText.text = ok ? "Το κύκλωμα είναι σωστό. Πάτησε Start (F6)." : FaultMessage(r, phase);
+            statusText.text = ok ? "Circuit is correct. Press OK on the DL120." : FaultMessage(r, phase);
 
             dl120.SetStartEnabled(ok);
             if (!ok) dl120.Clear();
@@ -142,19 +142,19 @@ namespace STEM.Experiments.Resistance
             switch (r.fault)
             {
                 case CircuitFault.SwitchOpen:
-                    return "Ο διακόπτης είναι ανοιχτός. Κλείσε τον για να διαρρεύσει ρεύμα.";
+                    return "The switch is open. Close it to let current flow.";
                 case CircuitFault.NoLoop:
-                    return "Το κύκλωμα δεν είναι κλειστό.";
+                    return "The circuit is not closed.";
                 case CircuitFault.AmmeterBypassed:
-                    return "Το αμπερόμετρο παρακάμπτεται. Πρέπει να συνδεθεί σε σειρά.";
+                    return "The ammeter is bypassed. It must be connected in series.";
                 case CircuitFault.ShortCircuit:
-                    return "Βραχυκύκλωμα. Οι πόλοι της πηγής ενώνονται απευθείας.";
+                    return "Short circuit. The source terminals are connected directly.";
                 case CircuitFault.VoltmeterNotPlaced:
-                    return "Σύνδεσε το βολτόμετρο παράλληλα στα άκρα της αντίστασης.";
+                    return "Connect the voltmeter in parallel across the resistor.";
                 default:
                     if (r.voltmeter != phase.requiredVoltmeter && phase.requiredVoltmeter != VoltmeterTarget.None)
-                        return "Το βολτόμετρο μετρά σε λάθος αντίσταση.";
-                    return "Η συνδεσμολογία δεν είναι η ζητούμενη. Έλεγξε τα καλώδια.";
+                        return "The voltmeter is measuring across the wrong resistor.";
+                    return "The wiring is not correct. Check the cables.";
             }
         }
     }

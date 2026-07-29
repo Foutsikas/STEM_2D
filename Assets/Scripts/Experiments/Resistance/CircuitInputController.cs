@@ -37,7 +37,10 @@ namespace STEM.Experiments.Resistance
                     }
 
                     CircuitSwitch sw = hit.GetComponent<CircuitSwitch>();
-                    if (sw != null) sw.Toggle();
+                    if (sw != null) { sw.Toggle(); return; }
+
+                    DL120Button ok = hit.GetComponent<DL120Button>();
+                    if (ok != null) { ok.Press(); return; }
                 }
             }
 
