@@ -82,8 +82,21 @@ namespace STEM.Experiments.Resistance
                 Cable c = cm.cables[p.cableIndex];
                 c.gameObject.SetActive(true);
 
-                if (p.endAAttached) c.endA.AttachTo(cm.FindNode(p.endANode));
-                if (p.endBAttached) c.endB.AttachTo(cm.FindNode(p.endBNode));
+                if (p.endAAttached)
+                {
+                    CircuitNode node = cm.FindNode(p.endANode);
+                    if (node == null)
+                        Debug.LogError($"Phase preset: no node {p.endANode} for cable {p.cableIndex} end A", this);
+                    c.endA.AttachTo(node);
+                }
+
+                if (p.endBAttached)
+                {
+                    CircuitNode node = cm.FindNode(p.endBNode);
+                    if (node == null)
+                        Debug.LogError($"Phase preset: no node {p.endBNode} for cable {p.cableIndex} end B", this);
+                    c.endB.AttachTo(node);
+                }
 
                 c.endA.locked = p.endALocked;
                 c.endB.locked = p.endBLocked;
@@ -107,7 +120,9 @@ namespace STEM.Experiments.Resistance
 
         void HandleMeasured(float v, float i)
         {
+            if (measured) return;
             measured = true;
+            dl120.SetStartEnabled(false);
 
             ResistancePhase phase = phases[index];
             bool series = phase.requiredTopology == Topology.Series;
@@ -122,7 +137,7 @@ namespace STEM.Experiments.Resistance
                 .Replace("{V}", v.ToString("0.00"))
                 .Replace("{I}", i.ToString("0.000"))
                 .Replace("{Vn}", vnom.ToString("0.##"))
-                .Replace("{In}", inom.ToString("0.###"))
+                .Replace("{In}", inom.ToString("0.####"))
                 .Replace("{R}", rShown.ToString("0.##"));
 
             resultText.text = body;
@@ -151,6 +166,14 @@ namespace STEM.Experiments.Resistance
                     return "Short circuit. The source terminals are connected directly.";
                 case CircuitFault.VoltmeterNotPlaced:
                     return "Connect the voltmeter in parallel across the resistor.";
+                case CircuitFault.JunctionAtSource:
+                    return "The resistors are joined at a terminal already wired to the source. Use the free terminal.";
+                case CircuitFault.ResistorNotBridged:
+                    if (phase.requiredTopology == Topology.Parallel)
+                        return "One resistor is across the source. Connect the other across the same two points.";
+                    if (phase.requiredTopology == Topology.Series)
+                        return "Both resistors must be in the current path, one after the other.";
+                    return "The wiring is not correct. Check the cables.";
                 default:
                     if (r.voltmeter != phase.requiredVoltmeter && phase.requiredVoltmeter != VoltmeterTarget.None)
                         return "The voltmeter is measuring across the wrong resistor.";

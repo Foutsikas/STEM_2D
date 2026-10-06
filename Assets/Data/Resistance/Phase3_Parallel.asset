@@ -12,27 +12,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5aa0de718882e0e4fb6bbb67eec1d13f, type: 3}
   m_Name: Phase3_Parallel
   m_EditorClassIdentifier: Assembly-CSharp::STEM.Experiments.Resistance.ResistancePhase
-  instruction: 'Step 3: Rearrange the cables so R1 is connected
+  instruction: 'Step 3: Connect R1 in parallel with R2.
 
-    in parallel
-    with R2. The ammeter stays in series,
+    Join the two left terminals
+    together, then the two right
 
-    the voltmeter in parallel across R1.'
+    terminals, so both resistors span the same
+    two points.'
   resultText: 'Measurement: V = {V} V, I = {I} A
 
+    
 
-    Total resistance: Rtot = V
-    / I = {Vn} / {In} = {R} Ohm
+    Rtot = V / I = {Vn}
+    / {In} ~ {R} Ohm
 
+    
 
-    1/R = 1/R1 + 1/R2 = 1/100 + 1/50  ->  R = 33.33
-    Ohm
+    Parallel: 1/Rtot = 1/R1 + 1/R2 = 1/100 + 1/50
 
+    Rtot
+    = (100 * 50) / 150 = 33.3 Ohm
 
-    The total resistance is smaller than either resistor,
+    
 
-    because
-    the current has more paths to flow through.'
+    The ammeter shows the total current.
+
+    Through
+    R1 alone: I1 = V / R1 = 5 / 100 = 0.05 A'
   requiredTopology: 3
   requiredVoltmeter: 1
   switchStartsClosed: 1

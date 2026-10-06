@@ -42,6 +42,8 @@ namespace STEM.Experiments.Resistance
         AmmeterBypassed,
         ShortCircuit,
         VoltmeterNotPlaced,
+        JunctionAtSource,
+        ResistorNotBridged,
         Unrecognised
     }
 
@@ -120,13 +122,27 @@ namespace STEM.Experiments.Resistance
             bool r1Across = r1Live && Bridges(r1a, r1b, p, n);
             bool r2Across = r2Live && Bridges(r2a, r2b, p, n);
 
+            if (r1Live && r2Live && !r1Across && !r2Across)
+            {
+                int shared = SharedNet(r1a, r1b, r2a, r2b);
+                if (shared == p || shared == n)
+                {
+                    result.topology = Topology.Invalid;
+                    result.fault = CircuitFault.JunctionAtSource;
+                    return result;
+                }
+            }
+
             result.topology = Classify(r1a, r1b, r2a, r2b, p, n, r1Across, r2Across, r1Live, r2Live);
 
             if (result.topology == Topology.Invalid)
             {
-                result.fault = CircuitFault.Unrecognised;
+                result.fault = (r1Across || r2Across)
+                    ? CircuitFault.ResistorNotBridged
+                    : CircuitFault.Unrecognised;
                 return result;
             }
+            
             if (result.topology == Topology.Open)
             {
                 result.fault = CircuitFault.NoLoop;

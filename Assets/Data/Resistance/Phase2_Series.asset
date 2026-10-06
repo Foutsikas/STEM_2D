@@ -12,12 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5aa0de718882e0e4fb6bbb67eec1d13f, type: 3}
   m_Name: Phase2_Series
   m_EditorClassIdentifier: Assembly-CSharp::STEM.Experiments.Resistance.ResistancePhase
-  instruction: 'Step 2: Add resistor R1 in series with R2.
+  instruction: 'Step 2: Put R1 in series with R2.
 
-    The ammeter stays
-    in series and the voltmeter
+    R2''s right terminal already
+    goes to the battery, so join
 
-    connects in parallel across R1.'
+    R1 to R2''s free left terminal with the jumper.
+    Connect the
+
+    ammeter lead to R1''s other terminal and clip the voltmeter
+
+    across
+    R1.'
   resultText: 'Measurement: V = {V} V, I = {I} A
 
 

@@ -74,6 +74,10 @@ namespace STEM.Experiments.Resistance
             ConnectionManager.Instance.HighlightNodes(false);
 
             CircuitNode target = ConnectionManager.Instance.NearestNode(transform.position, snapRadius);
+
+            CableEnd other = (this == cable.endA) ? cable.endB : cable.endA;
+            if (target != null && other != null && other.Node == target) target = null;
+
             if (target != null) AttachTo(target);
             else Detach();
 

@@ -25,17 +25,17 @@ namespace STEM.Experiments.Resistance
 
             if (dragging == null && mouse.leftButton.wasPressedThisFrame && !PointerOverUI())
             {
+                CableEnd end = PickCableEnd(world);
+                if (end != null)
+                {
+                    dragging = end;
+                    end.BeginDrag(world);
+                    return;
+                }
+
                 Collider2D hit = Physics2D.OverlapPoint(world);
                 if (hit != null)
                 {
-                    CableEnd end = hit.GetComponent<CableEnd>();
-                    if (end != null && !end.locked)
-                    {
-                        dragging = end;
-                        end.BeginDrag(world);
-                        return;
-                    }
-
                     CircuitSwitch sw = hit.GetComponent<CircuitSwitch>();
                     if (sw != null) { sw.Toggle(); return; }
 
@@ -61,6 +61,28 @@ namespace STEM.Experiments.Resistance
         static bool PointerOverUI()
         {
             return EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
+        }
+
+        // Coincident ends are normal, so choose the nearest draggable one.
+        static CableEnd PickCableEnd(Vector3 world)
+        {
+            Collider2D[] hits = Physics2D.OverlapPointAll(world);
+            CableEnd best = null;
+            float bestDist = float.MaxValue;
+
+            foreach (Collider2D h in hits)
+            {
+                CableEnd e = h.GetComponent<CableEnd>();
+                if (e == null || e.locked) continue;
+
+                float d = Vector3.Distance(world, e.transform.position);
+                if (d < bestDist)
+                {
+                    bestDist = d;
+                    best = e;
+                }
+            }
+            return best;
         }
     }
 }
