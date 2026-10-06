@@ -1,0 +1,90 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5aa0de718882e0e4fb6bbb67eec1d13f, type: 3}
+  m_Name: Phase2_Series
+  m_EditorClassIdentifier: Assembly-CSharp::STEM.Experiments.Resistance.ResistancePhase
+  instruction: 'Step 2: Put R1 in series with R2.
+
+    R2''s right terminal already
+    goes to the battery, so join
+
+    R1 to R2''s free left terminal with the jumper.
+    Connect the
+
+    ammeter lead to R1''s other terminal and clip the voltmeter
+
+    across
+    R1.'
+  resultText: 'Measurement: V = {V} V, I = {I} A
+
+
+    R1 = V / I = {Vn} / {In} ~
+    {R} Ohm
+
+
+    Total resistance: Rtot = R1 + R2 = 100 + 50 = 150 Ohm
+
+    Source
+    check: V = I * Rtot = {In} * 150 ~ 5 V'
+  requiredTopology: 2
+  requiredVoltmeter: 1
+  switchStartsClosed: 1
+  presets:
+  - cableIndex: 0
+    endAAttached: 1
+    endANode: 0
+    endALocked: 1
+    endBAttached: 1
+    endBNode: 2
+    endBLocked: 1
+  - cableIndex: 1
+    endAAttached: 1
+    endANode: 3
+    endALocked: 1
+    endBAttached: 1
+    endBNode: 4
+    endBLocked: 1
+  - cableIndex: 2
+    endAAttached: 1
+    endANode: 5
+    endALocked: 1
+    endBAttached: 0
+    endBNode: 0
+    endBLocked: 0
+  - cableIndex: 3
+    endAAttached: 1
+    endANode: 9
+    endALocked: 1
+    endBAttached: 1
+    endBNode: 1
+    endBLocked: 1
+  - cableIndex: 4
+    endAAttached: 0
+    endANode: 0
+    endALocked: 0
+    endBAttached: 0
+    endBNode: 0
+    endBLocked: 0
+  - cableIndex: 6
+    endAAttached: 1
+    endANode: 10
+    endALocked: 1
+    endBAttached: 0
+    endBNode: 0
+    endBLocked: 0
+  - cableIndex: 7
+    endAAttached: 1
+    endANode: 11
+    endALocked: 1
+    endBAttached: 0
+    endBNode: 0
+    endBLocked: 0

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 5a2a9c23b60a9be49973b769c8e3e64e
+guid: 0b18f7d2ef254a14e9248628397ee63b
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -123,23 +123,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Voltage_Sensor
+      name: PT2013.2_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 447
-        height: 555
+        width: 618
+        height: 992
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 243d26b94f5a08d4d9c4bb9aeff31a3f
-      internalID: 1371059889
+      spriteID: 636801d9503e11a43bf9f9a0fb08f6d2
+      internalID: -224196253
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: e69f5c2de40d3f2409d1ab673df8d205
+    spriteID: 4c378a4bf82ca444f9be2c8326f78b3b
     internalID: 0
     vertices: []
     indices: 
@@ -158,7 +158,16 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Voltage_Sensor: 1371059889
+      PT2013.2_: 2112245811
+      PT2013.2_0: -224196253
+      PT2013.2_1: -1044375430
+      PT2013.2_2: 1905894762
+      PT2013.2_3: 805385712
+      PT2013.2_4: 179481820
+      PT2013.2_5: 1925477233
+      PT2013.2_6: -1530430917
+      PT2013.2_8: -305783278
+      PT2013.2_9: -1614004184
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

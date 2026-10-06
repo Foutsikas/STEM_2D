@@ -1,0 +1,79 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5aa0de718882e0e4fb6bbb67eec1d13f, type: 3}
+  m_Name: Phase1_R2
+  m_EditorClassIdentifier: Assembly-CSharp::STEM.Experiments.Resistance.ResistancePhase
+  instruction: 'Step 1: Assemble the circuit with resistor R2.
+
+    The ammeter (RS102)
+    is connected in series.
+
+    Connect the voltmeter (RS101) in parallel across
+    R2.
+
+    Close the switch and press OK on the DL120.'
+  resultText: 'Measurement: V = {V} V, I = {I} A
+
+
+    Ohm''s Law:
+
+    R2 = V /
+    I = {Vn} / {In} = {R} Ohm
+
+
+    The resistance of the cables is negligible.'
+  requiredTopology: 1
+  requiredVoltmeter: 2
+  switchStartsClosed: 0
+  presets:
+  - cableIndex: 0
+    endAAttached: 1
+    endANode: 0
+    endALocked: 1
+    endBAttached: 1
+    endBNode: 2
+    endBLocked: 1
+  - cableIndex: 1
+    endAAttached: 1
+    endANode: 3
+    endALocked: 1
+    endBAttached: 1
+    endBNode: 4
+    endBLocked: 1
+  - cableIndex: 2
+    endAAttached: 1
+    endANode: 5
+    endALocked: 1
+    endBAttached: 1
+    endBNode: 8
+    endBLocked: 1
+  - cableIndex: 3
+    endAAttached: 1
+    endANode: 9
+    endALocked: 1
+    endBAttached: 1
+    endBNode: 1
+    endBLocked: 1
+  - cableIndex: 6
+    endAAttached: 1
+    endANode: 10
+    endALocked: 1
+    endBAttached: 0
+    endBNode: 0
+    endBLocked: 0
+  - cableIndex: 7
+    endAAttached: 1
+    endANode: 11
+    endALocked: 1
+    endBAttached: 0
+    endBNode: 0
+    endBLocked: 0
