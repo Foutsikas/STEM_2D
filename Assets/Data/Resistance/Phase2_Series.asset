@@ -15,14 +15,8 @@ MonoBehaviour:
   instruction: 'Step 2: Put R1 in series with R2.
 
     R2''s right terminal already
-    goes to the battery, so join
-
-    R1 to R2''s free left terminal with the jumper.
-    Connect the
-
-    ammeter lead to R1''s other terminal and clip the voltmeter
-
-    across
+    goes to the battery, so join R1 to R2''s free left terminal with the jumper.
+    Connect the ammeter lead to R1''s other terminal and clip the voltmeter across
     R1.'
   resultText: 'Measurement: V = {V} V, I = {I} A
 

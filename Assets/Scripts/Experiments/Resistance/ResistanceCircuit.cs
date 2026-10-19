@@ -4,18 +4,10 @@ namespace STEM.Experiments.Resistance
 {
     public enum NodeId
     {
-        BAT_POS,
-        BAT_NEG,
-        SW_A,
-        SW_B,
-        AMM_A,
-        AMM_B,
-        R1_A,
-        R1_B,
-        R2_A,
-        R2_B,
-        VOLT_A,
-        VOLT_B
+        BAT_POS, BAT_NEG, SW_A, SW_B, AMM_A, AMM_B,
+        R1_A, R1_B, R2_A, R2_B, VOLT_A, VOLT_B,
+        PS_1, PS_2, PS_3, PS_4, PS_5, PS_6, PS_7,
+        PS_8, PS_9, PS_10, PS_11, PS_12, PS_13, PS_14
     }
 
     public enum Topology

@@ -1,0 +1,93 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e0d06212ab7417438d46c3054f43f0d, type: 3}
+  m_Name: Phase4_Rheostat
+  m_EditorClassIdentifier: Assembly-CSharp::STEM.Experiments.Rheostat.RheostatPhase
+  instruction: 'Step 4: Dim the lamp with the rheostat.
+
+    Join 3 to 5, 6 to 7,
+    and 8 to 4. Run the two voltmeter
+
+    cables from the RS101 to sockets 7 and
+    8, then turn the knob.'
+  resultText: 'Measurement: V = {V} V, I = {I} A
+
+    Rheostat: R = {R} Ohm
+
+
+
+    The
+    rheostat is in series with the lamp, so it takes a
+
+    share of the 5 V. More
+    resistance leaves less voltage and
+
+    less current for the lamp, so the lamp
+    dims.
+
+
+
+    Lamp: R = 6.2 V / 0.5 A = 12.4 Ohm
+
+    Check: I = 5 / (12.4 + {R})'
+  switchStartsClosed: 1
+  startKnob: 0
+  presets:
+  - cableIndex: 0
+    endAAttached: 1
+    endANode: 0
+    endALocked: 1
+    endBAttached: 1
+    endBNode: 12
+    endBLocked: 1
+  - cableIndex: 1
+    endAAttached: 1
+    endANode: 1
+    endALocked: 1
+    endBAttached: 1
+    endBNode: 13
+    endBLocked: 1
+  - cableIndex: 2
+    endAAttached: 0
+    endANode: 1
+    endALocked: 0
+    endBAttached: 0
+    endBNode: 13
+    endBLocked: 0
+  - cableIndex: 3
+    endAAttached: 0
+    endANode: 1
+    endALocked: 0
+    endBAttached: 0
+    endBNode: 13
+    endBLocked: 0
+  - cableIndex: 4
+    endAAttached: 0
+    endANode: 1
+    endALocked: 0
+    endBAttached: 0
+    endBNode: 13
+    endBLocked: 0
+  - cableIndex: 6
+    endAAttached: 0
+    endANode: 1
+    endALocked: 0
+    endBAttached: 0
+    endBNode: 13
+    endBLocked: 0
+  - cableIndex: 7
+    endAAttached: 0
+    endANode: 1
+    endALocked: 0
+    endBAttached: 0
+    endBNode: 13
+    endBLocked: 0

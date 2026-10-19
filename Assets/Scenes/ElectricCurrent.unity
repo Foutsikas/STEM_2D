@@ -1953,6 +1953,8 @@ MonoBehaviour:
   plotTopRight: {fileID: 1472450629}
   maxTime: 25
   maxVoltage: 6
+  startTimeOffset: 0.5
+  minimumVoltage: 0.3
   timeConstant: 5
   simulationSpeed: 1
   sampleInterval: 0.1
@@ -4555,6 +4557,7 @@ MonoBehaviour:
   isDischarging: 0
   chargeSpeed: 2
   dischargeTimeConstant: 5
+  minimumVoltageThreshold: 0.3
   actionIdOnDischargeStarted: circuit_closed
   OnChargingStarted:
     m_PersistentCalls:
@@ -5788,7 +5791,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u03A7\u03C1\u03CC\u03BD\u03BF\u03C2 (s)"
+  m_text: "X\u03C1\u03CC\u03BD\u03BF\u03C2 (s)"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -9029,7 +9032,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u03A4\u03AC\u03C3\u03B7 \u03A1\u03B5\u03CD\u03BC\u03B1\u03C4\u03BF\u03C2
+  m_text: "\u03A4\u03AC\u03C3\u03B7 \u03C1\u03B5\u03CD\u03BC\u03B1\u03C4\u03BF\u03C2
     (V)"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

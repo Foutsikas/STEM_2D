@@ -49,7 +49,7 @@ namespace STEM.Experiments.Resistance
             foreach (var n in nodes) n.SetHighlight(on);
         }
 
-        public void Evaluate()
+        public virtual void Evaluate()
         {
             var pairs = new List<(NodeId, NodeId)>();
             foreach (var c in cables)
@@ -59,5 +59,6 @@ namespace STEM.Experiments.Resistance
             Result = ResistanceCircuit.Solve(pairs, closed);
             OnCircuitChanged?.Invoke(Result);
         }
+        
     }
 }

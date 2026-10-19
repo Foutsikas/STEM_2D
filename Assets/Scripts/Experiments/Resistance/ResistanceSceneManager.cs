@@ -19,7 +19,7 @@ namespace STEM.Experiments.Resistance
         public Button nextButton;
 
         public DL120Panel dl120;
-        public string quizSceneName = "ResistanceQuizScene";
+        public string nextSceneName;
 
         int index;
         bool measured;
@@ -149,7 +149,7 @@ namespace STEM.Experiments.Resistance
         void NextPhase()
         {
             if (index + 1 < phases.Length) LoadPhase(index + 1);
-            else SceneManager.LoadScene(quizSceneName);
+            else SceneManager.LoadScene(nextSceneName);
         }
 
         string FaultMessage(CircuitResult r, ResistancePhase phase)

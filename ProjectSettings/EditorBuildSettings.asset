@@ -26,6 +26,24 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/DNA/StopCodonRNAScene.unity
     guid: 9dafb65e5403e534aab44d86db6a63ba
+  - enabled: 1
+    path: Assets/Scenes/ResistanceScene.unity
+    guid: 9481cb99756044f4e96f7814c7da1c00
+  - enabled: 1
+    path: Assets/Scenes/RheostatScene.unity
+    guid: 5d9c1307dec380b4d9b5f27482383203
+  - enabled: 1
+    path: Assets/Scenes/Microscope/MicroscopeScene.unity
+    guid: 27edd688ef369e34f8df3d812c0cc998
+  - enabled: 1
+    path: Assets/Scenes/Microscope/MicroscopeQuizScene.unity
+    guid: 8d4cdd0ba84947a4ba98f70d2656e022
+  - enabled: 1
+    path: Assets/Scenes/MicroscopeScene.unity
+    guid: 89c4114e76f1b9b4eb55e519b5c1cc62
+  - enabled: 1
+    path: Assets/Scenes/MicroscopeQuizScene.unity
+    guid: f30fce8644fc15f40b8c6693d7621da8
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
