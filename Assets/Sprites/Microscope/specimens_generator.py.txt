@@ -1,0 +1,188 @@
+import math, random
+import numpy as np
+from PIL import Image, ImageDraw, ImageFilter
+
+S = 3072
+L = S // 2
+BLUR = 12
+
+def finish(img, name, label):
+    arr = np.asarray(img).astype(float)
+    rng = np.random.default_rng(1)
+    arr += rng.normal(0, 3.0, arr.shape)
+    img = Image.fromarray(np.clip(arr, 0, 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(0.7))
+    img.save(name + '_sharp.png')
+    img.filter(ImageFilter.GaussianBlur(BLUR)).save(name + '_blur.png')
+    label.save(name + '_labels.png')
+
+def poisson(n, r, box, rnd, existing=None, mind=1.0):
+    pts = list(existing or [])
+    out = []
+    tries = 0
+    while len(out) < n and tries < n * 60:
+        tries += 1
+        x = rnd.uniform(box[0], box[2]); y = rnd.uniform(box[1], box[3])
+        rr = r * rnd.uniform(0.9, 1.1)
+        if all((x - px) ** 2 + (y - py) ** 2 > ((rr + pr) * mind) ** 2 for px, py, pr in pts):
+            pts.append((x, y, rr)); out.append((x, y, rr))
+    return out
+
+def blood():
+    rnd = random.Random(7)
+    img = Image.new('RGB', (S, S), (244, 234, 232))
+    d = ImageDraw.Draw(img)
+    lab = Image.new('RGB', (L, L), (0, 0, 0))
+    ld = ImageDraw.Draw(lab)
+    wbcs = poisson(26, 36, (80, 80, S - 80, S - 80), rnd, mind=4.0)
+    rbcs = poisson(2600, 21, (0, 0, S, S), rnd, existing=wbcs, mind=0.93)
+    plts = poisson(140, 6, (20, 20, S - 20, S - 20), rnd, existing=wbcs + rbcs, mind=1.0)
+    for x, y, r in rbcs:
+        t = rnd.randint(-8, 8)
+        d.ellipse((x - r, y - r, x + r, y + r), fill=(205 + t, 105 + t, 115 + t))
+        r2 = r * 0.85
+        d.ellipse((x - r2, y - r2, x + r2, y + r2), fill=(220 + t, 128 + t, 135 + t))
+        r3 = r * 0.42
+        d.ellipse((x - r3, y - r3, x + r3, y + r3), fill=(236, 186, 186))
+        ld.ellipse(((x - r) / 2, (y - r) / 2, (x + r) / 2, (y + r) / 2), fill=(40, 0, 0))
+    for x, y, r in plts:
+        for _ in range(5):
+            ox, oy = rnd.uniform(-3, 3), rnd.uniform(-3, 3)
+            rr = rnd.uniform(2, 4)
+            d.ellipse((x + ox - rr, y + oy - rr, x + ox + rr, y + oy + rr), fill=(120, 70, 150))
+        R = 14
+        ld.ellipse(((x - R) / 2, (y - R) / 2, (x + R) / 2, (y + R) / 2), fill=(120, 0, 0))
+    for i, (x, y, r) in enumerate(wbcs):
+        if i % 3 == 2:
+            r = 27
+            d.ellipse((x - r, y - r, x + r, y + r), fill=(170, 190, 230))
+            rn = r * 0.82
+            d.ellipse((x - rn + 3, y - rn, x + rn + 3, y + rn), fill=(85, 40, 120))
+        else:
+            d.ellipse((x - r, y - r, x + r, y + r), fill=(222, 202, 226))
+            a0 = rnd.uniform(0, 6.28)
+            lobes = rnd.choice([3, 4])
+            prev = None
+            for k in range(lobes):
+                a = a0 + k * 1.3
+                lx, ly = x + math.cos(a) * r * 0.42, y + math.sin(a) * r * 0.42
+                lr = r * 0.3
+                d.ellipse((lx - lr, ly - lr, lx + lr, ly + lr), fill=(105, 45, 135))
+                if prev:
+                    d.line((prev, (lx, ly)), fill=(105, 45, 135), width=5)
+                prev = (lx, ly)
+        ld.ellipse(((x - r - 4) / 2, (y - r - 4) / 2, (x + r + 4) / 2, (y + r + 4) / 2), fill=(80, 0, 0))
+    finish(img, 'blood', lab)
+
+def root():
+    rnd = random.Random(11)
+    bg = (238, 236, 226)
+    img = Image.new('RGB', (S, S), bg)
+    d = ImageDraw.Draw(img)
+    lab = Image.new('RGB', (L, L), (0, 0, 0))
+    ld = ImageDraw.Draw(lab)
+    cx, half, tipY = S / 2, 560, 2780
+    mer0, mer1 = 1650, 2420
+    wall = (165, 100, 115)
+    nucl = (140, 50, 85)
+    chrom = (95, 25, 60)
+    counts = {}
+
+    def inside(x, y):
+        if y < tipY - half:
+            return abs(x - cx) < half
+        dy = y - (tipY - half)
+        return (x - cx) ** 2 + (dy * 1.0) ** 2 < half ** 2
+
+    def blob(x, y, r, c):
+        d.ellipse((x - r, y - r, x + r, y + r), fill=c)
+
+    def labl(x0, y0, x1, y1, v, g=0):
+        ld.rectangle((x0 / 2, y0 / 2, x1 / 2, y1 / 2), fill=(v, g, 0))
+
+    y = 0
+    while y < tipY:
+        if y < mer0 - 300:
+            h = rnd.uniform(150, 210)
+        elif y < mer0:
+            h = rnd.uniform(90, 130)
+        elif y < mer1:
+            h = rnd.uniform(60, 72)
+        else:
+            h = rnd.uniform(70, 95)
+        x = cx - half - rnd.uniform(0, 70)
+        while x < cx + half:
+            w = rnd.uniform(62, 80)
+            x0, y0, x1, y1 = x, y, x + w, y + h
+            mx, my = (x0 + x1) / 2, (y0 + y1) / 2
+            if inside(mx, my):
+                cap = y0 > mer1
+                fill = (238, 222, 210) if cap else (236, 206, 206)
+                d.rectangle((x0, y0, x1, y1), fill=fill, outline=wall, width=3)
+                ingap = (x0 + 6, y0 + 6, x1 - 6, y1 - 6)
+                g = 255 if mer0 <= my <= mer1 else 0
+                stage = 'I'
+                if mer0 + 20 <= my <= mer1 - 20 and abs(mx - cx) < half - 90:
+                    p = rnd.random()
+                    stage = 'P' if p < 0.09 else 'M' if p < 0.16 else 'A' if p < 0.22 else 'T' if p < 0.29 else 'I'
+                counts[stage] = counts.get(stage, 0) + 1
+                if cap:
+                    blob(mx, my, 9, (190, 140, 150))
+                    labl(*ingap, 0, 0)
+                elif stage == 'I':
+                    r = 15 if g else 12
+                    blob(mx, my, r, nucl)
+                    blob(mx + 3, my - 2, 4, chrom)
+                    labl(*ingap, 40, g)
+                elif stage == 'P':
+                    blob(mx, my, 18, (200, 150, 165))
+                    for _ in range(7):
+                        pts = [(mx + rnd.uniform(-13, 13), my + rnd.uniform(-13, 13)) for _ in range(4)]
+                        d.line(pts, fill=chrom, width=3, joint='curve')
+                    labl(*ingap, 80, g)
+                elif stage == 'M':
+                    for k in range(9):
+                        px = mx - 22 + k * 5.5
+                        d.line((px, my - 9 + rnd.uniform(-2, 2), px + rnd.uniform(-2, 2), my + 9), fill=chrom, width=3)
+                    labl(*ingap, 120, g)
+                elif stage == 'A':
+                    sep = h * 0.18
+                    for sgn in (-1, 1):
+                        yy = my + sgn * sep
+                        for k in range(7):
+                            px = mx - 18 + k * 6
+                            d.line(((px - 3, yy - sgn * 8), (px, yy), (px + 3, yy - sgn * 8)), fill=chrom, width=3)
+                    labl(*ingap, 160, g)
+                else:
+                    sep = h * 0.3
+                    for sgn in (-1, 1):
+                        yy = my + sgn * sep
+                        d.ellipse((mx - 18, yy - 8, mx + 18, yy + 8), fill=chrom)
+                    d.line((x0 + 8, my, x1 - 8, my), fill=(190, 130, 145), width=2)
+                    labl(*ingap, 200, g)
+            x += w
+        y += h
+    mask = Image.new('L', (S, S), 0)
+    md = ImageDraw.Draw(mask)
+    md.rectangle((cx - half, 0, cx + half, tipY - half), fill=255)
+    md.ellipse((cx - half, tipY - 2 * half, cx + half, tipY), fill=255)
+    out = Image.new('RGB', (S, S), bg)
+    out.paste(img, mask=mask.filter(ImageFilter.GaussianBlur(1.5)))
+    od = ImageDraw.Draw(out)
+    od.rectangle((cx - half - 2, 0, cx - half + 2, tipY - half), fill=wall)
+    od.rectangle((cx + half - 2, 0, cx + half + 2, tipY - half), fill=wall)
+    od.arc((cx - half, tipY - 2 * half, cx + half, tipY), 0, 180, fill=wall, width=4)
+    lab = Image.composite(lab, Image.new('RGB', (L, L), 0), mask.resize((L, L)))
+    print('root stages', counts)
+    finish(out, 'root', lab)
+
+blood()
+root()
+w = Image.new('RGBA', (8, 8), (255, 255, 255, 255)); w.save('white.png')
+c = Image.new('RGBA', (128, 128), (0, 0, 0, 0)); ImageDraw.Draw(c).ellipse((2, 2, 125, 125), fill=(255, 255, 255, 255)); c.save('circle.png')
+for name, col in (('slide_blood', (200, 60, 70)), ('slide_root', (150, 60, 120))):
+    s = Image.new('RGBA', (600, 200), (0, 0, 0, 0)); sd = ImageDraw.Draw(s)
+    sd.rounded_rectangle((0, 0, 599, 199), 8, fill=(215, 235, 240, 170), outline=(150, 175, 185, 255), width=3)
+    sd.rectangle((10, 10, 170, 190), fill=(245, 245, 240, 255))
+    sd.rectangle((24, 30, 156, 60), fill=col + (255,))
+    sd.ellipse((330, 60, 450, 140), fill=col + (120,))
+    s.save(name + '.png')

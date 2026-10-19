@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3703727baea712e4984780050cab9035, type: 3}
+  m_Name: Phase_22
+  m_EditorClassIdentifier: Assembly-CSharp::STEM.Experiments.Microscope.MicroscopePhase
+  instruction: "\u039A\u03AC\u03BD\u03B5 \u03BA\u03BB\u03B9\u03BA \u03C3\u03B5 \u03BA\u03CD\u03C4\u03C4\u03B1\u03C1\u03BF
+    \u03C3\u03C4\u03B7 \u03BC\u03B5\u03C3\u03CC\u03C6\u03B1\u03C3\u03B7.\n\u0388\u03C7\u03B5\u03B9
+    \u03C3\u03C4\u03C1\u03BF\u03B3\u03B3\u03C5\u03BB\u03CC \u03C0\u03C5\u03C1\u03AE\u03BD\u03B1,
+    \u03B4\u03B5\u03BD \u03C6\u03B1\u03AF\u03BD\u03BF\u03BD\u03C4\u03B1\u03B9 \u03C7\u03C1\u03C9\u03BC\u03BF\u03C3\u03CE\u03BC\u03B1\u03C4\u03B1."
+  goal: 6
+  part: 0
+  slide: {fileID: 0}
+  objectiveIndex: 0
+  targetKind: Interphase
+  minObjective: 2
+  successText: "\u039C\u03B5\u03C3\u03CC\u03C6\u03B1\u03C3\u03B7: \u03C4\u03BF \u03BA\u03CD\u03C4\u03C4\u03B1\u03C1\u03BF
+    \u03BC\u03B5\u03B3\u03B1\u03BB\u03CE\u03BD\u03B5\u03B9 \u03BA\u03B1\u03B9 \u03B4\u03B9\u03C0\u03BB\u03B1\u03C3\u03B9\u03AC\u03B6\u03B5\u03B9
+    \u03C4\u03BF DNA \u03C4\u03BF\u03C5. \u0395\u03AF\u03BD\u03B1\u03B9 \u03B7 \u03BC\u03B5\u03B3\u03B1\u03BB\u03CD\u03C4\u03B5\u03C1\u03B7
+    \u03C6\u03AC\u03C3\u03B7."

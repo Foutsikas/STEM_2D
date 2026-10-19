@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dca1a32a84b6da44c852f937d196753c, type: 3}
+  m_Name: Slide_OnionRoot
+  m_EditorClassIdentifier: Assembly-CSharp::STEM.Experiments.Microscope.SlideData
+  displayName: "\u03A1\u03AF\u03B6\u03B1 \u03BA\u03C1\u03B5\u03BC\u03BC\u03C5\u03B4\u03B9\u03BF\u03CD"
+  sharp: {fileID: 21300000, guid: 47046a9a9e3a92548b826ad5c236effa, type: 3}
+  blurred: {fileID: 21300000, guid: 2671905097651bd45b87b64d0dda3f02, type: 3}
+  labelMap: {fileID: 2800000, guid: f215f659f13a5a64ca88c6a83b07bb99, type: 3}
+  kinds:
+  - id: Interphase
+    displayName: "\u03BA\u03CD\u03C4\u03C4\u03B1\u03C1\u03BF \u03C3\u03C4\u03B7 \u03BC\u03B5\u03C3\u03CC\u03C6\u03B1\u03C3\u03B7"
+    channel: 0
+    value: 40
+  - id: Prophase
+    displayName: "\u03BA\u03CD\u03C4\u03C4\u03B1\u03C1\u03BF \u03C3\u03C4\u03B7\u03BD
+      \u03C0\u03C1\u03CC\u03C6\u03B1\u03C3\u03B7"
+    channel: 0
+    value: 80
+  - id: Metaphase
+    displayName: "\u03BA\u03CD\u03C4\u03C4\u03B1\u03C1\u03BF \u03C3\u03C4\u03B7 \u03BC\u03B5\u03C4\u03AC\u03C6\u03B1\u03C3\u03B7"
+    channel: 0
+    value: 120
+  - id: Anaphase
+    displayName: "\u03BA\u03CD\u03C4\u03C4\u03B1\u03C1\u03BF \u03C3\u03C4\u03B7\u03BD
+      \u03B1\u03BD\u03AC\u03C6\u03B1\u03C3\u03B7"
+    channel: 0
+    value: 160
+  - id: Telophase
+    displayName: "\u03BA\u03CD\u03C4\u03C4\u03B1\u03C1\u03BF \u03C3\u03C4\u03B7\u03BD
+      \u03C4\u03B5\u03BB\u03CC\u03C6\u03B1\u03C3\u03B7"
+    channel: 0
+    value: 200
+  - id: Meristem
+    displayName: "\u03BC\u03B5\u03C1\u03AF\u03C3\u03C4\u03C9\u03BC\u03B1"
+    channel: 1
+    value: 255
+  valueTolerance: 10

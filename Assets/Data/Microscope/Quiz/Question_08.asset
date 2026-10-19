@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 594a652d41e51a14aaa8b078e5a824af, type: 3}
+  m_Name: Question_08
+  m_EditorClassIdentifier: Assembly-CSharp::STEM.Experiments.Microscope.MicroscopeQuizQuestion
+  question: "\u03A3\u03B5 \u03C0\u03BF\u03B9\u03B1 \u03C6\u03AC\u03C3\u03B7 \u03C4\u03B1
+    \u03C7\u03C1\u03C9\u03BC\u03BF\u03C3\u03CE\u03BC\u03B1\u03C4\u03B1 \u03C0\u03B1\u03C1\u03B1\u03C4\u03AC\u03C3\u03C3\u03BF\u03BD\u03C4\u03B1\u03B9
+    \u03C3\u03C4\u03B7 \u03BC\u03AD\u03C3\u03B7 \u03C4\u03BF\u03C5 \u03BA\u03C5\u03C4\u03C4\u03AC\u03C1\u03BF\u03C5;"
+  answers:
+  - "\u039C\u03B5\u03C4\u03AC\u03C6\u03B1\u03C3\u03B7"
+  - "\u03A0\u03C1\u03CC\u03C6\u03B1\u03C3\u03B7"
+  - "\u0391\u03BD\u03AC\u03C6\u03B1\u03C3\u03B7"
+  - "\u03A4\u03B5\u03BB\u03CC\u03C6\u03B1\u03C3\u03B7"
+  explanation: "\u03A3\u03C4\u03B7 \u03BC\u03B5\u03C4\u03AC\u03C6\u03B1\u03C3\u03B7
+    \u03C4\u03B1 \u03C7\u03C1\u03C9\u03BC\u03BF\u03C3\u03CE\u03BC\u03B1\u03C4\u03B1
+    \u03B2\u03C1\u03AF\u03C3\u03BA\u03BF\u03BD\u03C4\u03B1\u03B9 \u03C3\u03C4\u03BF
+    \u03B9\u03C3\u03B7\u03BC\u03B5\u03C1\u03B9\u03BD\u03CC \u03B5\u03C0\u03AF\u03C0\u03B5\u03B4\u03BF."
