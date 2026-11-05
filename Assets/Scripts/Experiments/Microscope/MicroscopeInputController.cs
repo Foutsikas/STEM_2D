@@ -37,6 +37,11 @@ namespace STEM.Experiments.Microscope
             if (active != null && pointer.press.wasReleasedThisFrame)
             {
                 active.OnRelease(world);
+
+                // A press on the screen that did not move is a click on the specimen.
+                if (active is SpecimenView view && !view.Moved && view.TryGetUV(world, out Vector2 uv))
+                    manager.OnSpecimenClicked(uv);
+
                 active = null;
             }
         }
@@ -60,9 +65,6 @@ namespace STEM.Experiments.Microscope
 
             var part = best.GetComponent<MicroscopePart>();
             if (part != null) manager.OnPartClicked(part);
-
-            var view = best.GetComponent<SpecimenView>();
-            if (view != null && view.TryGetUV(world, out Vector2 uv)) manager.OnSpecimenClicked(uv);
 
             active = best.GetComponent<IMicroscopeInteractable>();
             active?.OnPress(world);

@@ -5,7 +5,7 @@ namespace STEM.Experiments.Microscope
 {
     // The microscope screen. Zoom = objective, pan = stage, blur = focus error.
     [RequireComponent(typeof(BoxCollider2D))]
-    public class SpecimenView : MonoBehaviour
+    public class SpecimenView : MonoBehaviour, IMicroscopeInteractable
     {
         [SerializeField] MicroscopeState state;
         [SerializeField] Vector2 viewSize = new Vector2(4.3f, 2.31f);
@@ -14,9 +14,35 @@ namespace STEM.Experiments.Microscope
         [SerializeField] SpriteRenderer sharp;
         [SerializeField] TextMeshPro objectiveLabel;
         [SerializeField] float brightnessGamma = 0.7f;
+        [Tooltip("Movement (local units) before a press counts as a drag instead of a click.")]
+        [SerializeField] float clickTolerance = 0.05f;
 
         float imageWidth;
         float imageHeight;
+        Vector2 lastLocal;
+        float moved;
+
+        public bool Moved => moved > clickTolerance;
+
+        public void OnPress(Vector2 worldPos)
+        {
+            lastLocal = transform.InverseTransformPoint(worldPos);
+            moved = 0f;
+        }
+
+        // Drag moves the slide: the image follows the pointer.
+        public void OnDrag(Vector2 worldPos)
+        {
+            Vector2 local = transform.InverseTransformPoint(worldPos);
+            Vector2 d = local - lastLocal;
+            lastLocal = local;
+            moved += d.magnitude;
+
+            if (!Moved || !state.Power || state.Slide == null || imageWidth <= 0f) return;
+            state.Pan(new Vector2(-d.x / imageWidth, -d.y / imageHeight));
+        }
+
+        public void OnRelease(Vector2 worldPos) { }
 
         void OnEnable()
         {

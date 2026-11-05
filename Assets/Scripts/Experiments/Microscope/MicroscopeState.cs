@@ -56,6 +56,13 @@ namespace STEM.Experiments.Microscope
             Changed?.Invoke();
         }
 
+        public void Pan(Vector2 uvDelta)
+        {
+            StagePos += uvDelta;
+            ClampPan();
+            Changed?.Invoke();
+        }
+
         public void Apply(ControlType control, float drag)
         {
             switch (control)
