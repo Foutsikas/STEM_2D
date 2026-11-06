@@ -112,7 +112,7 @@ namespace STEM.Experiments.Resistance
                       && r.topology == phase.requiredTopology
                       && (phase.requiredVoltmeter == VoltmeterTarget.None || r.voltmeter == phase.requiredVoltmeter);
 
-            statusText.text = ok ? "Circuit is correct. Press OK on the DL120." : FaultMessage(r, phase);
+            statusText.text = ok ? "Το κύκλωμα είναι σωστό. Πατήστε OK στο DL120." : FaultMessage(r, phase);
 
             dl120.SetStartEnabled(ok);
             if (!ok) dl120.Clear();
@@ -157,27 +157,27 @@ namespace STEM.Experiments.Resistance
             switch (r.fault)
             {
                 case CircuitFault.SwitchOpen:
-                    return "The switch is open. Close it to let current flow.";
+                    return "Ο διακόπτης είναι ανοιχτός. Κλείστε τον για να περάσει ρεύμα.";
                 case CircuitFault.NoLoop:
-                    return "The circuit is not closed.";
+                    return "Το κύκλωμα δεν είναι κλειστό.";
                 case CircuitFault.AmmeterBypassed:
-                    return "The ammeter is bypassed. It must be connected in series.";
+                    return "Το αμπερόμετρο παρακάμπτεται. Πρέπει να συνδεθεί σε σειρά.";
                 case CircuitFault.ShortCircuit:
-                    return "Short circuit. The source terminals are connected directly.";
+                    return "Βραχυκύκλωμα. Οι πόλοι της πηγής συνδέονται απευθείας.";
                 case CircuitFault.VoltmeterNotPlaced:
-                    return "Connect the voltmeter in parallel across the resistor.";
+                    return "Συνδέστε το βολτόμετρο παράλληλα στα άκρα της αντίστασης.";
                 case CircuitFault.JunctionAtSource:
-                    return "The resistors are joined at a terminal already wired to the source. Use the free terminal.";
+                    return "Οι αντιστάσεις ενώνονται σε ακροδέκτη που είναι ήδη συνδεδεμένος με την πηγή. Χρησιμοποιήστε τον ελεύθερο ακροδέκτη.";
                 case CircuitFault.ResistorNotBridged:
                     if (phase.requiredTopology == Topology.Parallel)
-                        return "One resistor is across the source. Connect the other across the same two points.";
+                        return "Η μία αντίσταση είναι συνδεδεμένη στους πόλους της πηγής. Συνδέστε την άλλη στα ίδια δύο σημεία.";
                     if (phase.requiredTopology == Topology.Series)
-                        return "Both resistors must be in the current path, one after the other.";
-                    return "The wiring is not correct. Check the cables.";
+                        return "Και οι δύο αντιστάσεις πρέπει να βρίσκονται στη διαδρομή του ρεύματος, η μία μετά την άλλη.";
+                    return "Η συνδεσμολογία δεν είναι σωστή. Ελέγξτε τα καλώδια.";
                 default:
                     if (r.voltmeter != phase.requiredVoltmeter && phase.requiredVoltmeter != VoltmeterTarget.None)
-                        return "The voltmeter is measuring across the wrong resistor.";
-                    return "The wiring is not correct. Check the cables.";
+                        return "Το βολτόμετρο μετρά στα άκρα λάθος αντίστασης.";
+                    return "Η συνδεσμολογία δεν είναι σωστή. Ελέγξτε τα καλώδια.";
             }
         }
     }

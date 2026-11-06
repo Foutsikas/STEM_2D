@@ -116,7 +116,7 @@ namespace STEM.DNA_Quiz
             if (index == q.correctAnswerIndex)
             {
                 answerButtons[index].image.color = correctColor;
-                feedbackText.text = "Correct!";
+                feedbackText.text = "Σωστά!";
                 feedbackText.color = correctColor;
                 correctCount++;
 
@@ -127,7 +127,7 @@ namespace STEM.DNA_Quiz
             {
                 answerButtons[index].image.color = wrongColor;
                 answerButtons[index].interactable = false;
-                feedbackText.text = "Wrong. Try again.";
+                feedbackText.text = "Λάθος. Δοκίμασε ξανά.";
                 feedbackText.color = wrongColor;
             }
         }
@@ -151,7 +151,7 @@ namespace STEM.DNA_Quiz
         {
             quizPanel.SetActive(true);
             questionText.text = "";
-            feedbackText.text = "Quiz Passed!";
+            feedbackText.text = "Μπράβο! Πέρασες το κουίζ!";
             feedbackText.color = correctColor;
 
             if (currentQuiz != null)
@@ -168,7 +168,7 @@ namespace STEM.DNA_Quiz
         private void OnQuizFailed()
         {
             questionText.text = "";
-            feedbackText.text = "Quiz Failed. Retrying...";
+            feedbackText.text = "Δεν πέρασες το κουίζ. Ξεκινάμε ξανά...";
             feedbackText.color = wrongColor;
 
             HideAnswerButtons();

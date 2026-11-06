@@ -1634,8 +1634,8 @@ MonoBehaviour:
   nextButtonText: {fileID: 229949645}
   panelRoot: {fileID: 0}
   canvasGroup: {fileID: 0}
-  defaultNextText: Next
-  continueText: Continue
+  defaultNextText: "\u0395\u03C0\u03CC\u03BC\u03B5\u03BD\u03BF"
+  continueText: "\u03A3\u03C5\u03BD\u03AD\u03C7\u03B5\u03B9\u03B1"
   fadeSpeed: 5
 --- !u!1 &317478040
 GameObject:

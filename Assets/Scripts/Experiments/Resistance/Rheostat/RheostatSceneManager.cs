@@ -111,7 +111,7 @@ namespace STEM.Experiments.Rheostat
             maxKnob = Mathf.Max(maxKnob, knob.value);
 
             if (maxKnob - minKnob >= sweepNeeded) Finish(r);
-            else statusText.text = "Circuit is correct. Turn the knob and watch the lamp.";
+            else statusText.text = "Το κύκλωμα είναι σωστό. Γυρίστε το κουμπί και παρατηρήστε τον λαμπτήρα.";
         }
 
         void Finish(RheostatResult r)
@@ -149,21 +149,21 @@ namespace STEM.Experiments.Rheostat
             switch (f)
             {
                 case RheostatFault.SwitchOpen:
-                    return "The switch is open. Close it to let current flow.";
+                    return "Ο διακόπτης είναι ανοιχτός. Κλείστε τον για να περάσει ρεύμα.";
                 case RheostatFault.ShortCircuit:
-                    return "Short circuit. The source terminals are connected directly.";
+                    return "Βραχυκύκλωμα. Οι πόλοι της πηγής συνδέονται απευθείας.";
                 case RheostatFault.PotMissing:
-                    return "The rheostat is not in the circuit. Use sockets 5 and 6.";
+                    return "Ο ροοστάτης δεν είναι στο κύκλωμα. Χρησιμοποιήστε τις υποδοχές 5 και 6.";
                 case RheostatFault.LampMissing:
-                    return "The lamp is not in the circuit. Use sockets 7 and 8.";
+                    return "Ο λαμπτήρας δεν είναι στο κύκλωμα. Χρησιμοποιήστε τις υποδοχές 7 και 8.";
                 case RheostatFault.PotBypassed:
-                    return "The rheostat is bypassed. Its two terminals are joined.";
+                    return "Ο ροοστάτης παρακάμπτεται. Οι δύο ακροδέκτες του είναι ενωμένοι.";
                 case RheostatFault.LampBypassed:
-                    return "The lamp is bypassed. Its two terminals are joined.";
+                    return "Ο λαμπτήρας παρακάμπτεται. Οι δύο ακροδέκτες του είναι ενωμένοι.";
                 case RheostatFault.VoltmeterNotPlaced:
-                    return "Connect the voltmeter in parallel across the lamp.";
+                    return "Συνδέστε το βολτόμετρο παράλληλα στα άκρα του λαμπτήρα.";
                 default:
-                    return "The circuit is not closed.";
+                    return "Το κύκλωμα δεν είναι κλειστό.";
             }
         }
     }

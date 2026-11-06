@@ -18,8 +18,8 @@ namespace STEM2D.Core
         [SerializeField] private CanvasGroup canvasGroup;
         
         [Header("Next Button Text")]
-        [SerializeField] private string defaultNextText = "Next";
-        [SerializeField] private string continueText = "Continue";
+        [SerializeField] private string defaultNextText = "Επόμενο";
+        [SerializeField] private string continueText = "Συνέχεια";
         
         [Header("Animation")]
         [SerializeField] private float fadeSpeed = 5f;

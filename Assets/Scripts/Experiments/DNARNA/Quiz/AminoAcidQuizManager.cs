@@ -110,7 +110,7 @@ namespace STEM.DNA_Quiz
             if (index == entry.correctAnswerIndex)
             {
                 answerButtons[index].image.color = correctColor;
-                feedbackText.text = "Correct!";
+                feedbackText.text = "Σωστά!";
                 feedbackText.color = correctColor;
                 correctCount++;
 
@@ -121,7 +121,7 @@ namespace STEM.DNA_Quiz
             {
                 answerButtons[index].image.color = wrongColor;
                 answerButtons[index].interactable = false;
-                feedbackText.text = "Wrong. Try again.";
+                feedbackText.text = "Λάθος. Δοκίμασε ξανά.";
                 feedbackText.color = wrongColor;
             }
         }
