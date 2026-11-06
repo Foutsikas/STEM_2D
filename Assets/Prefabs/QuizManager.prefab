@@ -60,6 +60,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   nextSceneButton: {fileID: 0}
+  flowConfig: {fileID: 11400000, guid: 855d5ec56aa2e73408368921e349923d, type: 2}
   normalColor: {r: 0.9, g: 0.9, b: 0.9, a: 1}
   correctColor: {r: 0.3, g: 0.8, b: 0.3, a: 1}
   wrongColor: {r: 0.8, g: 0.3, b: 0.3, a: 1}

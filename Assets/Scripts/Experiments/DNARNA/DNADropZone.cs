@@ -72,8 +72,6 @@ namespace STEM.Experiments.DNA
 
                         molecule.ClaimGhost();
                     }
-
-                    molecule.poolUsed = true;
                 }
                 else
                 {

@@ -19,6 +19,10 @@ namespace STEM.DNA_Quiz
         [SerializeField] private TextMeshProUGUI[] answerLabels;
         [SerializeField] private Button nextSceneButton;
 
+        [Header("Flow")]
+        [Tooltip("Used to create the GameProgressManager when the scene is played without BootScene.")]
+        [SerializeField] private SceneFlowConfig flowConfig;
+
         [Header("Colors")]
         [SerializeField] private Color normalColor = new Color(0.9f, 0.9f, 0.9f, 1f);
         [SerializeField] private Color correctColor = new Color(0.3f, 0.8f, 0.3f, 1f);
@@ -36,6 +40,9 @@ namespace STEM.DNA_Quiz
                 return;
             }
             Instance = this;
+
+            if (GameProgressManager.Instance == null && flowConfig != null)
+                GameProgressManager.Create(flowConfig);
 
             quizPanel.SetActive(false);
             nextSceneButton.gameObject.SetActive(false);
@@ -142,6 +149,7 @@ namespace STEM.DNA_Quiz
 
         private void OnQuizPassed()
         {
+            quizPanel.SetActive(true);
             questionText.text = "";
             feedbackText.text = "Quiz Passed!";
             feedbackText.color = correctColor;

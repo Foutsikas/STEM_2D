@@ -10,7 +10,6 @@ namespace STEM.Experiments.DNA
         public bool isPoolSource = true;
 
         [HideInInspector] public bool wasPlaced = false;
-        [HideInInspector] public bool poolUsed = false;
 
         private Canvas rootCanvas;
         private RectTransform rectTransform;
@@ -79,9 +78,6 @@ namespace STEM.Experiments.DNA
                 dragGhost = null;
                 ghostRect = null;
                 canvasGroup.blocksRaycasts = true;
-
-                if (poolUsed)
-                    Destroy(gameObject);
             }
             else
             {

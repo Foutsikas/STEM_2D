@@ -29,6 +29,51 @@ namespace STEM.DNA_Quiz
 
             if (flowConfig != null)
                 completedScenes = new bool[flowConfig.scenes.Length];
+
+            SceneManager.sceneLoaded += OnSceneLoaded;
+            SyncWithActiveScene();
+        }
+
+        void OnDestroy()
+        {
+            if (Instance == this)
+            {
+                SceneManager.sceneLoaded -= OnSceneLoaded;
+                Instance = null;
+            }
+        }
+
+        // Used when a DNA scene is played without BootScene.
+        public static GameProgressManager Create(SceneFlowConfig config)
+        {
+            var go = new GameObject("GameProgressManager");
+            var gpm = go.AddComponent<GameProgressManager>();
+            gpm.flowConfig = config;
+            gpm.completedScenes = new bool[config.scenes.Length];
+            gpm.SyncWithActiveScene();
+            return gpm;
+        }
+
+        void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            SyncWithActiveScene();
+        }
+
+        // The index follows the scene that is open, so a scene loaded by any
+        // means still gets its own quiz.
+        void SyncWithActiveScene()
+        {
+            if (flowConfig == null) return;
+
+            string active = SceneManager.GetActiveScene().name;
+            for (int i = 0; i < flowConfig.scenes.Length; i++)
+            {
+                if (flowConfig.scenes[i].sceneName == active)
+                {
+                    currentSceneIndex = i;
+                    return;
+                }
+            }
         }
 
         public SceneFlowConfig.SceneEntry GetCurrentEntry()
