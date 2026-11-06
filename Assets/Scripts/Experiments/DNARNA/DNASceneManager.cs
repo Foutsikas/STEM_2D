@@ -60,7 +60,9 @@ namespace STEM.Experiments.DNA
             if (filledDropZones >= totalDropZones)
             {
                 ShowWellDone();
-                FindAnyObjectByType<ActivityQuizBridge>().OnActivityComplete();
+
+                var bridge = FindAnyObjectByType<ActivityQuizBridge>();
+                if (bridge != null) bridge.OnActivityComplete();
             }
         }
 
