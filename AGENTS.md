@@ -8,7 +8,7 @@
   - Layers:
     - Default, TransparentFX, Ignore Raycast, ConnectionPoint, Water, UI
 - Active game object:
-  - Name: MicroscopeSceneManager
+  - Name: Slide_OnionRoot_Label
   - Tag: Untagged
   - Layer: Default
 <!-- UNITY CODE ASSIST INSTRUCTIONS END -->
