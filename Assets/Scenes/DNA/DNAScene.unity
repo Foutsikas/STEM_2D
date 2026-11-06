@@ -2537,7 +2537,7 @@ GameObject:
   - component: {fileID: 490040873}
   - component: {fileID: 490040872}
   m_Layer: 5
-  m_Name: G_Pool_1
+  m_Name: A_Pool_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
