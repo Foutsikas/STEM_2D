@@ -3241,7 +3241,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 26e83cf348660c44b995f5b59271dc99, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::STEM2D.Core.InstructionPanel
+  m_EditorClassIdentifier: Assembly-CSharp::STEM.Core.InstructionPanel
   instructionText: {fileID: 988902021}
   infographicImage: {fileID: 0}
   nextButton: {fileID: 963397394}
@@ -6572,6 +6572,14 @@ MonoBehaviour:
   lt2Graph: {fileID: 497063871}
   selectionUI: {fileID: 1989583673}
   photogateRotator: {fileID: 1063224103}
+  steps:
+  - {fileID: 11400000, guid: dbe937f8fc874637840ebb2b95c796e7, type: 2}
+  - {fileID: 11400000, guid: c633cd1e56c6477398f34a0d987981e0, type: 2}
+  - {fileID: 11400000, guid: bcc811f91e1247d286158a5f422f5c32, type: 2}
+  - {fileID: 11400000, guid: 591133f9625842b08a777f186ab0e1ae, type: 2}
+  - {fileID: 11400000, guid: 65374446c1bb44f18d149524367f5b8a, type: 2}
+  - {fileID: 11400000, guid: 20265494d59b49b6a5bb638c502bbe38, type: 2}
+  - {fileID: 11400000, guid: c3591b8e6ee64de8afaeb0ee1d6e6a96, type: 2}
 --- !u!114 &1286433851
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.Events;
 using TMPro;
-using STEM2D.Core;
+using STEM.Core;
 
-namespace STEM2D.Interactions
+namespace STEM.Interactions
 {
     public class PowerSupplyController : MonoBehaviour
     {
@@ -99,7 +99,7 @@ namespace STEM2D.Interactions
             if (!string.IsNullOrEmpty(actionIdOnPowerOn))
                 ExperimentManager.Instance?.RegisterActionComplete(actionIdOnPowerOn);
 
-            Debug.Log($"[PowerSupply] ON - Output: {CurrentVoltage}V");
+            Log.Info($"[PowerSupply] ON - Output: {CurrentVoltage}V");
         }
 
         public void TurnOff()
@@ -122,7 +122,7 @@ namespace STEM2D.Interactions
             if (!string.IsNullOrEmpty(actionIdOnPowerOff))
                 ExperimentManager.Instance?.RegisterActionComplete(actionIdOnPowerOff);
 
-            Debug.Log("[PowerSupply] OFF");
+            Log.Info("[PowerSupply] OFF");
         }
 
         public void IncreaseVoltage()
@@ -161,7 +161,7 @@ namespace STEM2D.Interactions
             if (!string.IsNullOrEmpty(actionIdOnVoltageChanged))
                 ExperimentManager.Instance?.RegisterActionComplete(actionIdOnVoltageChanged);
 
-            Debug.Log($"[PowerSupply] Voltage: {CurrentVoltage}V");
+            Log.Info($"[PowerSupply] Voltage: {CurrentVoltage}V");
         }
 
         public void SetVoltage(float voltage)

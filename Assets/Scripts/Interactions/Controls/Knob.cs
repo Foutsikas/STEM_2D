@@ -1,8 +1,8 @@
 using UnityEngine;
 using UnityEngine.Events;
-using STEM2D.Core;
+using STEM.Core;
 
-namespace STEM2D.Interactions
+namespace STEM.Interactions
 {
     public class Knob : MonoBehaviour, IInteractable
     {
@@ -133,7 +133,7 @@ namespace STEM2D.Interactions
 
             RegisterAction(presetIndex);
             
-            Debug.Log($"[Knob] {knobId}: Preset {currentPresetIndex} (Angle: {targetAngle})");
+            Log.Info($"[Knob] {knobId}: Preset {currentPresetIndex} (Angle: {targetAngle})");
         }
 
         void RegisterAction(int presetIndex)

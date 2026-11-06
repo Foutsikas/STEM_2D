@@ -1,8 +1,9 @@
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using STEM.Core;
 
-namespace STEM2D.Interactions
+namespace STEM.Interactions
 {
     /// <summary>
     /// Generic clickable button for equipment (Power Supply, DL120, etc.)
@@ -103,7 +104,7 @@ namespace STEM2D.Interactions
             UpdateVisuals();
             OnButtonPressed?.Invoke();
             
-            Debug.Log($"[Button] {buttonId}: Pressed");
+            Log.Info($"[Button] {buttonId}: Pressed");
         }
 
         public void OnPointerUp(PointerEventData eventData)

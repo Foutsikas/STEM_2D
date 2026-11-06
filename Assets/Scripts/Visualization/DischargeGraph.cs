@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 using System.Collections.Generic;
-using STEM2D.Core;
+using STEM.Core;
 
-namespace STEM2D.Interactions
+namespace STEM.Interactions
 {
     public class DischargeGraph : MonoBehaviour
     {
@@ -96,7 +96,7 @@ namespace STEM2D.Interactions
             plotWidth = plotTopRight.position.x - plotBottomLeft.position.x;
             plotHeight = plotTopRight.position.y - plotBottomLeft.position.y;
 
-            Debug.Log($"[Graph] Plot: origin={plotOrigin}, size={plotWidth}x{plotHeight}");
+            Log.Info($"[Graph] Plot: origin={plotOrigin}, size={plotWidth}x{plotHeight}");
         }
 
         void Update()
@@ -171,7 +171,7 @@ namespace STEM2D.Interactions
             isRecording = true;
             OnRecordingStarted?.Invoke();
 
-            Debug.Log($"[Graph] Started at {initialVoltage}V (τ={timeConstant}s)");
+            Log.Info($"[Graph] Started at {initialVoltage}V (τ={timeConstant}s)");
         }
 
         public void StopRecording()
@@ -184,10 +184,10 @@ namespace STEM2D.Interactions
             if (!string.IsNullOrEmpty(actionIdOnComplete) && ExperimentManager.Instance != null)
             {
                 ExperimentManager.Instance.RegisterActionComplete(actionIdOnComplete);
-                Debug.Log($"[Graph] Action: {actionIdOnComplete}");
+                Log.Info($"[Graph] Action: {actionIdOnComplete}");
             }
 
-            Debug.Log($"[Graph] Stopped. Points: {points.Count}");
+            Log.Info($"[Graph] Stopped. Points: {points.Count}");
         }
 
         public void ClearGraph()

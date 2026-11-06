@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.Events;
 using System.Collections.Generic;
-using STEM2D.Core;
+using STEM.Core;
 
-namespace STEM2D.Interactions
+namespace STEM.Interactions
 {
     public class CircuitManager : MonoBehaviour
     {
@@ -146,12 +146,12 @@ namespace STEM2D.Interactions
                     hasRegisteredComplete = true;
                 }
                 
-                Debug.Log($"[Circuit] {circuitId}: Complete");
+                Log.Info($"[Circuit] {circuitId}: Complete");
             }
             else if (!isComplete && previousComplete)
             {
                 OnCircuitIncomplete?.Invoke();
-                Debug.Log($"[Circuit] {circuitId}: Incomplete");
+                Log.Info($"[Circuit] {circuitId}: Incomplete");
             }
 
             bool allSwitchesOn = true;
@@ -178,13 +178,13 @@ namespace STEM2D.Interactions
                     hasRegisteredActive = true;
                 }
                 
-                Debug.Log($"[Circuit] {circuitId}: Active");
+                Log.Info($"[Circuit] {circuitId}: Active");
             }
             else if (!isActive && previousActive)
             {
                 OnCircuitInactive?.Invoke();
                 SetControlledElementsActive(false);
-                Debug.Log($"[Circuit] {circuitId}: Inactive");
+                Log.Info($"[Circuit] {circuitId}: Inactive");
             }
 
             UpdateVisuals();

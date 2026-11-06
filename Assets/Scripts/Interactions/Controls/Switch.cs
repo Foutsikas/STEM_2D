@@ -1,8 +1,8 @@
 using UnityEngine;
 using UnityEngine.Events;
-using STEM2D.Core;
+using STEM.Core;
 
-namespace STEM2D.Interactions
+namespace STEM.Interactions
 {
     public class Switch : MonoBehaviour, IInteractable
     {
@@ -126,7 +126,7 @@ namespace STEM2D.Interactions
             
             OnStateChanged?.Invoke(isOn);
             
-            Debug.Log($"[Switch] {switchId}: {(isOn ? "ON" : "OFF")}");
+            Log.Info($"[Switch] {switchId}: {(isOn ? "ON" : "OFF")}");
         }
 
         void RegisterAction()

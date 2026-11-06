@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
-using STEM2D.Core;
+using STEM.Core;
 
-namespace STEM2D.Interactions
+namespace STEM.Interactions
 {
     public class CapacitorCircuit : MonoBehaviour
     {
@@ -92,7 +92,7 @@ namespace STEM2D.Interactions
             targetVoltage = powerSupply.CurrentVoltage;
             StartCharging();
 
-            Debug.Log($"[Circuit] Power ON - Charging to {targetVoltage}V");
+            Log.Info($"[Circuit] Power ON - Charging to {targetVoltage}V");
         }
 
         void OnPowerSupplyTurnedOff()
@@ -107,7 +107,7 @@ namespace STEM2D.Interactions
                 StartDischarging();
             }
 
-            Debug.Log("[Circuit] Power OFF - Discharging");
+            Log.Info("[Circuit] Power OFF - Discharging");
         }
 
         void OnPowerSupplyVoltageChanged(float voltage)
@@ -115,7 +115,7 @@ namespace STEM2D.Interactions
             if (powerSupply.IsPoweredOn)
             {
                 targetVoltage = voltage;
-                Debug.Log($"[Circuit] Target voltage changed to {voltage}V");
+                Log.Info($"[Circuit] Target voltage changed to {voltage}V");
             }
         }
 
@@ -130,7 +130,7 @@ namespace STEM2D.Interactions
             }
 
             OnChargingStarted?.Invoke();
-            Debug.Log($"[Circuit] Charging started to {targetVoltage}V");
+            Log.Info($"[Circuit] Charging started to {targetVoltage}V");
         }
 
         void StopCharging()
@@ -155,10 +155,10 @@ namespace STEM2D.Interactions
             if (!string.IsNullOrEmpty(actionIdOnDischargeStarted))
             {
                 ExperimentManager.Instance?.RegisterActionComplete(actionIdOnDischargeStarted);
-                Debug.Log($"[Circuit] Action '{actionIdOnDischargeStarted}' registered");
+                Log.Info($"[Circuit] Action '{actionIdOnDischargeStarted}' registered");
             }
 
-            Debug.Log($"[Circuit] Discharging from {initialDischargeVoltage}V (τ = {dischargeTimeConstant}s)");
+            Log.Info($"[Circuit] Discharging from {initialDischargeVoltage}V (τ = {dischargeTimeConstant}s)");
         }
 
         void StopDischarging()
@@ -198,7 +198,7 @@ namespace STEM2D.Interactions
                 if (Mathf.Approximately(capacitorVoltage, targetVoltage))
                 {
                     OnCapacitorCharged?.Invoke();
-                    Debug.Log($"[Circuit] Fully charged: {capacitorVoltage}V");
+                    Log.Info($"[Circuit] Fully charged: {capacitorVoltage}V");
                 }
             }
             else if (capacitorVoltage > targetVoltage)
@@ -222,7 +222,7 @@ namespace STEM2D.Interactions
                 capacitorVoltage = minimumVoltageThreshold;
                 StopDischarging();
                 OnDischargeComplete?.Invoke();
-                Debug.Log($"[Circuit] Discharge complete at {minimumVoltageThreshold}V threshold");
+                Log.Info($"[Circuit] Discharge complete at {minimumVoltageThreshold}V threshold");
             }
         }
 

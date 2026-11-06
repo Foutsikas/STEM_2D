@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using System.Collections.Generic;
 
-namespace STEM2D.Core
+namespace STEM.Core
 {
     public class ExperimentManager : MonoBehaviour
     {
@@ -88,7 +88,7 @@ namespace STEM2D.Core
             if (currentStepIndex >= steps.Count)
             {
                 OnExperimentComplete?.Invoke();
-                Debug.Log("[Experiment] Complete!");
+                Log.Info("[Experiment] Complete!");
                 return;
             }
 
@@ -100,7 +100,7 @@ namespace STEM2D.Core
             ExperimentStep step = CurrentStep;
             if (step == null) return;
 
-            Debug.Log($"[Experiment] Step {currentStepIndex}: {step.stepId}");
+            Log.Info($"[Experiment] Step {currentStepIndex}: {step.stepId}");
 
             step.onStepEnter?.Invoke();
             OnStepChanged?.Invoke(currentStepIndex);
@@ -135,7 +135,7 @@ namespace STEM2D.Core
             if (string.IsNullOrEmpty(actionId)) return;
             
             completedActions.Add(actionId);
-            Debug.Log($"[Experiment] Action completed: {actionId}");
+            Log.Info($"[Experiment] Action completed: {actionId}");
             
             CheckStepCompletion();
         }
@@ -158,7 +158,7 @@ namespace STEM2D.Core
                 }
             }
 
-            Debug.Log($"[Experiment] All actions complete for step {currentStepIndex}");
+            Log.Info($"[Experiment] All actions complete for step {currentStepIndex}");
             GoToNextStep();
         }
 

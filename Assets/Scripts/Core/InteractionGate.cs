@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-namespace STEM2D.Core
+namespace STEM.Core
 {
     public class InteractionGate : MonoBehaviour
     {

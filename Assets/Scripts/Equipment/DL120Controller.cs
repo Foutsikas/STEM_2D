@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.Events;
 using TMPro;
-using STEM2D.Core;
+using STEM.Core;
 
-namespace STEM2D.Interactions
+namespace STEM.Interactions
 {
     public class DL120Controller : MonoBehaviour
     {
@@ -121,7 +121,7 @@ namespace STEM2D.Interactions
                 ExperimentManager.Instance?.RegisterActionComplete(actionIdOnPowerOn);
             }
 
-            Debug.Log("[DL120] Powered ON");
+            Log.Info("[DL120] Powered ON");
         }
 
         void UpdatePowerIndicator()
@@ -152,7 +152,7 @@ namespace STEM2D.Interactions
             selectedOption = (MenuOption)current;
 
             UpdateSelectionIndicator();
-            Debug.Log($"[DL120] Selected: {selectedOption}");
+            Log.Info($"[DL120] Selected: {selectedOption}");
         }
 
         void OnDownButtonPressed()
@@ -168,7 +168,7 @@ namespace STEM2D.Interactions
             selectedOption = (MenuOption)current;
 
             UpdateSelectionIndicator();
-            Debug.Log($"[DL120] Selected: {selectedOption}");
+            Log.Info($"[DL120] Selected: {selectedOption}");
         }
 
         void OnConfirmButtonPressed()
@@ -191,7 +191,7 @@ namespace STEM2D.Interactions
                 }
                 else
                 {
-                    Debug.Log($"[DL120] {selectedOption} not available in this experiment");
+                    Log.Info($"[DL120] {selectedOption} not available in this experiment");
                 }
             }
         }
@@ -220,7 +220,7 @@ namespace STEM2D.Interactions
                 ExperimentManager.Instance?.RegisterActionComplete(actionIdOnMeterSelected);
             }
 
-            Debug.Log("[DL120] Entered Meter mode");
+            Log.Info("[DL120] Entered Meter mode");
         }
 
         void ExitMeterMode()
@@ -228,7 +228,7 @@ namespace STEM2D.Interactions
             currentState = DL120State.MainMenu;
             UpdateDisplay();
 
-            Debug.Log("[DL120] Exited Meter mode");
+            Log.Info("[DL120] Exited Meter mode");
         }
 
         void UpdateDisplay()

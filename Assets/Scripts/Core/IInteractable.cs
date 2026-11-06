@@ -1,4 +1,4 @@
-namespace STEM2D.Core
+namespace STEM.Core
 {
     /// <summary>
     /// Interface for objects that can be interacted with during experiments.

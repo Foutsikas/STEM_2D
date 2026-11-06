@@ -1,8 +1,8 @@
 using UnityEngine;
 using UnityEngine.Events;
-using STEM2D.Core;
+using STEM.Core;
 
-namespace STEM2D.Interactions
+namespace STEM.Interactions
 {
     public class ClickableButton : MonoBehaviour, IInteractable
     {
@@ -152,7 +152,7 @@ namespace STEM2D.Interactions
                 ExperimentManager.Instance?.RegisterActionComplete(actionIdOnClick);
             }
             
-            Debug.Log($"[Button] {buttonId}: Clicked" + (toggleMode ? $" (Toggled: {isToggled})" : ""));
+            Log.Info($"[Button] {buttonId}: Clicked" + (toggleMode ? $" (Toggled: {isToggled})" : ""));
         }
 
         void UpdateSprite()

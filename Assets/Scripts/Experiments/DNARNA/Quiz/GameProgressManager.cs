@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using STEM.Core;
 
 namespace STEM.DNA_Quiz
 {
@@ -56,7 +57,7 @@ namespace STEM.DNA_Quiz
 
             if (currentSceneIndex >= flowConfig.scenes.Length)
             {
-                Debug.Log("All scenes completed!");
+                Log.Info("All scenes completed!");
                 return;
             }
 

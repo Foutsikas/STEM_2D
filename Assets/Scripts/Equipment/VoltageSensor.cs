@@ -1,8 +1,8 @@
 using UnityEngine;
 using UnityEngine.Events;
-using STEM2D.Core;
+using STEM.Core;
 
-namespace STEM2D.Interactions
+namespace STEM.Interactions
 {
     public class VoltageSensor : MonoBehaviour
     {
@@ -85,28 +85,28 @@ namespace STEM2D.Interactions
         {
             redConnected = true;
             CheckFullConnection();
-            Debug.Log($"[VoltageSensor] Red wire connected to {point.PointId}");
+            Log.Info($"[VoltageSensor] Red wire connected to {point.PointId}");
         }
 
         void OnRedWireDisconnected()
         {
             redConnected = false;
             CheckFullConnection();
-            Debug.Log("[VoltageSensor] Red wire disconnected");
+            Log.Info("[VoltageSensor] Red wire disconnected");
         }
 
         void OnBlackWireConnected(ConnectionPoint point)
         {
             blackConnected = true;
             CheckFullConnection();
-            Debug.Log($"[VoltageSensor] Black wire connected to {point.PointId}");
+            Log.Info($"[VoltageSensor] Black wire connected to {point.PointId}");
         }
 
         void OnBlackWireDisconnected()
         {
             blackConnected = false;
             CheckFullConnection();
-            Debug.Log("[VoltageSensor] Black wire disconnected");
+            Log.Info("[VoltageSensor] Black wire disconnected");
         }
 
         void CheckFullConnection()
@@ -123,13 +123,13 @@ namespace STEM2D.Interactions
                     ExperimentManager.Instance?.RegisterActionComplete(actionIdOnBothWiresConnected);
                 }
                 
-                Debug.Log("[VoltageSensor] Fully connected - ready to measure");
+                Log.Info("[VoltageSensor] Fully connected - ready to measure");
             }
             else if (!isConnected && wasConnected)
             {
                 OnSensorDisconnected?.Invoke();
                 SetReading(0f);
-                Debug.Log("[VoltageSensor] Disconnected");
+                Log.Info("[VoltageSensor] Disconnected");
             }
         }
 
@@ -194,7 +194,7 @@ namespace STEM2D.Interactions
                 graph.StartRecording(initialVoltage);
             }
             
-            Debug.Log($"[VoltageSensor] Started measuring at {initialVoltage}V");
+            Log.Info($"[VoltageSensor] Started measuring at {initialVoltage}V");
         }
 
         public void StopMeasuring()
@@ -204,7 +204,7 @@ namespace STEM2D.Interactions
                 graph.StopRecording();
             }
             
-            Debug.Log("[VoltageSensor] Stopped measuring");
+            Log.Info("[VoltageSensor] Stopped measuring");
         }
 
         public void SetDL120Channel(int channel)

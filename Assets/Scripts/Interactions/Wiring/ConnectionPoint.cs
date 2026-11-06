@@ -1,7 +1,8 @@
 using UnityEngine;
 using UnityEngine.Events;
+using STEM.Core;
 
-namespace STEM2D.Interactions
+namespace STEM.Interactions
 {
     public enum WireColor
     {
@@ -102,7 +103,7 @@ namespace STEM2D.Interactions
             
             OnWireConnected?.Invoke(this);
             
-            Debug.Log($"[ConnectionPoint] {pointId}: Wire connected");
+            Log.Info($"[ConnectionPoint] {pointId}: Wire connected");
             return true;
         }
 
@@ -115,7 +116,7 @@ namespace STEM2D.Interactions
             
             OnWireDisconnected?.Invoke(this);
             
-            Debug.Log($"[ConnectionPoint] {pointId}: Wire disconnected");
+            Log.Info($"[ConnectionPoint] {pointId}: Wire disconnected");
         }
 
         public static Color GetColorForWireType(WireColor wireColor)
