@@ -52,42 +52,10 @@ namespace STEM.Experiments.Rheostat
 
             knob.value = Mathf.Clamp01(phase.startKnob);
             ClearReadout();
-            ApplyPresets();
+            manager.ApplyPresets(phase.presets);
 
             manager.circuitSwitch.SetClosed(phase.switchStartsClosed);
             manager.Evaluate();
-        }
-
-        void ApplyPresets()
-        {
-            foreach (Cable c in manager.cables)
-            {
-                c.endA.Detach();
-                c.endB.Detach();
-                c.endA.locked = true;
-                c.endB.locked = true;
-                c.gameObject.SetActive(false);
-            }
-
-            foreach (CablePreset p in phase.presets)
-            {
-                Cable c = manager.cables[p.cableIndex];
-                c.gameObject.SetActive(true);
-
-                if (p.endAAttached) c.endA.AttachTo(RequireNode(p.endANode, p.cableIndex, "A"));
-                if (p.endBAttached) c.endB.AttachTo(RequireNode(p.endBNode, p.cableIndex, "B"));
-
-                c.endA.locked = p.endALocked;
-                c.endB.locked = p.endBLocked;
-            }
-        }
-
-        CircuitNode RequireNode(NodeId id, int cableIndex, string end)
-        {
-            CircuitNode node = manager.FindNode(id);
-            if (node == null)
-                Debug.LogError($"Rheostat preset: no node {id} for cable {cableIndex} end {end}", this);
-            return node;
         }
 
         void HandleCircuit(RheostatResult r)

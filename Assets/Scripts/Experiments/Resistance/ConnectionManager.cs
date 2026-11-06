@@ -20,6 +20,39 @@ namespace STEM.Experiments.Resistance
             Instance = this;
         }
 
+        // Hides every cable, then shows and attaches the ones listed in the phase.
+        public void ApplyPresets(IEnumerable<CablePreset> presets)
+        {
+            foreach (Cable c in cables)
+            {
+                c.endA.Detach();
+                c.endB.Detach();
+                c.endA.locked = true;
+                c.endB.locked = true;
+                c.gameObject.SetActive(false);
+            }
+
+            foreach (CablePreset p in presets)
+            {
+                Cable c = cables[p.cableIndex];
+                c.gameObject.SetActive(true);
+
+                if (p.endAAttached) c.endA.AttachTo(RequireNode(p.endANode, p.cableIndex, "A"));
+                if (p.endBAttached) c.endB.AttachTo(RequireNode(p.endBNode, p.cableIndex, "B"));
+
+                c.endA.locked = p.endALocked;
+                c.endB.locked = p.endBLocked;
+            }
+        }
+
+        CircuitNode RequireNode(NodeId id, int cableIndex, string end)
+        {
+            CircuitNode node = FindNode(id);
+            if (node == null)
+                Debug.LogError($"Cable preset: no node {id} for cable {cableIndex} end {end}", this);
+            return node;
+        }
+
         public CircuitNode FindNode(NodeId id)
         {
             foreach (var n in nodes)
