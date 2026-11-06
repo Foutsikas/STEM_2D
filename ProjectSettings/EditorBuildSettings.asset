@@ -38,12 +38,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Microscope/MicroscopeQuizScene.unity
     guid: f30fce8644fc15f40b8c6693d7621da8
-  - enabled: 0
-    path: Assets/Scenes/MicroscopeScene.unity
-    guid: 89c4114e76f1b9b4eb55e519b5c1cc62
-  - enabled: 0
-    path: Assets/Scenes/Microscope/MicroscopeQuizScene.unity
-    guid: f30fce8644fc15f40b8c6693d7621da8
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
