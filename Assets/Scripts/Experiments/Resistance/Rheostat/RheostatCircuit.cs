@@ -48,7 +48,7 @@ namespace STEM.Experiments.Rheostat
                 touched.Add(c.Item2);
             }
 
-            var d = new Dsu();
+            var d = new NodeDsu();
             foreach (var c in cables) d.Union(c.Item1, c.Item2);
             d.Union(NodeId.PS_1, NodeId.PS_3);
             d.Union(NodeId.PS_2, NodeId.PS_4);
@@ -127,37 +127,6 @@ namespace STEM.Experiments.Rheostat
         static bool SameNets(int a1, int a2, int b1, int b2)
         {
             return (a1 == b1 && a2 == b2) || (a1 == b2 && a2 == b1);
-        }
-
-        class Dsu
-        {
-            readonly int[] parent;
-
-            public Dsu()
-            {
-                int count = System.Enum.GetValues(typeof(NodeId)).Length;
-                parent = new int[count];
-                for (int i = 0; i < count; i++) parent[i] = i;
-            }
-
-            public int Find(NodeId id) { return Find((int)id); }
-
-            int Find(int x)
-            {
-                while (parent[x] != x)
-                {
-                    parent[x] = parent[parent[x]];
-                    x = parent[x];
-                }
-                return x;
-            }
-
-            public void Union(NodeId a, NodeId b)
-            {
-                int ra = Find((int)a);
-                int rb = Find((int)b);
-                if (ra != rb) parent[ra] = rb;
-            }
         }
     }
 }

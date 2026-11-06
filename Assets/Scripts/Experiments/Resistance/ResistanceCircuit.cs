@@ -76,7 +76,7 @@ namespace STEM.Experiments.Resistance
             }
 
             // Pass one: nets without the ammeter joined, so we can tell if it is bypassed.
-            var probe = new Dsu();
+            var probe = new NodeDsu();
             foreach (var c in cables) probe.Union(c.Item1, c.Item2);
             probe.Union(NodeId.SW_A, NodeId.SW_B);
 
@@ -88,7 +88,7 @@ namespace STEM.Experiments.Resistance
             }
 
             // Pass two: ammeter treated as an ideal wire.
-            var d = new Dsu();
+            var d = new NodeDsu();
             foreach (var c in cables) d.Union(c.Item1, c.Item2);
             d.Union(NodeId.SW_A, NodeId.SW_B);
             d.Union(NodeId.AMM_A, NodeId.AMM_B);
@@ -221,39 +221,6 @@ namespace STEM.Experiments.Resistance
         static bool SameNets(int a1, int a2, int b1, int b2)
         {
             return (a1 == b1 && a2 == b2) || (a1 == b2 && a2 == b1);
-        }
-
-        class Dsu
-        {
-            readonly int[] parent;
-
-            public Dsu()
-            {
-                int count = System.Enum.GetValues(typeof(NodeId)).Length;
-                parent = new int[count];
-                for (int i = 0; i < count; i++) parent[i] = i;
-            }
-
-            public int Find(NodeId id) => Find((int)id);
-
-            int Find(int x)
-            {
-                while (parent[x] != x)
-                {
-                    parent[x] = parent[parent[x]];
-                    x = parent[x];
-                }
-                return x;
-            }
-
-            public void Union(NodeId a, NodeId b)
-            {
-                int ra = Find((int)a);
-                int rb = Find((int)b);
-                if (ra != rb) parent[ra] = rb;
-            }
-
-            public bool Same(NodeId a, NodeId b) => Find(a) == Find(b);
         }
     }
 }

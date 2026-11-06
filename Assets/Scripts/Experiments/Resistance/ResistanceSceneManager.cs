@@ -59,48 +59,9 @@ namespace STEM.Experiments.Resistance
             dl120.Clear();
             dl120.SetStartEnabled(false);
 
-            ApplyPresets(phase);
+            ConnectionManager.Instance.ApplyPresets(phase.presets);
             ConnectionManager.Instance.circuitSwitch.SetClosed(phase.switchStartsClosed);
             ConnectionManager.Instance.Evaluate();
-        }
-
-        void ApplyPresets(ResistancePhase phase)
-        {
-            ConnectionManager cm = ConnectionManager.Instance;
-
-            foreach (Cable c in cm.cables)
-            {
-                c.endA.Detach();
-                c.endB.Detach();
-                c.endA.locked = true;
-                c.endB.locked = true;
-                c.gameObject.SetActive(false);
-            }
-
-            foreach (CablePreset p in phase.presets)
-            {
-                Cable c = cm.cables[p.cableIndex];
-                c.gameObject.SetActive(true);
-
-                if (p.endAAttached)
-                {
-                    CircuitNode node = cm.FindNode(p.endANode);
-                    if (node == null)
-                        Debug.LogError($"Phase preset: no node {p.endANode} for cable {p.cableIndex} end A", this);
-                    c.endA.AttachTo(node);
-                }
-
-                if (p.endBAttached)
-                {
-                    CircuitNode node = cm.FindNode(p.endBNode);
-                    if (node == null)
-                        Debug.LogError($"Phase preset: no node {p.endBNode} for cable {p.cableIndex} end B", this);
-                    c.endB.AttachTo(node);
-                }
-
-                c.endA.locked = p.endALocked;
-                c.endB.locked = p.endBLocked;
-            }
         }
 
         void HandleCircuit(CircuitResult r)
