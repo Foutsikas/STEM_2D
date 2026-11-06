@@ -99,12 +99,10 @@ namespace STEM.Interactions
 
         void Update()
         {
-            if (isDragging)
-            {
-                UpdateDragPosition();
-                CheckForSnapTarget();
-            }
+            if (!isDragging) return;
 
+            UpdateDragPosition();
+            CheckForSnapTarget();
             UpdateLinePositions();
         }
 
@@ -129,6 +127,7 @@ namespace STEM.Interactions
             HighlightValidTargets(false);
 
             TryConnect();
+            UpdateLinePositions();
         }
 
         void UpdateDragPosition()
@@ -217,6 +216,7 @@ namespace STEM.Interactions
 
             isConnected = false;
             ResetToSource();
+            UpdateLinePositions();
 
             OnDisconnected?.Invoke();
             Log.Info($"[Wire] {wireId}: Disconnected");

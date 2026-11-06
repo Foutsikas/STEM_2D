@@ -318,7 +318,7 @@ namespace STEM.Interactions
             isInteractable = interactable;
         }
 
-        public void Reset()
+        public void ResetState()
         {
             currentState = DL120State.Off;
             selectedOption = MenuOption.EasyLog;

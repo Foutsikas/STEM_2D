@@ -211,7 +211,7 @@ namespace STEM.Interactions
             isInteractable = interactable;
         }
 
-        public void Reset()
+        public void ResetState()
         {
             isPoweredOn = false;
             currentVoltageIndex = 3;

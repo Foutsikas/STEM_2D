@@ -67,10 +67,16 @@ namespace STEM.Interactions
 
         void Update()
         {
-            if (useScaleAnimation)
+            if (!useScaleAnimation) return;
+
+            Vector3 scale = transform.localScale;
+            if ((scale - targetScale).sqrMagnitude < 0.000001f)
             {
-                transform.localScale = Vector3.Lerp(transform.localScale, targetScale, animationSpeed * Time.deltaTime);
+                if (scale != targetScale) transform.localScale = targetScale;
+                return;
             }
+
+            transform.localScale = Vector3.Lerp(scale, targetScale, animationSpeed * Time.deltaTime);
         }
 
         public void OnPointerEnter(PointerEventData eventData)

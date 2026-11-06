@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using System.Collections;
 
 namespace STEM.DNA_Quiz
 {
@@ -41,8 +42,15 @@ namespace STEM.DNA_Quiz
             else
             {
                 lessonPanel.SetActive(false);
-                OnLessonComplete?.Invoke();
+                StartCoroutine(CompleteNextFrame());
             }
+        }
+
+        // Listeners subscribe in their own Start, which may run after this one.
+        private IEnumerator CompleteNextFrame()
+        {
+            yield return null;
+            OnLessonComplete?.Invoke();
         }
 
         private void ShowSlide(int index)

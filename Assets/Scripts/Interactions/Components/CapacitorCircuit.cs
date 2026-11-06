@@ -272,7 +272,7 @@ namespace STEM.Interactions
             }
         }
 
-        public void Reset()
+        public void ResetState()
         {
             capacitorVoltage = 0f;
             isCharging = false;

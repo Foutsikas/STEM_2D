@@ -106,13 +106,13 @@ namespace STEM.Core
             OnStepChanged?.Invoke(currentStepIndex);
 
             UpdateInstructionPanel();
-            
-            if (step.requiredActionIds.Count == 0 && !step.showNextButton)
-            {
-                step.showNextButton = true;
-            }
-            
             CheckStepCompletion();
+        }
+
+        // A step with no required actions can only be left with the Next button.
+        static bool ShowsNextButton(ExperimentStep step)
+        {
+            return step.showNextButton || step.requiredActionIds.Count == 0;
         }
 
         void UpdateInstructionPanel()
@@ -125,7 +125,7 @@ namespace STEM.Core
             instructionPanel.ShowInstruction(
                 step.instruction,
                 step.infographic,
-                step.showNextButton,
+                ShowsNextButton(step),
                 step.requiredActionIds.Count == 0
             );
         }
@@ -167,7 +167,7 @@ namespace STEM.Core
             ExperimentStep step = CurrentStep;
             if (step == null) return;
 
-            if (step.showNextButton && step.requiredActionIds.Count == 0)
+            if (ShowsNextButton(step) && step.requiredActionIds.Count == 0)
             {
                 GoToNextStep();
             }

@@ -26,8 +26,10 @@ namespace STEM.Experiments.Resistance
 
         void Update()
         {
+#if UNITY_EDITOR
             Keyboard kb = Keyboard.current;
             if (kb != null && kb.f6Key.wasPressedThisFrame) TryMeasure();
+#endif
 
             if (okGlow != null && okGlow.enabled)
             {
