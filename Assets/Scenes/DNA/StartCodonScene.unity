@@ -1994,7 +1994,6 @@ MonoBehaviour:
   moleculeType: 4
   isPoolSource: 1
   wasPlaced: 0
-  poolUsed: 0
 --- !u!225 &434386477
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -2365,7 +2364,7 @@ GameObject:
   - component: {fileID: 490040873}
   - component: {fileID: 490040872}
   m_Layer: 5
-  m_Name: G_Pool_1
+  m_Name: A_Pool_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2405,7 +2404,6 @@ MonoBehaviour:
   moleculeType: 5
   isPoolSource: 1
   wasPlaced: 0
-  poolUsed: 0
 --- !u!225 &490040873
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -3075,7 +3073,6 @@ MonoBehaviour:
   moleculeType: 2
   isPoolSource: 1
   wasPlaced: 0
-  poolUsed: 0
 --- !u!225 &588700098
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -8753,8 +8750,8 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_characterHorizontalScale: 1
@@ -9424,7 +9421,6 @@ MonoBehaviour:
   moleculeType: 3
   isPoolSource: 1
   wasPlaced: 0
-  poolUsed: 0
 --- !u!225 &1858427292
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -9622,10 +9618,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c142c79651c0404f8e9ba9a499bb50a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::STEM.Experiments.DNA.DraggableMolecule
-  moleculeType: 5
+  moleculeType: 6
   isPoolSource: 1
   wasPlaced: 0
-  poolUsed: 0
 --- !u!225 &1863724332
 CanvasGroup:
   m_ObjectHideFlags: 0
