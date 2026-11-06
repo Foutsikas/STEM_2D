@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using STEM2D.Core;
+using STEM.Core;
 
-namespace STEM2D.Core
+namespace STEM.Core
 {
     public class InstructionPanel : MonoBehaviour
     {

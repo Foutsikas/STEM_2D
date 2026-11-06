@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace STEM2D.Interactions
+namespace STEM.Interactions
 {
     [RequireComponent(typeof(LineRenderer))]
     public class StaticWire : MonoBehaviour

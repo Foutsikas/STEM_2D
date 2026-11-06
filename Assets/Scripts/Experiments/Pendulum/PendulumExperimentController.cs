@@ -1,4 +1,5 @@
 using UnityEngine;
+using STEM.Core;
 
 namespace STEM.Experiments.Pendulum
 {
@@ -90,9 +91,7 @@ namespace STEM.Experiments.Pendulum
         {
             if (lastRecordedPeriod <= 0f)
             {
-#if UNITY_EDITOR
-                Debug.Log("No valid period measured yet.");
-#endif
+                Log.Info("No valid period measured yet.");
                 return;
             }
 

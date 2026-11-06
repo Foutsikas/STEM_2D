@@ -404,7 +404,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9b491738db33ff649b1a9105e2d36aa2, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::STEM2D.Interactions.LED
+  m_EditorClassIdentifier: Assembly-CSharp::STEM.Interactions.LED
   ledId: circuit_led
   ledColor: {r: 1, g: 0, b: 0, a: 1}
   ledRenderer: {fileID: 0}
@@ -967,7 +967,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0875f39754df10499f18027f18f9da9, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::STEM2D.Interactions.ConnectionPoint
+  m_EditorClassIdentifier: Assembly-CSharp::STEM.Interactions.ConnectionPoint
   pointId: board_power_black
   acceptedColor: 3
   isSource: 0
@@ -1414,7 +1414,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 485399a9d500db44088cf6646a0fb683, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::STEM2D.Interactions.StaticWire
+  m_EditorClassIdentifier: Assembly-CSharp::STEM.Interactions.StaticWire
   startPoint: {fileID: 1235783478}
   endPoint: {fileID: 972909534}
   wireColor: {r: 1, g: 0, b: 0, a: 1}
@@ -1627,7 +1627,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 26e83cf348660c44b995f5b59271dc99, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::STEM2D.Core.InstructionPanel
+  m_EditorClassIdentifier: Assembly-CSharp::STEM.Core.InstructionPanel
   instructionText: {fileID: 485279952}
   infographicImage: {fileID: 0}
   nextButton: {fileID: 249724635}
@@ -1948,7 +1948,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 98ecaad4c266a834fb9dfbb45e3e6772, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::STEM2D.Interactions.DischargeGraph
+  m_EditorClassIdentifier: Assembly-CSharp::STEM.Interactions.DischargeGraph
   plotBottomLeft: {fileID: 1087156672}
   plotTopRight: {fileID: 1472450629}
   maxTime: 25
@@ -2231,7 +2231,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f7df29f1d9dead04eb1e151f33cf11ec, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::STEM2D.Interactions.EquipmentButton
+  m_EditorClassIdentifier: Assembly-CSharp::STEM.Interactions.EquipmentButton
   buttonId: 
   interactable: 1
   buttonRenderer: {fileID: 0}
@@ -2473,7 +2473,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7b7ac4262ba13ce4f94a2ebbed8de384, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::STEM2D.Core.ExperimentManager
+  m_EditorClassIdentifier: Assembly-CSharp::STEM.Core.ExperimentManager
   experimentTitle: Capacitor Discharge
   steps:
   - stepId: power_on
@@ -2986,7 +2986,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0875f39754df10499f18027f18f9da9, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::STEM2D.Interactions.ConnectionPoint
+  m_EditorClassIdentifier: Assembly-CSharp::STEM.Interactions.ConnectionPoint
   pointId: power_red
   acceptedColor: 0
   isSource: 1
@@ -4395,7 +4395,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: de058affb9758134a93ef1f467366d0f, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::STEM2D.Interactions.DL120Controller
+  m_EditorClassIdentifier: Assembly-CSharp::STEM.Interactions.DL120Controller
   currentState: 0
   actionIdOnPowerOn: dl120_power_on
   actionIdOnMeterSelected: dl120_meter_selected
@@ -4545,7 +4545,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 083e0ea8539290a46b275f2494490ad3, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::STEM2D.Interactions.CapacitorCircuit
+  m_EditorClassIdentifier: Assembly-CSharp::STEM.Interactions.CapacitorCircuit
   powerSupply: {fileID: 1808902471}
   led: {fileID: 32217903}
   voltageSensor: {fileID: 1968834625}
@@ -4619,7 +4619,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0875f39754df10499f18027f18f9da9, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::STEM2D.Interactions.ConnectionPoint
+  m_EditorClassIdentifier: Assembly-CSharp::STEM.Interactions.ConnectionPoint
   pointId: capacitor_black
   acceptedColor: 3
   isSource: 0
@@ -5135,7 +5135,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0875f39754df10499f18027f18f9da9, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::STEM2D.Interactions.ConnectionPoint
+  m_EditorClassIdentifier: Assembly-CSharp::STEM.Interactions.ConnectionPoint
   pointId: sensor_black
   acceptedColor: 3
   isSource: 1
@@ -5288,7 +5288,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 485399a9d500db44088cf6646a0fb683, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::STEM2D.Interactions.StaticWire
+  m_EditorClassIdentifier: Assembly-CSharp::STEM.Interactions.StaticWire
   startPoint: {fileID: 405777836}
   endPoint: {fileID: 1235783478}
   wireColor: {r: 1, g: 0, b: 0, a: 1}
@@ -5562,7 +5562,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f7df29f1d9dead04eb1e151f33cf11ec, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::STEM2D.Interactions.EquipmentButton
+  m_EditorClassIdentifier: Assembly-CSharp::STEM.Interactions.EquipmentButton
   buttonId: 
   interactable: 1
   buttonRenderer: {fileID: 0}
@@ -5684,7 +5684,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0875f39754df10499f18027f18f9da9, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::STEM2D.Interactions.ConnectionPoint
+  m_EditorClassIdentifier: Assembly-CSharp::STEM.Interactions.ConnectionPoint
   pointId: sensor_red
   acceptedColor: 0
   isSource: 1
@@ -5998,7 +5998,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f7df29f1d9dead04eb1e151f33cf11ec, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::STEM2D.Interactions.EquipmentButton
+  m_EditorClassIdentifier: Assembly-CSharp::STEM.Interactions.EquipmentButton
   buttonId: 
   interactable: 1
   buttonRenderer: {fileID: 0}
@@ -6165,7 +6165,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 485399a9d500db44088cf6646a0fb683, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::STEM2D.Interactions.StaticWire
+  m_EditorClassIdentifier: Assembly-CSharp::STEM.Interactions.StaticWire
   startPoint: {fileID: 144016305}
   endPoint: {fileID: 553004555}
   wireColor: {r: 0, g: 0, b: 0, a: 1}
@@ -6610,7 +6610,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0875f39754df10499f18027f18f9da9, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::STEM2D.Interactions.ConnectionPoint
+  m_EditorClassIdentifier: Assembly-CSharp::STEM.Interactions.ConnectionPoint
   pointId: capacitor_red
   acceptedColor: 0
   isSource: 0
@@ -6842,7 +6842,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 153c828bb5f00b8439641a99e8a80b6c, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::STEM2D.Interactions.DraggableWire
+  m_EditorClassIdentifier: Assembly-CSharp::STEM.Interactions.DraggableWire
   wireId: sensor_black_wire
   wireColor: 3
   sourcePoint: {fileID: 566745787}
@@ -7069,7 +7069,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0875f39754df10499f18027f18f9da9, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::STEM2D.Interactions.ConnectionPoint
+  m_EditorClassIdentifier: Assembly-CSharp::STEM.Interactions.ConnectionPoint
   pointId: power_black
   acceptedColor: 3
   isSource: 1
@@ -7456,7 +7456,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0875f39754df10499f18027f18f9da9, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::STEM2D.Interactions.ConnectionPoint
+  m_EditorClassIdentifier: Assembly-CSharp::STEM.Interactions.ConnectionPoint
   pointId: board_power_red
   acceptedColor: 0
   isSource: 0
@@ -8455,7 +8455,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f7df29f1d9dead04eb1e151f33cf11ec, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::STEM2D.Interactions.EquipmentButton
+  m_EditorClassIdentifier: Assembly-CSharp::STEM.Interactions.EquipmentButton
   buttonId: 
   interactable: 1
   buttonRenderer: {fileID: 1570681571}
@@ -8903,7 +8903,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 153c828bb5f00b8439641a99e8a80b6c, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::STEM2D.Interactions.DraggableWire
+  m_EditorClassIdentifier: Assembly-CSharp::STEM.Interactions.DraggableWire
   wireId: sensor_red_wire
   wireColor: 0
   sourcePoint: {fileID: 682457863}
@@ -9409,7 +9409,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 724ad6d0809add34d9db7ba3bc18c4ad, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::STEM2D.Interactions.PowerSupplyController
+  m_EditorClassIdentifier: Assembly-CSharp::STEM.Interactions.PowerSupplyController
   isPoweredOn: 0
   allowedVoltages:
   - 1.5
@@ -9520,7 +9520,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 485399a9d500db44088cf6646a0fb683, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::STEM2D.Interactions.StaticWire
+  m_EditorClassIdentifier: Assembly-CSharp::STEM.Interactions.StaticWire
   startPoint: {fileID: 1147479959}
   endPoint: {fileID: 144016305}
   wireColor: {r: 0, g: 0, b: 0, a: 1}
@@ -10281,7 +10281,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f7df29f1d9dead04eb1e151f33cf11ec, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::STEM2D.Interactions.EquipmentButton
+  m_EditorClassIdentifier: Assembly-CSharp::STEM.Interactions.EquipmentButton
   buttonId: power_switch
   interactable: 1
   buttonRenderer: {fileID: 1941474507}
@@ -11038,7 +11038,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 435da8025eab6004f945924ac4d8eb6f, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::STEM2D.Interactions.VoltageSensor
+  m_EditorClassIdentifier: Assembly-CSharp::STEM.Interactions.VoltageSensor
   sensorId: RS101
   dl120Channel: 1
   redWire: {fileID: 1740763333}
@@ -12008,7 +12008,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f7df29f1d9dead04eb1e151f33cf11ec, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::STEM2D.Interactions.EquipmentButton
+  m_EditorClassIdentifier: Assembly-CSharp::STEM.Interactions.EquipmentButton
   buttonId: 
   interactable: 1
   buttonRenderer: {fileID: 0}
@@ -12176,7 +12176,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f7df29f1d9dead04eb1e151f33cf11ec, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::STEM2D.Interactions.EquipmentButton
+  m_EditorClassIdentifier: Assembly-CSharp::STEM.Interactions.EquipmentButton
   buttonId: 
   interactable: 1
   buttonRenderer: {fileID: 2024647508}

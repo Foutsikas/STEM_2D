@@ -1,6 +1,7 @@
 using UnityEngine;
+using STEM.Core;
 
-namespace STEM2D.Interactions
+namespace STEM.Interactions
 {
     public class Lamp : MonoBehaviour
     {
@@ -83,7 +84,7 @@ namespace STEM2D.Interactions
         {
             isOn = on;
             UpdateVisuals();
-            Debug.Log($"[Lamp] {lampId}: {(isOn ? "ON" : "OFF")}");
+            Log.Info($"[Lamp] {lampId}: {(isOn ? "ON" : "OFF")}");
         }
 
         void UpdateVisuals()

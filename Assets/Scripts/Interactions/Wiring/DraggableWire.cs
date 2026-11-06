@@ -2,9 +2,9 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using STEM2D.Core;
+using STEM.Core;
 
-namespace STEM2D.Interactions
+namespace STEM.Interactions
 {
     [RequireComponent(typeof(LineRenderer))]
     [RequireComponent(typeof(BoxCollider2D))]
@@ -188,7 +188,7 @@ namespace STEM2D.Interactions
                             ExperimentManager.Instance?.RegisterActionComplete(completionActionId);
                         }
 
-                        Debug.Log($"[Wire] {wireId}: Connected to {point.PointId}");
+                        Log.Info($"[Wire] {wireId}: Connected to {point.PointId}");
                         return;
                     }
                 }
@@ -219,7 +219,7 @@ namespace STEM2D.Interactions
             ResetToSource();
 
             OnDisconnected?.Invoke();
-            Debug.Log($"[Wire] {wireId}: Disconnected");
+            Log.Info($"[Wire] {wireId}: Disconnected");
         }
 
         void UpdateLinePositions()
